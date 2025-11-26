@@ -315,6 +315,72 @@ export class Neo4jRepository {
   }
 
   /**
+   * Get all columns from all databases in the graph
+   * Used for relationship discovery
+   */
+  async getAllColumns(): Promise<Column[]> {
+    const session = this.driver.session();
+    try {
+      const result = await session.run(
+        `
+        MATCH (:Database)-[:CONTAINS]->(t:Table)-[:HAS_COLUMN]->(c:Column)
+        RETURN c.id as id,
+               c.name as name,
+               c.dataType as dataType,
+               t.id as tableId,
+               c.notNull as notNull,
+               c.primaryKey as primaryKey,
+               c.defaultValue as defaultValue
+        `
+      );
+
+      return result.records.map((record) => {
+        return new Column({
+          id: record.get('id'),
+          name: record.get('name'),
+          dataType: record.get('dataType'),
+          tableId: record.get('tableId'),
+          notNull: record.get('notNull') || false,
+          primaryKey: record.get('primaryKey') || false,
+          defaultValue: record.get('defaultValue'),
+        });
+      });
+    } finally {
+      await session.close();
+    }
+  }
+
+  /**
+   * Create a SIMILAR_TO relationship between two columns
+   * Indicates that columns are potentially related based on name/type similarity
+   *
+   * @param fromColumnId - Source column ID
+   * @param toColumnId - Target column ID
+   * @param confidence - Confidence score (0.0 to 1.0)
+   */
+  async createSimilarityRelationship(
+    fromColumnId: string,
+    toColumnId: string,
+    confidence: number
+  ): Promise<void> {
+    const session = this.driver.session();
+    try {
+      await session.run(
+        `
+        MATCH (from:Column {id: $fromColumnId})
+        MATCH (to:Column {id: $toColumnId})
+        MERGE (from)-[r:SIMILAR_TO]->(to)
+        SET r.confidence = $confidence,
+            r.discoveredAt = datetime()
+        `,
+        { fromColumnId, toColumnId, confidence }
+      );
+    } finally {
+      await session.close();
+    }
+  }
+
+  /**
    * Deletes all nodes and relationships in the graph
    * WARNING: Use only for testing!
    */
