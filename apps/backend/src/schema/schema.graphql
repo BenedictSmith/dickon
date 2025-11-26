@@ -1,0 +1,118 @@
+"""
+A SQLite database that has been ingested into the system
+"""
+type Database {
+  """Unique identifier for the database"""
+  id: ID!
+
+  """Human-readable name of the database"""
+  name: String!
+
+  """File system path to the SQLite database file"""
+  path: String!
+
+  """Timestamp when the database was added to the system"""
+  addedAt: String!
+
+  """Tables contained in this database"""
+  tables: [Table!]!
+}
+
+"""
+A table within a database
+"""
+type Table {
+  """Unique identifier for the table"""
+  id: ID!
+
+  """Name of the table"""
+  name: String!
+
+  """ID of the database this table belongs to"""
+  databaseId: ID!
+
+  """Number of rows in the table (null if not calculated)"""
+  rowCount: Int
+
+  """Columns in this table"""
+  columns: [Column!]!
+
+  """The database this table belongs to"""
+  database: Database!
+}
+
+"""
+A column within a table
+"""
+type Column {
+  """Unique identifier for the column"""
+  id: ID!
+
+  """Name of the column"""
+  name: String!
+
+  """Data type of the column (e.g., INTEGER, TEXT)"""
+  dataType: String!
+
+  """ID of the table this column belongs to"""
+  tableId: ID!
+
+  """Whether the column has a NOT NULL constraint"""
+  notNull: Boolean!
+
+  """Whether the column is a primary key"""
+  primaryKey: Boolean!
+
+  """Default value for the column (null if none)"""
+  defaultValue: String
+
+  """The table this column belongs to"""
+  table: Table!
+}
+
+"""
+Input for adding a new database to the system
+"""
+input AddDatabaseInput {
+  """Human-readable name for the database"""
+  name: String!
+
+  """File system path to the SQLite database file"""
+  path: String!
+}
+
+"""
+Response from adding a database
+"""
+type AddDatabaseResponse {
+  """Whether the operation was successful"""
+  success: Boolean!
+
+  """The newly added database (null if failed)"""
+  database: Database
+
+  """Error message if the operation failed"""
+  error: String
+}
+
+type Query {
+  """Get all databases in the system"""
+  databases: [Database!]!
+
+  """Get a specific database by ID"""
+  database(id: ID!): Database
+
+  """Get all tables for a specific database"""
+  tables(databaseId: ID!): [Table!]!
+
+  """Get a specific table by ID"""
+  table(id: ID!): Table
+}
+
+type Mutation {
+  """
+  Add a new SQLite database to the system
+  This will extract the schema and populate the knowledge graph
+  """
+  addDatabase(input: AddDatabaseInput!): AddDatabaseResponse!
+}
