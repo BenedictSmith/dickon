@@ -2,10 +2,28 @@
 
 A project inspired by Dickon from The Secret Garden - a shared workspace for collaborative development.
 
+## Project: SiloBreaker
+
+**SiloBreaker** is a production-grade system for automated discovery, federation, and visualization of relationships across disparate SQLite databases, using knowledge graphs to break down enterprise data silos.
+
+### Key Features
+- **Automated Discovery**: Intelligently detects relationships between databases using schema analysis and value overlap
+- **Knowledge Graph**: Uses Neo4j to map and visualize cross-database relationships
+- **Visual Exploration**: Interactive D3.js force-directed graphs for exploring data connections
+- **Federated Queries**: Execute queries spanning multiple SQLite databases
+- **Type-Safe**: Full TypeScript coverage from backend to frontend
+
+### Technology Stack
+- **Backend**: Node.js 20+, TypeScript 5+, Apollo Server 4 (GraphQL), Neo4j 5+
+- **Frontend**: React 18+, TypeScript, D3.js v7, Apollo Client, Tailwind CSS
+- **Infrastructure**: Docker Compose, GitHub Actions, ESLint, Prettier
+
 ## Getting Started
 
 ### Prerequisites
-- [List required software, versions]
+- Node.js 20+
+- Docker & Docker Compose
+- Git
 
 ### Installation
 ```bash
@@ -13,13 +31,32 @@ A project inspired by Dickon from The Secret Garden - a shared workspace for col
 git clone https://github.com/BenedictSmith/dickon.git
 cd dickon
 
-# Installation steps
+# Start services with Docker Compose
+docker-compose up -d
+
+# Install dependencies (for local development)
+npm install
 ```
 
 ### Running the Project
 ```bash
-# Commands to run the project
+# Development mode
+docker-compose up
+
+# Backend only
+cd apps/backend && npm run dev
+
+# Frontend only
+cd apps/frontend && npm run dev
+
+# Run tests
+npm test
 ```
+
+## Documentation
+- [ARCHITECTURE.md](docs/ARCHITECTURE.md) - System architecture overview
+- [SILOBREAKER.md](docs/SILOBREAKER.md) - Detailed technical design
+- [ADR/](docs/ADR/) - Architecture decision records
 
 ## Workflow with Carsten
 
