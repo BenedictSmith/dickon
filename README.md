@@ -23,6 +23,7 @@ A project inspired by Dickon from The Secret Garden - a shared workspace for col
 ## Quick Links
 
 - 📊 **[PROJECT_STATE.md](PROJECT_STATE.md)** - Project overview, documentation index, architecture diagrams
+- ⚡ **[QUICKSTART.md](QUICKSTART.md)** - 5-minute setup and command-line workflow guide
 - 🚀 **[SETUP.md](SETUP.md)** - Installation and activation guide
 - 🧪 **[TESTING.md](docs/TESTING.md)** - TDD strategy and testing guide
 - 🤝 **[CONTRIBUTING.md](CONTRIBUTING.md)** - Development workflow and guidelines

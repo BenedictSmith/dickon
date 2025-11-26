@@ -78,6 +78,7 @@
 |----------|---------|--------|--------------|
 | [README.md](README.md) | Project overview, quick start | ✅ Complete | 2024-11-26 |
 | [PROJECT_STATE.md](PROJECT_STATE.md) | This file - central index | ✅ Complete | 2024-11-26 |
+| [QUICKSTART.md](QUICKSTART.md) | 5-minute setup, command-line workflow | ✅ Complete | 2024-11-26 |
 | [SETUP.md](SETUP.md) | Installation & activation guide | ✅ Complete | 2024-11-26 |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | Development workflow, TDD guide | ✅ Complete | 2024-11-26 |
 | [ROADMAP.md](ROADMAP.md) | Project phases and epics | ✅ Complete | 2024-11-26 |
