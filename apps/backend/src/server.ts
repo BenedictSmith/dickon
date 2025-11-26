@@ -5,6 +5,8 @@ import { join } from 'path';
 import { resolvers, GraphQLContext } from './resolvers';
 import { GraphService } from './services/GraphService';
 import { SchemaService } from './services/SchemaService';
+import { DiscoveryService } from './services/DiscoveryService';
+import { JobManager } from './services/JobManager';
 import { Neo4jRepository } from './repositories/Neo4jRepository';
 
 /**
@@ -38,6 +40,8 @@ export async function startServer() {
   const neo4jRepository = new Neo4jRepository(neo4jUri, neo4jUser, neo4jPassword);
   const graphService = new GraphService(neo4jRepository);
   const schemaService = new SchemaService();
+  const discoveryService = new DiscoveryService(neo4jRepository);
+  const jobManager = new JobManager(discoveryService);
 
   // Create server
   const server = await createApolloServer();
@@ -47,6 +51,7 @@ export async function startServer() {
     context: async () => ({
       graphService,
       schemaService,
+      jobManager,
     }),
     listen: { port: 4000 },
   });
