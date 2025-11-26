@@ -147,6 +147,42 @@ export class SQLiteRepository {
   }
 
   /**
+   * Sample values from a column for overlap analysis
+   * Returns up to maxSamples distinct values from the specified column
+   *
+   * @param tableName - Name of the table
+   * @param columnName - Name of the column
+   * @param maxSamples - Maximum number of samples to return (default: 1000)
+   * @returns Array of distinct values (as strings)
+   */
+  sampleColumnValues(
+    tableName: string,
+    columnName: string,
+    maxSamples: number = 1000
+  ): Array<string | null> {
+    if (!this.db) {
+      throw new Error('Database connection is closed');
+    }
+
+    const tables = this.getTables();
+    if (!tables.includes(tableName)) {
+      throw new Error(`Table '${tableName}' does not exist`);
+    }
+
+    // Get distinct values, limited to maxSamples
+    // CAST to TEXT to ensure all values are strings for comparison
+    const query = `
+      SELECT DISTINCT CAST("${columnName}" AS TEXT) as value
+      FROM "${tableName}"
+      WHERE "${columnName}" IS NOT NULL
+      LIMIT ${maxSamples}
+    `;
+
+    const rows = this.db.prepare(query).all() as Array<{ value: string | null }>;
+    return rows.map((row) => row.value);
+  }
+
+  /**
    * Closes the database connection
    * Can be called multiple times safely
    */

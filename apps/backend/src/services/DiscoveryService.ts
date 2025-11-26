@@ -15,6 +15,7 @@ export interface SimilarityMatch {
   confidence: number;
   nameSimilarity: number;
   typeCompatibility: number;
+  valueOverlap?: number; // Optional: value overlap score (0-1)
 }
 
 /**
