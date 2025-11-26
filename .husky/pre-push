@@ -1,0 +1,35 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "📊 Updating PROJECT_STATE.md..."
+
+# Get current date
+CURRENT_DATE=$(date +%Y-%m-%d)
+
+# Get current branch
+CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
+# Update last updated date in PROJECT_STATE.md
+if [ -f "PROJECT_STATE.md" ]; then
+  # Update date
+  sed -i.bak "s/\*\*Last Updated:\*\* .*/\*\*Last Updated:\*\* $CURRENT_DATE/" PROJECT_STATE.md
+
+  # Update branch
+  sed -i.bak "s/\*\*Branch:\*\* .*/\*\*Branch:\*\* $CURRENT_BRANCH/" PROJECT_STATE.md
+
+  # Clean up backup file
+  rm -f PROJECT_STATE.md.bak
+
+  # Add to commit if changes were made
+  if git diff --quiet PROJECT_STATE.md; then
+    echo "✅ PROJECT_STATE.md already up to date"
+  else
+    git add PROJECT_STATE.md
+    git commit --amend --no-edit --no-verify
+    echo "✅ PROJECT_STATE.md updated with current date and branch"
+  fi
+else
+  echo "⚠️  PROJECT_STATE.md not found, skipping update"
+fi
+
+echo "✅ Pre-push checks complete"

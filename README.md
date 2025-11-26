@@ -2,6 +2,8 @@
 
 A project inspired by Dickon from The Secret Garden - a shared workspace for collaborative development.
 
+> 📊 **[View Complete Project State](PROJECT_STATE.md)** - Central index with architecture diagrams, documentation map, and current status.
+
 ## Project: SiloBreaker
 
 **SiloBreaker** is a production-grade system for automated discovery, federation, and visualization of relationships across disparate SQLite databases, using knowledge graphs to break down enterprise data silos.
@@ -17,6 +19,16 @@ A project inspired by Dickon from The Secret Garden - a shared workspace for col
 - **Backend**: Node.js 20+, TypeScript 5+, Apollo Server 4 (GraphQL), Neo4j 5+
 - **Frontend**: React 18+, TypeScript, D3.js v7, Apollo Client, Tailwind CSS
 - **Infrastructure**: Docker Compose, GitHub Actions, ESLint, Prettier
+
+## Quick Links
+
+- 📊 **[PROJECT_STATE.md](PROJECT_STATE.md)** - Project overview, documentation index, architecture diagrams
+- 🚀 **[SETUP.md](SETUP.md)** - Installation and activation guide
+- 🧪 **[TESTING.md](docs/TESTING.md)** - TDD strategy and testing guide
+- 🤝 **[CONTRIBUTING.md](CONTRIBUTING.md)** - Development workflow and guidelines
+- 🗺️ **[ROADMAP.md](ROADMAP.md)** - Project phases and epics
+- 🏗️ **[ARCHITECTURE.md](docs/ARCHITECTURE.md)** - System architecture
+- 📋 **[SILOBREAKER.md](docs/SILOBREAKER.md)** - Detailed technical design
 
 ## Getting Started
 
@@ -54,6 +66,15 @@ npm test
 ```
 
 ## Documentation
+
+**Start here:** [PROJECT_STATE.md](PROJECT_STATE.md) - Complete project overview with:
+- 📚 Documentation index and links
+- 🏗️ Interactive Mermaid architecture diagrams
+- 📊 Current phase status and metrics
+- ✅ Setup checklist
+- 🗺️ Folder structure map
+
+**Core Docs:**
 - [ARCHITECTURE.md](docs/ARCHITECTURE.md) - System architecture overview
 - [SILOBREAKER.md](docs/SILOBREAKER.md) - Detailed technical design
 - [ADR/](docs/ADR/) - Architecture decision records
