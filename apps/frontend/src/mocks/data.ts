@@ -1,0 +1,382 @@
+import type { Database } from '../types/schema';
+
+/**
+ * Mock data for development
+ * Used until Epic 1.3 (GraphQL API) is complete
+ */
+
+export const mockDatabases: Database[] = [
+  {
+    id: 'db-1',
+    name: 'Chinook',
+    path: '/data/chinook.db',
+    addedAt: '2024-01-15T10:00:00Z',
+    tables: [
+      {
+        id: 'table-1',
+        name: 'Artist',
+        databaseId: 'db-1',
+        rowCount: 275,
+        columns: [
+          {
+            id: 'col-1',
+            name: 'ArtistId',
+            dataType: 'INTEGER',
+            tableId: 'table-1',
+            primaryKey: true,
+            notNull: true,
+            statistics: {
+              distinctCount: 275,
+              nullCount: 0,
+              minValue: '1',
+              maxValue: '275',
+            },
+          },
+          {
+            id: 'col-2',
+            name: 'Name',
+            dataType: 'NVARCHAR(120)',
+            tableId: 'table-1',
+            primaryKey: false,
+            notNull: false,
+            statistics: {
+              distinctCount: 275,
+              nullCount: 0,
+            },
+          },
+        ],
+      },
+      {
+        id: 'table-2',
+        name: 'Album',
+        databaseId: 'db-1',
+        rowCount: 347,
+        columns: [
+          {
+            id: 'col-3',
+            name: 'AlbumId',
+            dataType: 'INTEGER',
+            tableId: 'table-2',
+            primaryKey: true,
+            notNull: true,
+            statistics: {
+              distinctCount: 347,
+              nullCount: 0,
+              minValue: '1',
+              maxValue: '347',
+            },
+          },
+          {
+            id: 'col-4',
+            name: 'Title',
+            dataType: 'NVARCHAR(160)',
+            tableId: 'table-2',
+            primaryKey: false,
+            notNull: true,
+            statistics: {
+              distinctCount: 347,
+              nullCount: 0,
+            },
+          },
+          {
+            id: 'col-5',
+            name: 'ArtistId',
+            dataType: 'INTEGER',
+            tableId: 'table-2',
+            primaryKey: false,
+            notNull: true,
+            statistics: {
+              distinctCount: 204,
+              nullCount: 0,
+              minValue: '1',
+              maxValue: '275',
+            },
+          },
+        ],
+      },
+      {
+        id: 'table-3',
+        name: 'Track',
+        databaseId: 'db-1',
+        rowCount: 3503,
+        columns: [
+          {
+            id: 'col-6',
+            name: 'TrackId',
+            dataType: 'INTEGER',
+            tableId: 'table-3',
+            primaryKey: true,
+            notNull: true,
+            statistics: {
+              distinctCount: 3503,
+              nullCount: 0,
+              minValue: '1',
+              maxValue: '3503',
+            },
+          },
+          {
+            id: 'col-7',
+            name: 'Name',
+            dataType: 'NVARCHAR(200)',
+            tableId: 'table-3',
+            primaryKey: false,
+            notNull: true,
+            statistics: {
+              distinctCount: 3500,
+              nullCount: 0,
+            },
+          },
+          {
+            id: 'col-8',
+            name: 'AlbumId',
+            dataType: 'INTEGER',
+            tableId: 'table-3',
+            primaryKey: false,
+            notNull: false,
+            statistics: {
+              distinctCount: 347,
+              nullCount: 0,
+              minValue: '1',
+              maxValue: '347',
+            },
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'db-2',
+    name: 'Northwind',
+    path: '/data/northwind.db',
+    addedAt: '2024-01-16T11:30:00Z',
+    tables: [
+      {
+        id: 'table-4',
+        name: 'Customers',
+        databaseId: 'db-2',
+        rowCount: 91,
+        columns: [
+          {
+            id: 'col-9',
+            name: 'CustomerID',
+            dataType: 'NCHAR(5)',
+            tableId: 'table-4',
+            primaryKey: true,
+            notNull: true,
+            statistics: {
+              distinctCount: 91,
+              nullCount: 0,
+            },
+          },
+          {
+            id: 'col-10',
+            name: 'CompanyName',
+            dataType: 'NVARCHAR(40)',
+            tableId: 'table-4',
+            primaryKey: false,
+            notNull: true,
+            statistics: {
+              distinctCount: 91,
+              nullCount: 0,
+            },
+          },
+        ],
+      },
+      {
+        id: 'table-5',
+        name: 'Orders',
+        databaseId: 'db-2',
+        rowCount: 830,
+        columns: [
+          {
+            id: 'col-11',
+            name: 'OrderID',
+            dataType: 'INTEGER',
+            tableId: 'table-5',
+            primaryKey: true,
+            notNull: true,
+            statistics: {
+              distinctCount: 830,
+              nullCount: 0,
+              minValue: '10248',
+              maxValue: '11077',
+            },
+          },
+          {
+            id: 'col-12',
+            name: 'CustomerID',
+            dataType: 'NCHAR(5)',
+            tableId: 'table-5',
+            primaryKey: false,
+            notNull: false,
+            statistics: {
+              distinctCount: 89,
+              nullCount: 0,
+            },
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'db-3',
+    name: 'Sakila',
+    path: '/data/sakila.db',
+    addedAt: '2024-01-17T14:00:00Z',
+    tables: [
+      {
+        id: 'table-6',
+        name: 'actor',
+        databaseId: 'db-3',
+        rowCount: 200,
+        columns: [
+          {
+            id: 'col-13',
+            name: 'actor_id',
+            dataType: 'INT',
+            tableId: 'table-6',
+            primaryKey: true,
+            notNull: true,
+            statistics: {
+              distinctCount: 200,
+              nullCount: 0,
+              minValue: '1',
+              maxValue: '200',
+            },
+          },
+          {
+            id: 'col-14',
+            name: 'first_name',
+            dataType: 'VARCHAR(45)',
+            tableId: 'table-6',
+            primaryKey: false,
+            notNull: true,
+            statistics: {
+              distinctCount: 128,
+              nullCount: 0,
+            },
+          },
+          {
+            id: 'col-15',
+            name: 'last_name',
+            dataType: 'VARCHAR(45)',
+            tableId: 'table-6',
+            primaryKey: false,
+            notNull: true,
+            statistics: {
+              distinctCount: 121,
+              nullCount: 0,
+            },
+          },
+        ],
+      },
+      {
+        id: 'table-7',
+        name: 'film',
+        databaseId: 'db-3',
+        rowCount: 1000,
+        columns: [
+          {
+            id: 'col-16',
+            name: 'film_id',
+            dataType: 'INT',
+            tableId: 'table-7',
+            primaryKey: true,
+            notNull: true,
+            statistics: {
+              distinctCount: 1000,
+              nullCount: 0,
+              minValue: '1',
+              maxValue: '1000',
+            },
+          },
+          {
+            id: 'col-17',
+            name: 'title',
+            dataType: 'VARCHAR(255)',
+            tableId: 'table-7',
+            primaryKey: false,
+            notNull: true,
+            statistics: {
+              distinctCount: 1000,
+              nullCount: 0,
+            },
+          },
+          {
+            id: 'col-18',
+            name: 'release_year',
+            dataType: 'VARCHAR(4)',
+            tableId: 'table-7',
+            primaryKey: false,
+            notNull: false,
+            statistics: {
+              distinctCount: 1,
+              nullCount: 0,
+              minValue: '2006',
+              maxValue: '2006',
+            },
+          },
+          {
+            id: 'col-19',
+            name: 'rating',
+            dataType: 'VARCHAR(10)',
+            tableId: 'table-7',
+            primaryKey: false,
+            notNull: false,
+            defaultValue: 'G',
+            statistics: {
+              distinctCount: 5,
+              nullCount: 0,
+            },
+          },
+        ],
+      },
+      {
+        id: 'table-8',
+        name: 'customer',
+        databaseId: 'db-3',
+        rowCount: 599,
+        columns: [
+          {
+            id: 'col-20',
+            name: 'customer_id',
+            dataType: 'INT',
+            tableId: 'table-8',
+            primaryKey: true,
+            notNull: true,
+            statistics: {
+              distinctCount: 599,
+              nullCount: 0,
+              minValue: '1',
+              maxValue: '599',
+            },
+          },
+          {
+            id: 'col-21',
+            name: 'first_name',
+            dataType: 'VARCHAR(45)',
+            tableId: 'table-8',
+            primaryKey: false,
+            notNull: true,
+            statistics: {
+              distinctCount: 591,
+              nullCount: 0,
+            },
+          },
+          {
+            id: 'col-22',
+            name: 'email',
+            dataType: 'VARCHAR(50)',
+            tableId: 'table-8',
+            primaryKey: false,
+            notNull: false,
+            statistics: {
+              distinctCount: 599,
+              nullCount: 0,
+            },
+          },
+        ],
+      },
+    ],
+  },
+];
