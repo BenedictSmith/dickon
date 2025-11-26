@@ -12,7 +12,12 @@
       "Bash(gh repo edit:*)",
       "Bash(gh api:*)",
       "Bash(gh repo view:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(gh issue create:*)",
+      "Bash(git checkout:*)",
+      "Bash(npm install)",
+      "Bash(npm run type-check:*)",
+      "Bash(npm run lint:*)"
     ],
     "deny": [],
     "ask": []
