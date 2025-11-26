@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh repo create:*)",
+      "Bash(git --version:*)",
+      "Bash(where:*)",
+      "Bash(powershell -c \"Get-Command gh\")",
+      "Bash(git init:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nchore: initial project setup with collaboration guidelines\n\n- Add README, CONTRIBUTING, LICENSE, and ROADMAP documentation\n- Configure .gitignore, .env.example, and .editorconfig\n- Set up GitHub Actions CI workflow\n- Add pull request template\n- Create docs structure with ARCHITECTURE.md and ADR\n- Initialize src and tests directories\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
