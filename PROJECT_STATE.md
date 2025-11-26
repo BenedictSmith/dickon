@@ -59,14 +59,21 @@
 
 ### Phase 1: Schema Discovery & Ingestion 🔜 NEXT
 
-**Status:** Not Started
+**Status:** Ready to Start
 **Target:** Week 3-4
+**GitHub Issues:** [#1](https://github.com/BenedictSmith/dickon/issues/1), [#2](https://github.com/BenedictSmith/dickon/issues/2), [#3](https://github.com/BenedictSmith/dickon/issues/3), [#4](https://github.com/BenedictSmith/dickon/issues/4)
 
 **Epics:**
-- Epic 1.1: SQLite Schema Extraction
-- Epic 1.2: Neo4j Graph Population
-- Epic 1.3: GraphQL API
-- Epic 1.4: Schema Explorer UI
+- **Epic 1.1:** SQLite Schema Extraction (Ben) - [Issue #1](https://github.com/BenedictSmith/dickon/issues/1)
+- **Epic 1.2:** Neo4j Graph Population (Ben) - [Issue #2](https://github.com/BenedictSmith/dickon/issues/2)
+- **Epic 1.3:** GraphQL API (Ben) - [Issue #3](https://github.com/BenedictSmith/dickon/issues/3)
+- **Epic 1.4:** Schema Explorer UI (Carsten) - [Issue #4](https://github.com/BenedictSmith/dickon/issues/4)
+
+**Feature Branches Created:**
+- `feature/epic-1.1-schema-extraction`
+- `feature/epic-1.2-neo4j-graph`
+- `feature/epic-1.3-graphql-api`
+- `feature/epic-1.4-schema-ui`
 
 ---
 
@@ -78,6 +85,7 @@
 |----------|---------|--------|--------------|
 | [README.md](README.md) | Project overview, quick start | ✅ Complete | 2024-11-26 |
 | [PROJECT_STATE.md](PROJECT_STATE.md) | This file - central index | ✅ Complete | 2024-11-26 |
+| [WORK_SPLIT.md](WORK_SPLIT.md) | Ben/Carsten work division, timeline | ✅ Complete | 2024-11-26 |
 | [QUICKSTART.md](QUICKSTART.md) | 5-minute setup, command-line workflow | ✅ Complete | 2024-11-26 |
 | [SETUP.md](SETUP.md) | Installation & activation guide | ✅ Complete | 2024-11-26 |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | Development workflow, TDD guide | ✅ Complete | 2024-11-26 |
@@ -484,9 +492,9 @@ dickon/
 
 ### Repository Metrics
 - **Contributors**: 2 (Benedict, Carsten)
-- **Commits**: 5
-- **Branches**: 1 (master)
-- **Open Issues**: 0
+- **Commits**: 7
+- **Branches**: 5 (master + 4 feature branches)
+- **Open Issues**: 4 (Phase 1 epics)
 - **Open PRs**: 0
 
 ### Compliance Metrics
