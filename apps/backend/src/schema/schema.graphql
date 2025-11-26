@@ -109,10 +109,104 @@ type Query {
   table(id: ID!): Table
 }
 
+"""
+Discovery job status
+"""
+enum JobStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+"""
+A background discovery job
+"""
+type Job {
+  """Unique identifier for the job"""
+  id: ID!
+
+  """Type of job (e.g., 'discovery')"""
+  type: String!
+
+  """Current status of the job"""
+  status: JobStatus!
+
+  """Progress percentage (0-100)"""
+  progress: Int!
+
+  """When the job was created"""
+  createdAt: String!
+
+  """When the job started running"""
+  startedAt: String
+
+  """When the job completed"""
+  completedAt: String
+
+  """Error message if job failed"""
+  error: String
+
+  """Job result data"""
+  result: String
+}
+
+"""
+Response from starting a discovery job
+"""
+type StartDiscoveryResponse {
+  """Whether the operation was successful"""
+  success: Boolean!
+
+  """The created job (null if failed)"""
+  job: Job
+
+  """Error message if the operation failed"""
+  error: String
+}
+
+type Query {
+  """Get all databases in the system"""
+  databases: [Database!]!
+
+  """Get a specific database by ID"""
+  database(id: ID!): Database
+
+  """Get all tables for a specific database"""
+  tables(databaseId: ID!): [Table!]!
+
+  """Get a specific table by ID"""
+  table(id: ID!): Table
+
+  """Get all jobs"""
+  jobs: [Job!]!
+
+  """Get a specific job by ID"""
+  job(id: ID!): Job
+}
+
 type Mutation {
   """
   Add a new SQLite database to the system
   This will extract the schema and populate the knowledge graph
   """
   addDatabase(input: AddDatabaseInput!): AddDatabaseResponse!
+
+  """
+  Start a discovery job to find relationships between columns
+  """
+  startDiscovery: StartDiscoveryResponse!
+
+  """
+  Cancel a running discovery job
+  """
+  cancelJob(id: ID!): Boolean!
+}
+
+type Subscription {
+  """
+  Subscribe to job progress updates
+  """
+  jobProgress(id: ID!): Job!
 }

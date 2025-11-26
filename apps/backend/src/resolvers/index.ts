@@ -1,8 +1,10 @@
 import { GraphService } from '../services/GraphService';
 import { SchemaService } from '../services/SchemaService';
+import { JobManager } from '../services/JobManager';
 import { Database } from '../domain/Database';
 import { Table } from '../domain/Table';
 import { Column } from '../domain/Column';
+import { Job } from '../domain/Job';
 
 /**
  * GraphQL context containing service instances
@@ -10,6 +12,7 @@ import { Column } from '../domain/Column';
 export interface GraphQLContext {
   graphService: GraphService;
   schemaService: SchemaService;
+  jobManager: JobManager;
 }
 
 /**
@@ -60,6 +63,28 @@ export const resolvers = {
     ): Promise<Table | null> {
       // TODO: Implement getTable in GraphService
       return null;
+    },
+
+    /**
+     * Get all jobs
+     */
+    async jobs(
+      _parent: unknown,
+      _args: unknown,
+      context: GraphQLContext
+    ): Promise<Job[]> {
+      return context.jobManager.getAllJobs();
+    },
+
+    /**
+     * Get a specific job by ID
+     */
+    async job(
+      _parent: unknown,
+      args: { id: string },
+      context: GraphQLContext
+    ): Promise<Job | null> {
+      return context.jobManager.getJob(args.id) || null;
     },
   },
 
@@ -112,6 +137,45 @@ export const resolvers = {
           error: error instanceof Error ? error.message : 'Unknown error',
         };
       }
+    },
+
+    /**
+     * Start a discovery job to find column relationships
+     */
+    async startDiscovery(
+      _parent: unknown,
+      _args: unknown,
+      context: GraphQLContext
+    ): Promise<{
+      success: boolean;
+      job: Job | null;
+      error: string | null;
+    }> {
+      try {
+        const job = await context.jobManager.startDiscovery();
+        return {
+          success: true,
+          job,
+          error: null,
+        };
+      } catch (error) {
+        return {
+          success: false,
+          job: null,
+          error: error instanceof Error ? error.message : 'Unknown error',
+        };
+      }
+    },
+
+    /**
+     * Cancel a running job
+     */
+    async cancelJob(
+      _parent: unknown,
+      args: { id: string },
+      context: GraphQLContext
+    ): Promise<boolean> {
+      return context.jobManager.cancelJob(args.id);
     },
   },
 
