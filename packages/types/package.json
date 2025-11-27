@@ -7,6 +7,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
+    "test": "echo 'No tests for types package'",
     "type-check": "tsc --noEmit",
     "lint": "eslint src --ext .ts"
   },
