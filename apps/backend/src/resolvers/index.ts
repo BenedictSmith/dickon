@@ -57,8 +57,11 @@ export const resolvers = {
      * Get a specific table by ID (placeholder for now)
      */
     async table(
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       _parent: unknown,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       _args: { id: string },
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       _context: GraphQLContext
     ): Promise<Table | null> {
       // TODO: Implement getTable in GraphService
@@ -214,8 +217,11 @@ export const resolvers = {
      * Resolve columns for a table (placeholder)
      */
     async columns(
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       _parent: Table,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       _args: unknown,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       _context: GraphQLContext
     ): Promise<Column[]> {
       // TODO: Implement getColumnsForTable in GraphService
