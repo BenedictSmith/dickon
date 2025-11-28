@@ -34,13 +34,13 @@ docker-compose up -d
 
 The project includes helper scripts in `scripts/`:
 
-| Script | Description |
-|--------|-------------|
-| `./scripts/restart-services.sh` | Stops and restarts all services cleanly |
-| `./scripts/restart-services.sh --backend-only` | Restart only backend |
-| `./scripts/restart-services.sh --frontend-only` | Restart only frontend |
-| `./scripts/stop-services.sh` | Stop all running services |
-| `./scripts/test-api.sh` | Test all GraphQL API endpoints via CURL |
+| Script                                          | Description                             |
+| ----------------------------------------------- | --------------------------------------- |
+| `./scripts/restart-services.sh`                 | Stops and restarts all services cleanly |
+| `./scripts/restart-services.sh --backend-only`  | Restart only backend                    |
+| `./scripts/restart-services.sh --frontend-only` | Restart only frontend                   |
+| `./scripts/stop-services.sh`                    | Stop all running services               |
+| `./scripts/test-api.sh`                         | Test all GraphQL API endpoints via CURL |
 
 ### Service Ports
 
@@ -78,12 +78,14 @@ Migrated from `better-sqlite3` to `sql.js`, a pure JavaScript/WebAssembly implem
 #### Consequences
 
 **Positive:**
+
 - No native compilation required
 - Works on all platforms without build tools
 - Compatible with newer Node.js versions (v20+)
 - Works in browsers (future-proofs for potential client-side usage)
 
 **Negative:**
+
 - Slightly higher memory usage (entire database loaded into memory)
 - Synchronous API differences required code changes
 - File I/O handled differently (manual file reads/writes)
@@ -91,6 +93,7 @@ Migrated from `better-sqlite3` to `sql.js`, a pure JavaScript/WebAssembly implem
 #### Migration Details
 
 **Package.json Changes:**
+
 ```json
 // OLD (apps/backend/package.json)
 "dependencies": {
@@ -110,6 +113,7 @@ Migrated from `better-sqlite3` to `sql.js`, a pure JavaScript/WebAssembly implem
 ```
 
 **Code Changes:**
+
 ```typescript
 // OLD: better-sqlite3
 import Database from 'better-sqlite3';
@@ -162,14 +166,14 @@ npm run test:unit -- --coverage
 
 ### Test Coverage Requirements
 
-| Layer | Minimum Coverage |
-|-------|-----------------:|
-| Domain Entities | 95% |
-| Services | 90% |
-| Repositories | 85% |
-| Resolvers | 80% |
-| Utilities | 90% |
-| Overall | 80% |
+| Layer           | Minimum Coverage |
+| --------------- | ---------------: |
+| Domain Entities |              95% |
+| Services        |              90% |
+| Repositories    |              85% |
+| Resolvers       |              80% |
+| Utilities       |              90% |
+| Overall         |              80% |
 
 ---
 
