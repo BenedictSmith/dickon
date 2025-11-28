@@ -2,11 +2,11 @@
  * Job status enum
  */
 export type JobStatus =
-  | 'pending'
-  | 'running'
-  | 'completed'
-  | 'failed'
-  | 'cancelled';
+  | 'PENDING'
+  | 'RUNNING'
+  | 'COMPLETED'
+  | 'FAILED'
+  | 'CANCELLED';
 
 /**
  * Job properties for construction
@@ -67,35 +67,35 @@ export class Job {
    * Check if job is pending
    */
   isPending(): boolean {
-    return this.status === 'pending';
+    return this.status === 'PENDING';
   }
 
   /**
    * Check if job is currently running
    */
   isRunning(): boolean {
-    return this.status === 'running';
+    return this.status === 'RUNNING';
   }
 
   /**
    * Check if job completed successfully
    */
   isCompleted(): boolean {
-    return this.status === 'completed';
+    return this.status === 'COMPLETED';
   }
 
   /**
    * Check if job failed
    */
   isFailed(): boolean {
-    return this.status === 'failed';
+    return this.status === 'FAILED';
   }
 
   /**
    * Check if job was cancelled
    */
   isCancelled(): boolean {
-    return this.status === 'cancelled';
+    return this.status === 'CANCELLED';
   }
 
   /**
@@ -127,7 +127,11 @@ export class Job {
       json.error = this.error;
     }
     if (this.result !== undefined) {
-      json.result = this.result;
+      // Serialize result to JSON string for GraphQL
+      json.result =
+        typeof this.result === 'string'
+          ? this.result
+          : JSON.stringify(this.result);
     }
 
     return json;

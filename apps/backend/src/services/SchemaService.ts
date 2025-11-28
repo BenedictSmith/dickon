@@ -33,12 +33,12 @@ export class SchemaService {
 
     try {
       // Extract table names
-      const tableNames = repository.getTables();
+      const tableNames = await repository.getTables();
 
       // Extract columns and foreign keys for each table
       for (const tableName of tableNames) {
-        repository.getColumns(tableName);
-        repository.getForeignKeys(tableName);
+        await repository.getColumns(tableName);
+        await repository.getForeignKeys(tableName);
       }
 
       // Create and return Database entity
@@ -67,10 +67,10 @@ export class SchemaService {
 
     try {
       // Extract column information
-      const columnInfos = repository.getColumns(tableName);
+      const columnInfos = await repository.getColumns(tableName);
 
       // Extract foreign key information
-      const foreignKeys = repository.getForeignKeys(tableName);
+      const foreignKeys = await repository.getForeignKeys(tableName);
 
       // Create Table entity
       const table = new Table({
@@ -112,11 +112,11 @@ export class SchemaService {
     const repository = new SQLiteRepository(dbPath);
 
     try {
-      const tableNames = repository.getTables();
+      const tableNames = await repository.getTables();
       const dataTypeCounts: Record<string, number> = {};
 
       for (const tableName of tableNames) {
-        const columns = repository.getColumns(tableName);
+        const columns = await repository.getColumns(tableName);
 
         for (const column of columns) {
           const dataType = column.type;

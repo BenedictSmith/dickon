@@ -1,10 +1,12 @@
 import { GraphService } from '../services/GraphService';
 import { SchemaService } from '../services/SchemaService';
 import { JobManager } from '../services/JobManager';
+import { SQLiteRepository } from '../repositories/SQLiteRepository';
 import { Database } from '../domain/Database';
 import { Table } from '../domain/Table';
 import { Column } from '../domain/Column';
 import { Job } from '../domain/Job';
+import { randomUUID } from 'crypto';
 
 /**
  * GraphQL context containing service instances
@@ -86,6 +88,47 @@ export const resolvers = {
     ): Promise<Job | null> {
       return context.jobManager.getJob(args.id) || null;
     },
+
+    /**
+     * Get graph data for visualization
+     */
+    async getGraphData(
+      _parent: unknown,
+      args: {
+        input?: {
+          databaseIds?: string[];
+          minConfidence?: number;
+          maxNodes?: number;
+          nodeTypes?: string[];
+          edgeTypes?: string[];
+        };
+      },
+      context: GraphQLContext
+    ): Promise<{
+      nodes: Array<{
+        id: string;
+        label: string;
+        type: string;
+        databaseId?: string;
+        tableId?: string;
+        properties: {
+          path?: string;
+          rowCount?: number;
+          dataType?: string;
+          primaryKey?: boolean;
+          notNull?: boolean;
+        };
+      }>;
+      edges: Array<{
+        source: string;
+        target: string;
+        type: string;
+        confidence?: number;
+        discoveredAt?: string;
+      }>;
+    }> {
+      return await context.graphService.getGraphData(args.input);
+    },
   },
 
   Mutation: {
@@ -108,14 +151,64 @@ export const resolvers = {
         // Extract schema from SQLite database
         const database = await context.schemaService.extractSchema(path, name);
 
-        // Get all tables and their structures
+        // Use SQLiteRepository to extract tables, columns, and foreign keys
+        const sqliteRepo = new SQLiteRepository(path);
         const tables: Table[] = [];
         const allColumns: Column[] = [];
         const allForeignKeys: { fromColumn: string; toColumn: string }[] = [];
 
-        // For now, we'll need to enhance SchemaService to return tables
-        // This is a simplified version - in practice, SchemaService.extractSchema
-        // should return more complete information
+        try {
+          const tableNames = await sqliteRepo.getTables();
+
+          for (const tableName of tableNames) {
+            // Create Table entity
+            const table = new Table({
+              id: randomUUID(),
+              name: tableName,
+              databaseId: database.id,
+            });
+            tables.push(table);
+
+            // Get columns for this table
+            const columnInfos = await sqliteRepo.getColumns(tableName);
+            for (const colInfo of columnInfos) {
+              const column = new Column({
+                id: randomUUID(),
+                name: colInfo.name,
+                dataType: colInfo.type,
+                tableId: table.id,
+                notNull: colInfo.notNull,
+                primaryKey: colInfo.primaryKey,
+                defaultValue: colInfo.defaultValue,
+              });
+              allColumns.push(column);
+            }
+
+            // Get foreign keys for this table
+            const fkInfos = await sqliteRepo.getForeignKeys(tableName);
+            for (const fk of fkInfos) {
+              // Find the source column in our created columns
+              const sourceCol = allColumns.find(
+                (c) => c.tableId === table.id && c.name === fk.fromColumn
+              );
+              // Find the target table and column
+              const targetTable = tables.find((t) => t.name === fk.toTable);
+              if (sourceCol && targetTable) {
+                const targetCol = allColumns.find(
+                  (c) => c.tableId === targetTable.id && c.name === fk.toColumn
+                );
+                if (targetCol) {
+                  allForeignKeys.push({
+                    fromColumn: sourceCol.id,
+                    toColumn: targetCol.id,
+                  });
+                }
+              }
+            }
+          }
+        } finally {
+          sqliteRepo.close();
+        }
 
         // Populate the Neo4j graph
         await context.graphService.populateFullSchema(
@@ -239,6 +332,31 @@ export const resolvers = {
       // This is inefficient - should be improved with DataLoader
       const tables = await context.graphService.getTablesForDatabase('');
       return tables.find((t) => t.id === parent.tableId) || null;
+    },
+  },
+
+  /**
+   * Field resolvers for Job type
+   * Ensures proper serialization of dates and result field
+   */
+  Job: {
+    createdAt(parent: Job): string {
+      return parent.createdAt.toISOString();
+    },
+    startedAt(parent: Job): string | null {
+      return parent.startedAt ? parent.startedAt.toISOString() : null;
+    },
+    completedAt(parent: Job): string | null {
+      return parent.completedAt ? parent.completedAt.toISOString() : null;
+    },
+    result(parent: Job): string | null {
+      if (parent.result === undefined) {
+        return null;
+      }
+      // Serialize result to JSON string for GraphQL
+      return typeof parent.result === 'string'
+        ? parent.result
+        : JSON.stringify(parent.result);
     },
   },
 };

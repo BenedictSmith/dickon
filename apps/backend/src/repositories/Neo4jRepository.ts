@@ -394,6 +394,224 @@ export class Neo4jRepository {
   }
 
   /**
+   * Get graph data for visualization
+   * Returns nodes and edges optimized for D3.js force-directed graph
+   */
+  async getGraphData(options?: {
+    databaseIds?: string[];
+    minConfidence?: number;
+    maxNodes?: number;
+    nodeTypes?: string[];
+    edgeTypes?: string[];
+  }): Promise<{
+    nodes: Array<{
+      id: string;
+      label: string;
+      type: string;
+      databaseId?: string;
+      tableId?: string;
+      properties: {
+        path?: string;
+        rowCount?: number;
+        dataType?: string;
+        primaryKey?: boolean;
+        notNull?: boolean;
+      };
+    }>;
+    edges: Array<{
+      source: string;
+      target: string;
+      type: string;
+      confidence?: number;
+      discoveredAt?: string;
+    }>;
+  }> {
+    const session = this.driver.session();
+    try {
+      const nodes: Array<{
+        id: string;
+        label: string;
+        type: string;
+        databaseId?: string;
+        tableId?: string;
+        properties: {
+          path?: string;
+          rowCount?: number;
+          dataType?: string;
+          primaryKey?: boolean;
+          notNull?: boolean;
+        };
+      }> = [];
+      const edges: Array<{
+        source: string;
+        target: string;
+        type: string;
+        confidence?: number;
+        discoveredAt?: string;
+      }> = [];
+
+      // Build WHERE clauses for filtering
+      const databaseFilter =
+        options?.databaseIds && options.databaseIds.length > 0
+          ? 'WHERE d.id IN $databaseIds'
+          : '';
+
+      // Fetch all nodes (Databases, Tables, Columns)
+      const nodeQuery = `
+        MATCH (d:Database)
+        ${databaseFilter}
+        OPTIONAL MATCH (d)-[:CONTAINS]->(t:Table)
+        OPTIONAL MATCH (t)-[:HAS_COLUMN]->(c:Column)
+        RETURN d, t, c
+        ${options?.maxNodes ? 'LIMIT $maxNodes' : ''}
+      `;
+
+      const nodeResult = await session.run(nodeQuery, {
+        databaseIds: options?.databaseIds || [],
+        maxNodes: options?.maxNodes || 10000,
+      });
+
+      // Process nodes
+      const seenDatabaseIds = new Set<string>();
+      const seenTableIds = new Set<string>();
+      const seenColumnIds = new Set<string>();
+
+      for (const record of nodeResult.records) {
+        const dbNode = record.get('d');
+        const tableNode = record.get('t');
+        const columnNode = record.get('c');
+
+        // Add Database node
+        if (dbNode && !seenDatabaseIds.has(dbNode.properties.id)) {
+          if (!options?.nodeTypes || options.nodeTypes.includes('DATABASE')) {
+            nodes.push({
+              id: dbNode.properties.id,
+              label: dbNode.properties.name,
+              type: 'DATABASE',
+              properties: {
+                path: dbNode.properties.path,
+              },
+            });
+          }
+          seenDatabaseIds.add(dbNode.properties.id);
+        }
+
+        // Add Table node
+        if (tableNode && !seenTableIds.has(tableNode.properties.id)) {
+          if (!options?.nodeTypes || options.nodeTypes.includes('TABLE')) {
+            nodes.push({
+              id: tableNode.properties.id,
+              label: tableNode.properties.name,
+              type: 'TABLE',
+              databaseId: dbNode.properties.id,
+              properties: {
+                rowCount: tableNode.properties.rowCount?.toNumber(),
+              },
+            });
+          }
+          seenTableIds.add(tableNode.properties.id);
+
+          // Add CONTAINS edge (Database -> Table)
+          if (!options?.edgeTypes || options.edgeTypes.includes('CONTAINS')) {
+            edges.push({
+              source: dbNode.properties.id,
+              target: tableNode.properties.id,
+              type: 'CONTAINS',
+            });
+          }
+        }
+
+        // Add Column node
+        if (columnNode && !seenColumnIds.has(columnNode.properties.id)) {
+          if (!options?.nodeTypes || options.nodeTypes.includes('COLUMN')) {
+            nodes.push({
+              id: columnNode.properties.id,
+              label: columnNode.properties.name,
+              type: 'COLUMN',
+              databaseId: dbNode.properties.id,
+              tableId: tableNode.properties.id,
+              properties: {
+                dataType: columnNode.properties.dataType,
+                primaryKey: columnNode.properties.primaryKey,
+                notNull: columnNode.properties.notNull,
+              },
+            });
+          }
+          seenColumnIds.add(columnNode.properties.id);
+
+          // Add HAS_COLUMN edge
+          if (
+            tableNode &&
+            (!options?.edgeTypes || options.edgeTypes.includes('HAS_COLUMN'))
+          ) {
+            edges.push({
+              source: tableNode.properties.id,
+              target: columnNode.properties.id,
+              type: 'HAS_COLUMN',
+            });
+          }
+        }
+      }
+
+      // Fetch REFERENCES relationships (foreign keys)
+      if (!options?.edgeTypes || options.edgeTypes.includes('REFERENCES')) {
+        const referencesQuery = `
+          MATCH (from:Column)-[r:REFERENCES]->(to:Column)
+          ${databaseFilter ? 'MATCH (from)<-[:HAS_COLUMN]-()<-[:CONTAINS]-(d:Database) ' + databaseFilter : ''}
+          RETURN from.id as fromId, to.id as toId
+        `;
+
+        const referencesResult = await session.run(referencesQuery, {
+          databaseIds: options?.databaseIds || [],
+        });
+
+        for (const record of referencesResult.records) {
+          edges.push({
+            source: record.get('fromId'),
+            target: record.get('toId'),
+            type: 'REFERENCES',
+          });
+        }
+      }
+
+      // Fetch SIMILAR_TO relationships
+      if (!options?.edgeTypes || options.edgeTypes.includes('SIMILAR_TO')) {
+        const confidenceFilter =
+          options?.minConfidence !== undefined
+            ? 'AND r.confidence >= $minConfidence'
+            : '';
+
+        const similarityQuery = `
+          MATCH (from:Column)-[r:SIMILAR_TO]->(to:Column)
+          ${databaseFilter ? 'MATCH (from)<-[:HAS_COLUMN]-()<-[:CONTAINS]-(d:Database) ' + databaseFilter : ''}
+          WHERE 1=1 ${confidenceFilter}
+          RETURN from.id as fromId, to.id as toId, r.confidence as confidence, r.discoveredAt as discoveredAt
+        `;
+
+        const similarityResult = await session.run(similarityQuery, {
+          databaseIds: options?.databaseIds || [],
+          minConfidence: options?.minConfidence || 0.0,
+        });
+
+        for (const record of similarityResult.records) {
+          const discoveredAt = record.get('discoveredAt');
+          edges.push({
+            source: record.get('fromId'),
+            target: record.get('toId'),
+            type: 'SIMILAR_TO',
+            confidence: record.get('confidence'),
+            discoveredAt: discoveredAt ? discoveredAt.toString() : undefined,
+          });
+        }
+      }
+
+      return { nodes, edges };
+    } finally {
+      await session.close();
+    }
+  }
+
+  /**
    * Closes the Neo4j driver connection
    */
   async close(): Promise<void> {

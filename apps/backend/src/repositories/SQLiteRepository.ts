@@ -1,4 +1,4 @@
-import Database from 'better-sqlite3';
+import initSqlJs, { Database } from 'sql.js';
 import * as fs from 'fs';
 
 /**
@@ -26,7 +26,8 @@ export interface ForeignKeyInfo {
  * Handles connection management and schema extraction
  */
 export class SQLiteRepository {
-  private db: Database.Database | null = null;
+  private db: Database | null = null;
+  private dbPath: string;
 
   /**
    * Creates a new SQLiteRepository instance
@@ -39,7 +40,19 @@ export class SQLiteRepository {
       throw new Error(`Database file not found: ${dbPath}`);
     }
 
-    this.db = new Database(dbPath, { readonly: true });
+    this.dbPath = dbPath;
+  }
+
+  /**
+   * Initialize the database connection (must be called before using other methods)
+   * sql.js requires async initialization
+   */
+  private async init(): Promise<void> {
+    if (this.db) return; // Already initialized
+
+    const SQL = await initSqlJs();
+    const buffer = fs.readFileSync(this.dbPath);
+    this.db = new SQL.Database(buffer);
   }
 
   /**
@@ -47,7 +60,9 @@ export class SQLiteRepository {
    * Excludes internal SQLite tables (those starting with 'sqlite_')
    * @returns Array of table names in alphabetical order
    */
-  getTables(): string[] {
+  async getTables(): Promise<string[]> {
+    await this.init();
+
     if (!this.db) {
       throw new Error('Database connection is closed');
     }
@@ -60,8 +75,11 @@ export class SQLiteRepository {
       ORDER BY name
     `;
 
-    const rows = this.db.prepare(query).all() as Array<{ name: string }>;
-    return rows.map((row) => row.name);
+    const result = this.db.exec(query);
+    if (result.length === 0) return [];
+
+    const rows = result[0].values;
+    return rows.map((row) => row[0] as string);
   }
 
   /**
@@ -71,13 +89,15 @@ export class SQLiteRepository {
    * @returns Array of column information
    * @throws Error if the table does not exist
    */
-  getColumns(tableName: string): ColumnInfo[] {
+  async getColumns(tableName: string): Promise<ColumnInfo[]> {
+    await this.init();
+
     if (!this.db) {
       throw new Error('Database connection is closed');
     }
 
     // Validate that the table exists
-    const tables = this.getTables();
+    const tables = await this.getTables();
     if (!tables.includes(tableName)) {
       throw new Error(`Table '${tableName}' does not exist`);
     }
@@ -85,24 +105,27 @@ export class SQLiteRepository {
     // Use PRAGMA table_info to get column information
     const query = `PRAGMA table_info("${tableName}")`;
 
-    interface PragmaRow {
-      cid: number;
-      name: string;
-      type: string;
-      notnull: number;
-      dflt_value: string | null;
-      pk: number;
-    }
+    const result = this.db.exec(query);
+    if (result.length === 0) return [];
 
-    const rows = this.db.prepare(query).all() as PragmaRow[];
+    const columns = result[0].columns; // ['cid', 'name', 'type', 'notnull', 'dflt_value', 'pk']
+    const rows = result[0].values;
 
-    return rows.map((row) => ({
-      name: row.name,
-      type: row.type,
-      notNull: row.notnull === 1,
-      defaultValue: row.dflt_value,
-      primaryKey: row.pk === 1,
-    }));
+    return rows.map((row) => {
+      const nameIdx = columns.indexOf('name');
+      const typeIdx = columns.indexOf('type');
+      const notnullIdx = columns.indexOf('notnull');
+      const dfltValueIdx = columns.indexOf('dflt_value');
+      const pkIdx = columns.indexOf('pk');
+
+      return {
+        name: row[nameIdx] as string,
+        type: row[typeIdx] as string,
+        notNull: row[notnullIdx] === 1,
+        defaultValue: row[dfltValueIdx] as string | null,
+        primaryKey: row[pkIdx] === 1,
+      };
+    });
   }
 
   /**
@@ -112,13 +135,15 @@ export class SQLiteRepository {
    * @returns Array of foreign key information
    * @throws Error if the table does not exist
    */
-  getForeignKeys(tableName: string): ForeignKeyInfo[] {
+  async getForeignKeys(tableName: string): Promise<ForeignKeyInfo[]> {
+    await this.init();
+
     if (!this.db) {
       throw new Error('Database connection is closed');
     }
 
     // Validate that the table exists
-    const tables = this.getTables();
+    const tables = await this.getTables();
     if (!tables.includes(tableName)) {
       throw new Error(`Table '${tableName}' does not exist`);
     }
@@ -126,24 +151,23 @@ export class SQLiteRepository {
     // Use PRAGMA foreign_key_list to get foreign key information
     const query = `PRAGMA foreign_key_list("${tableName}")`;
 
-    interface PragmaFKRow {
-      id: number;
-      seq: number;
-      table: string;
-      from: string;
-      to: string;
-      on_update: string;
-      on_delete: string;
-      match: string;
-    }
+    const result = this.db.exec(query);
+    if (result.length === 0) return [];
 
-    const rows = this.db.prepare(query).all() as PragmaFKRow[];
+    const columns = result[0].columns; // ['id', 'seq', 'table', 'from', 'to', 'on_update', 'on_delete', 'match']
+    const rows = result[0].values;
 
-    return rows.map((row) => ({
-      fromColumn: row.from,
-      toTable: row.table,
-      toColumn: row.to,
-    }));
+    return rows.map((row) => {
+      const tableIdx = columns.indexOf('table');
+      const fromIdx = columns.indexOf('from');
+      const toIdx = columns.indexOf('to');
+
+      return {
+        fromColumn: row[fromIdx] as string,
+        toTable: row[tableIdx] as string,
+        toColumn: row[toIdx] as string,
+      };
+    });
   }
 
   /**
@@ -155,16 +179,18 @@ export class SQLiteRepository {
    * @param maxSamples - Maximum number of samples to return (default: 1000)
    * @returns Array of distinct values (as strings)
    */
-  sampleColumnValues(
+  async sampleColumnValues(
     tableName: string,
     columnName: string,
     maxSamples: number = 1000
-  ): Array<string | null> {
+  ): Promise<Array<string | null>> {
+    await this.init();
+
     if (!this.db) {
       throw new Error('Database connection is closed');
     }
 
-    const tables = this.getTables();
+    const tables = await this.getTables();
     if (!tables.includes(tableName)) {
       throw new Error(`Table '${tableName}' does not exist`);
     }
@@ -178,10 +204,11 @@ export class SQLiteRepository {
       LIMIT ${maxSamples}
     `;
 
-    const rows = this.db.prepare(query).all() as Array<{
-      value: string | null;
-    }>;
-    return rows.map((row) => row.value);
+    const result = this.db.exec(query);
+    if (result.length === 0) return [];
+
+    const rows = result[0].values;
+    return rows.map((row) => row[0] as string | null);
   }
 
   /**
@@ -189,7 +216,7 @@ export class SQLiteRepository {
    * Can be called multiple times safely
    */
   close(): void {
-    if (this.db && this.db.open) {
+    if (this.db) {
       this.db.close();
       this.db = null;
     }

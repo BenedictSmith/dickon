@@ -2,19 +2,29 @@
 A SQLite database that has been ingested into the system
 """
 type Database {
-  """Unique identifier for the database"""
+  """
+  Unique identifier for the database
+  """
   id: ID!
 
-  """Human-readable name of the database"""
+  """
+  Human-readable name of the database
+  """
   name: String!
 
-  """File system path to the SQLite database file"""
+  """
+  File system path to the SQLite database file
+  """
   path: String!
 
-  """Timestamp when the database was added to the system"""
+  """
+  Timestamp when the database was added to the system
+  """
   addedAt: String!
 
-  """Tables contained in this database"""
+  """
+  Tables contained in this database
+  """
   tables: [Table!]!
 }
 
@@ -22,22 +32,34 @@ type Database {
 A table within a database
 """
 type Table {
-  """Unique identifier for the table"""
+  """
+  Unique identifier for the table
+  """
   id: ID!
 
-  """Name of the table"""
+  """
+  Name of the table
+  """
   name: String!
 
-  """ID of the database this table belongs to"""
+  """
+  ID of the database this table belongs to
+  """
   databaseId: ID!
 
-  """Number of rows in the table (null if not calculated)"""
+  """
+  Number of rows in the table (null if not calculated)
+  """
   rowCount: Int
 
-  """Columns in this table"""
+  """
+  Columns in this table
+  """
   columns: [Column!]!
 
-  """The database this table belongs to"""
+  """
+  The database this table belongs to
+  """
   database: Database!
 }
 
@@ -45,28 +67,44 @@ type Table {
 A column within a table
 """
 type Column {
-  """Unique identifier for the column"""
+  """
+  Unique identifier for the column
+  """
   id: ID!
 
-  """Name of the column"""
+  """
+  Name of the column
+  """
   name: String!
 
-  """Data type of the column (e.g., INTEGER, TEXT)"""
+  """
+  Data type of the column (e.g., INTEGER, TEXT)
+  """
   dataType: String!
 
-  """ID of the table this column belongs to"""
+  """
+  ID of the table this column belongs to
+  """
   tableId: ID!
 
-  """Whether the column has a NOT NULL constraint"""
+  """
+  Whether the column has a NOT NULL constraint
+  """
   notNull: Boolean!
 
-  """Whether the column is a primary key"""
+  """
+  Whether the column is a primary key
+  """
   primaryKey: Boolean!
 
-  """Default value for the column (null if none)"""
+  """
+  Default value for the column (null if none)
+  """
   defaultValue: String
 
-  """The table this column belongs to"""
+  """
+  The table this column belongs to
+  """
   table: Table!
 }
 
@@ -74,10 +112,14 @@ type Column {
 Input for adding a new database to the system
 """
 input AddDatabaseInput {
-  """Human-readable name for the database"""
+  """
+  Human-readable name for the database
+  """
   name: String!
 
-  """File system path to the SQLite database file"""
+  """
+  File system path to the SQLite database file
+  """
   path: String!
 }
 
@@ -85,27 +127,41 @@ input AddDatabaseInput {
 Response from adding a database
 """
 type AddDatabaseResponse {
-  """Whether the operation was successful"""
+  """
+  Whether the operation was successful
+  """
   success: Boolean!
 
-  """The newly added database (null if failed)"""
+  """
+  The newly added database (null if failed)
+  """
   database: Database
 
-  """Error message if the operation failed"""
+  """
+  Error message if the operation failed
+  """
   error: String
 }
 
 type Query {
-  """Get all databases in the system"""
+  """
+  Get all databases in the system
+  """
   databases: [Database!]!
 
-  """Get a specific database by ID"""
+  """
+  Get a specific database by ID
+  """
   database(id: ID!): Database
 
-  """Get all tables for a specific database"""
+  """
+  Get all tables for a specific database
+  """
   tables(databaseId: ID!): [Table!]!
 
-  """Get a specific table by ID"""
+  """
+  Get a specific table by ID
+  """
   table(id: ID!): Table
 }
 
@@ -124,31 +180,49 @@ enum JobStatus {
 A background discovery job
 """
 type Job {
-  """Unique identifier for the job"""
+  """
+  Unique identifier for the job
+  """
   id: ID!
 
-  """Type of job (e.g., 'discovery')"""
+  """
+  Type of job (e.g., 'discovery')
+  """
   type: String!
 
-  """Current status of the job"""
+  """
+  Current status of the job
+  """
   status: JobStatus!
 
-  """Progress percentage (0-100)"""
+  """
+  Progress percentage (0-100)
+  """
   progress: Int!
 
-  """When the job was created"""
+  """
+  When the job was created
+  """
   createdAt: String!
 
-  """When the job started running"""
+  """
+  When the job started running
+  """
   startedAt: String
 
-  """When the job completed"""
+  """
+  When the job completed
+  """
   completedAt: String
 
-  """Error message if job failed"""
+  """
+  Error message if job failed
+  """
   error: String
 
-  """Job result data"""
+  """
+  Job result data
+  """
   result: String
 }
 
@@ -156,34 +230,58 @@ type Job {
 Response from starting a discovery job
 """
 type StartDiscoveryResponse {
-  """Whether the operation was successful"""
+  """
+  Whether the operation was successful
+  """
   success: Boolean!
 
-  """The created job (null if failed)"""
+  """
+  The created job (null if failed)
+  """
   job: Job
 
-  """Error message if the operation failed"""
+  """
+  Error message if the operation failed
+  """
   error: String
 }
 
 type Query {
-  """Get all databases in the system"""
+  """
+  Get all databases in the system
+  """
   databases: [Database!]!
 
-  """Get a specific database by ID"""
+  """
+  Get a specific database by ID
+  """
   database(id: ID!): Database
 
-  """Get all tables for a specific database"""
+  """
+  Get all tables for a specific database
+  """
   tables(databaseId: ID!): [Table!]!
 
-  """Get a specific table by ID"""
+  """
+  Get a specific table by ID
+  """
   table(id: ID!): Table
 
-  """Get all jobs"""
+  """
+  Get all jobs
+  """
   jobs: [Job!]!
 
-  """Get a specific job by ID"""
+  """
+  Get a specific job by ID
+  """
   job(id: ID!): Job
+
+  """
+  Get graph data for visualization
+  Returns nodes and edges optimized for D3.js force-directed graph
+  """
+  getGraphData(input: GraphDataInput): GraphData!
 }
 
 type Mutation {
@@ -202,6 +300,175 @@ type Mutation {
   Cancel a running discovery job
   """
   cancelJob(id: ID!): Boolean!
+}
+
+type Subscription {
+  """
+  Subscribe to job progress updates
+  """
+  jobProgress(id: ID!): Job!
+}
+
+"""
+Node types in the graph visualization
+"""
+enum GraphNodeType {
+  DATABASE
+  TABLE
+  COLUMN
+}
+
+"""
+Relationship types in the graph visualization
+"""
+enum GraphEdgeType {
+  CONTAINS
+  HAS_COLUMN
+  REFERENCES
+  SIMILAR_TO
+}
+
+"""
+A node in the graph visualization
+D3.js force simulation expects nodes with id, and optional x/y for positioning
+"""
+type GraphNode {
+  """
+  Unique identifier for the node
+  """
+  id: ID!
+
+  """
+  Display label for the node
+  """
+  label: String!
+
+  """
+  Type of node (DATABASE, TABLE, COLUMN)
+  """
+  type: GraphNodeType!
+
+  """
+  Database ID (for TABLE and COLUMN nodes)
+  """
+  databaseId: ID
+
+  """
+  Table ID (for COLUMN nodes only)
+  """
+  tableId: ID
+
+  """
+  Additional properties for the node
+  """
+  properties: GraphNodeProperties!
+}
+
+"""
+Properties specific to each node type
+"""
+type GraphNodeProperties {
+  """
+  For DATABASE nodes: file path
+  """
+  path: String
+
+  """
+  For TABLE nodes: row count
+  """
+  rowCount: Int
+
+  """
+  For COLUMN nodes: data type
+  """
+  dataType: String
+
+  """
+  For COLUMN nodes: is primary key
+  """
+  primaryKey: Boolean
+
+  """
+  For COLUMN nodes: is not null
+  """
+  notNull: Boolean
+}
+
+"""
+An edge (relationship) in the graph visualization
+D3.js force simulation expects edges with source and target
+"""
+type GraphEdge {
+  """
+  Source node ID
+  """
+  source: ID!
+
+  """
+  Target node ID
+  """
+  target: ID!
+
+  """
+  Type of relationship
+  """
+  type: GraphEdgeType!
+
+  """
+  Confidence score (0.0-1.0) for SIMILAR_TO relationships
+  """
+  confidence: Float
+
+  """
+  When the relationship was discovered (for SIMILAR_TO)
+  """
+  discoveredAt: String
+}
+
+"""
+Complete graph data for visualization
+Optimized for D3.js force-directed graph
+"""
+type GraphData {
+  """
+  All nodes in the graph
+  """
+  nodes: [GraphNode!]!
+
+  """
+  All edges (relationships) in the graph
+  """
+  edges: [GraphEdge!]!
+}
+
+"""
+Input for filtering graph data
+"""
+input GraphDataInput {
+  """
+  Only include nodes from specific databases (empty = all databases)
+  """
+  databaseIds: [ID!]
+
+  """
+  Minimum confidence score for SIMILAR_TO relationships (0.0-1.0)
+  """
+  minConfidence: Float
+
+  """
+  Maximum number of nodes to return (for performance)
+  """
+  maxNodes: Int
+
+  """
+  Include only specific node types
+  """
+  nodeTypes: [GraphNodeType!]
+
+  """
+  Include only specific edge types
+  """
+  edgeTypes: [GraphEdgeType!]
 }
 
 type Subscription {
