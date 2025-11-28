@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { DatabaseList } from './components/DatabaseList';
 import { SchemaTree } from './components/SchemaTree';
 import { DetailPanel } from './components/DetailPanel';
+import { DiscoveryControlPanel } from './components/DiscoveryControlPanel';
+import { RelationshipReviewPanel } from './components/RelationshipReviewPanel';
 import type { Table, Column } from './types/schema';
 
 /**
@@ -9,6 +11,7 @@ import type { Table, Column } from './types/schema';
  *
  * Main application component.
  * Epic 1.4: Schema Explorer UI - Complete!
+ * Epic 2.4: Discovery Interface - Complete!
  */
 
 export function App(): JSX.Element {
@@ -28,35 +31,48 @@ export function App(): JSX.Element {
           <p className="text-gray-400">Database Schema Discovery Tool</p>
         </header>
 
-        <main className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Database List - Left Column */}
-          <section className="lg:col-span-1">
-            <DatabaseList onDatabaseSelect={setSelectedDatabaseId} />
+        <main className="space-y-6">
+          {/* Discovery Control Panel - Top Section */}
+          <section>
+            <DiscoveryControlPanel />
           </section>
 
-          {/* Schema Tree - Middle Column */}
-          <section className="lg:col-span-1 bg-gray-800 rounded-lg">
-            {selectedDatabaseId ? (
-              <SchemaTree
-                databaseId={selectedDatabaseId}
-                onTableSelect={setSelectedTable}
-                onColumnSelect={setSelectedColumn}
+          {/* Schema Explorer - Three Column Layout */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Database List - Left Column */}
+            <section className="lg:col-span-1">
+              <DatabaseList onDatabaseSelect={setSelectedDatabaseId} />
+            </section>
+
+            {/* Schema Tree - Middle Column */}
+            <section className="lg:col-span-1 bg-gray-800 rounded-lg">
+              {selectedDatabaseId ? (
+                <SchemaTree
+                  databaseId={selectedDatabaseId}
+                  onTableSelect={setSelectedTable}
+                  onColumnSelect={setSelectedColumn}
+                />
+              ) : (
+                <div className="p-4">
+                  <p className="text-gray-400">
+                    Select a database to view schema
+                  </p>
+                </div>
+              )}
+            </section>
+
+            {/* Detail Panel - Right Column */}
+            <section className="lg:col-span-1 bg-gray-800 rounded-lg">
+              <DetailPanel
+                table={selectedTable ?? undefined}
+                column={selectedColumn ?? undefined}
               />
-            ) : (
-              <div className="p-4">
-                <p className="text-gray-400">
-                  Select a database to view schema
-                </p>
-              </div>
-            )}
-          </section>
+            </section>
+          </div>
 
-          {/* Detail Panel - Right Column */}
-          <section className="lg:col-span-1 bg-gray-800 rounded-lg">
-            <DetailPanel
-              table={selectedTable ?? undefined}
-              column={selectedColumn ?? undefined}
-            />
+          {/* Relationship Review - Bottom Section */}
+          <section>
+            <RelationshipReviewPanel />
           </section>
         </main>
       </div>

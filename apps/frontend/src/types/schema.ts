@@ -44,3 +44,31 @@ export interface Relationship {
   type: 'REFERENCES' | 'SIMILAR_TO' | 'LINKS_TO';
   confidence?: number;
 }
+
+/**
+ * Job types for Epic 2.4: Discovery Interface
+ */
+
+export type JobStatus = 'PENDING' | 'RUNNING' | 'COMPLETED' | 'FAILED' | 'CANCELLED';
+
+export interface Job {
+  id: string;
+  type: string;
+  status: JobStatus;
+  progress: number;
+  createdAt: string;
+  startedAt?: string;
+  completedAt?: string;
+  error?: string;
+  result?: string;
+}
+
+export interface StartDiscoveryResponse {
+  success: boolean;
+  job?: Job;
+  error?: string;
+}
+
+export interface JobResult {
+  relationshipsCreated?: number;
+}
