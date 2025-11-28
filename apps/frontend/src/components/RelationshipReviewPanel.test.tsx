@@ -107,7 +107,9 @@ describe('RelationshipReviewPanel', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText(/no completed discoveries yet/i)).toBeInTheDocument();
+      expect(
+        screen.getByText(/no completed discoveries yet/i)
+      ).toBeInTheDocument();
     });
   });
 

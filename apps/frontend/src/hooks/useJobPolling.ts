@@ -30,9 +30,12 @@ export function useJobPolling(
   jobId: string | null,
   interval: number = 1500
 ): UseJobPollingResult {
-  const [getJob, { data, loading, error }] = useLazyQuery<GetJobResponse>(GET_JOB, {
-    fetchPolicy: 'network-only', // Always fetch fresh data
-  });
+  const [getJob, { data, loading, error }] = useLazyQuery<GetJobResponse>(
+    GET_JOB,
+    {
+      fetchPolicy: 'network-only', // Always fetch fresh data
+    }
+  );
 
   const [isPolling, setIsPolling] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);

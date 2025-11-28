@@ -38,7 +38,8 @@ export function RelationshipReviewPanel(): JSX.Element {
     );
   }
 
-  const completedJobs = data?.jobs.filter((job) => job.status === 'COMPLETED') || [];
+  const completedJobs =
+    data?.jobs.filter((job) => job.status === 'COMPLETED') || [];
   const totalRelationships = completedJobs.reduce((sum, job) => {
     if (!job.result) return sum;
     try {
@@ -67,21 +68,29 @@ export function RelationshipReviewPanel(): JSX.Element {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <p className="text-gray-400 text-sm">Total Discoveries</p>
-                <p className="text-3xl font-bold text-primary-400">{completedJobs.length}</p>
+                <p className="text-3xl font-bold text-primary-400">
+                  {completedJobs.length}
+                </p>
               </div>
               <div>
                 <p className="text-gray-400 text-sm">Relationships Found</p>
-                <p className="text-3xl font-bold text-green-400">{totalRelationships}</p>
+                <p className="text-3xl font-bold text-green-400">
+                  {totalRelationships}
+                </p>
               </div>
             </div>
           </div>
 
           {/* Job History */}
           <div>
-            <h3 className="text-lg font-semibold text-white mb-3">Recent Jobs</h3>
+            <h3 className="text-lg font-semibold text-white mb-3">
+              Recent Jobs
+            </h3>
             <div className="space-y-2">
               {completedJobs.slice(0, 5).map((job) => {
-                const result = job.result ? (JSON.parse(job.result) as JobResult) : null;
+                const result = job.result
+                  ? (JSON.parse(job.result) as JobResult)
+                  : null;
                 return (
                   <div
                     key={job.id}
@@ -97,7 +106,12 @@ export function RelationshipReviewPanel(): JSX.Element {
                         </p>
                       </div>
                       <div className="text-green-400">
-                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg
+                          className="w-6 h-6"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
                           <path
                             strokeLinecap="round"
                             strokeLinejoin="round"
@@ -130,10 +144,13 @@ export function RelationshipReviewPanel(): JSX.Element {
                 />
               </svg>
               <div>
-                <p className="text-blue-400 font-semibold text-sm">Coming in Phase 3</p>
+                <p className="text-blue-400 font-semibold text-sm">
+                  Coming in Phase 3
+                </p>
                 <p className="text-blue-300 text-sm mt-1">
-                  Detailed relationship viewer with confidence scores, column details,
-                  and validation controls will be available in the Graph Visualization phase.
+                  Detailed relationship viewer with confidence scores, column
+                  details, and validation controls will be available in the
+                  Graph Visualization phase.
                 </p>
               </div>
             </div>

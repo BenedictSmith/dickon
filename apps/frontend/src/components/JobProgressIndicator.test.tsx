@@ -110,7 +110,9 @@ describe('JobProgressIndicator', () => {
 
     expect(screen.getByText('100%')).toBeInTheDocument();
     expect(screen.getByText(/discovery complete/i)).toBeInTheDocument();
-    expect(screen.getByText(/created 42 similarity relationships/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/created 42 similarity relationships/i)
+    ).toBeInTheDocument();
   });
 
   it('should display failed job with error message', async () => {

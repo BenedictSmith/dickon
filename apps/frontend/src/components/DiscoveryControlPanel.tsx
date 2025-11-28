@@ -33,7 +33,8 @@ export function DiscoveryControlPanel(): JSX.Element {
       },
     });
 
-  const [cancelJob, { loading: cancelLoading }] = useMutation<CancelJobData>(CANCEL_JOB);
+  const [cancelJob, { loading: cancelLoading }] =
+    useMutation<CancelJobData>(CANCEL_JOB);
 
   const handleStartDiscovery = async (): Promise<void> => {
     try {
@@ -65,7 +66,9 @@ export function DiscoveryControlPanel(): JSX.Element {
       <div className="p-4 border-b border-gray-700">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-2xl font-bold text-white">Relationship Discovery</h2>
+            <h2 className="text-2xl font-bold text-white">
+              Relationship Discovery
+            </h2>
             <p className="text-sm text-gray-400 mt-1">
               Automatically discover relationships across databases
             </p>
@@ -76,12 +79,32 @@ export function DiscoveryControlPanel(): JSX.Element {
             aria-label={isExpanded ? 'Collapse panel' : 'Expand panel'}
           >
             {isExpanded ? (
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5 15l7-7 7 7"
+                />
               </svg>
             ) : (
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
               </svg>
             )}
           </button>

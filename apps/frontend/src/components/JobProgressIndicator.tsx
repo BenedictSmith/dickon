@@ -23,7 +23,12 @@ export function JobProgressIndicator({
 
   // Call onComplete when job finishes
   useEffect(() => {
-    if (job && (job.status === 'COMPLETED' || job.status === 'FAILED' || job.status === 'CANCELLED')) {
+    if (
+      job &&
+      (job.status === 'COMPLETED' ||
+        job.status === 'FAILED' ||
+        job.status === 'CANCELLED')
+    ) {
       onComplete?.();
     }
   }, [job, onComplete]);
@@ -62,7 +67,9 @@ export function JobProgressIndicator({
     };
 
     return (
-      <span className={`px-3 py-1 rounded-full text-sm font-semibold border ${styles[status]}`}>
+      <span
+        className={`px-3 py-1 rounded-full text-sm font-semibold border ${styles[status]}`}
+      >
         {status}
       </span>
     );
@@ -94,7 +101,9 @@ export function JobProgressIndicator({
       <div>
         <div className="flex items-center justify-between mb-2">
           <span className="text-sm text-gray-300">Progress</span>
-          <span className="text-sm font-semibold text-white">{job.progress}%</span>
+          <span className="text-sm font-semibold text-white">
+            {job.progress}%
+          </span>
         </div>
         <div className="w-full bg-gray-600 rounded-full h-3 overflow-hidden">
           <div
@@ -102,8 +111,8 @@ export function JobProgressIndicator({
               isComplete
                 ? 'bg-green-500'
                 : isFailed
-                ? 'bg-red-500'
-                : 'bg-primary-500'
+                  ? 'bg-red-500'
+                  : 'bg-primary-500'
             }`}
             style={{ width: `${job.progress}%` }}
           />
@@ -122,12 +131,16 @@ export function JobProgressIndicator({
         </div>
         <div>
           <p className="text-gray-400">Created</p>
-          <p className="text-white">{new Date(job.createdAt).toLocaleTimeString()}</p>
+          <p className="text-white">
+            {new Date(job.createdAt).toLocaleTimeString()}
+          </p>
         </div>
         {job.completedAt && (
           <div>
             <p className="text-gray-400">Completed</p>
-            <p className="text-white">{new Date(job.completedAt).toLocaleTimeString()}</p>
+            <p className="text-white">
+              {new Date(job.completedAt).toLocaleTimeString()}
+            </p>
           </div>
         )}
       </div>
@@ -135,9 +148,25 @@ export function JobProgressIndicator({
       {/* Running Indicator */}
       {isRunning && (
         <div className="flex items-center space-x-2 text-blue-400">
-          <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          <svg
+            className="animate-spin h-5 w-5"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            ></circle>
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            ></path>
           </svg>
           <span className="text-sm">Analyzing relationships...</span>
         </div>
@@ -146,9 +175,7 @@ export function JobProgressIndicator({
       {/* Success Result */}
       {isComplete && result?.relationshipsCreated !== undefined && (
         <div className="bg-green-900/20 border border-green-700 rounded-lg p-3">
-          <p className="text-green-400 font-semibold">
-            Discovery Complete!
-          </p>
+          <p className="text-green-400 font-semibold">Discovery Complete!</p>
           <p className="text-green-300 text-sm mt-1">
             Created {result.relationshipsCreated} similarity relationships
           </p>

@@ -49,7 +49,12 @@ export interface Relationship {
  * Job types for Epic 2.4: Discovery Interface
  */
 
-export type JobStatus = 'PENDING' | 'RUNNING' | 'COMPLETED' | 'FAILED' | 'CANCELLED';
+export type JobStatus =
+  | 'PENDING'
+  | 'RUNNING'
+  | 'COMPLETED'
+  | 'FAILED'
+  | 'CANCELLED';
 
 export interface Job {
   id: string;
