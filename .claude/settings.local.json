@@ -27,7 +27,10 @@
       "Bash(git restore:*)",
       "Bash(gh run view:*)",
       "Bash(npx prettier:*)",
-      "Bash(npm run test:unit:*)"
+      "Bash(npm run test:unit:*)",
+      "Bash(npx tsc --noEmit)",
+      "Bash(npx tsc:*)",
+      "Bash(/opt/homebrew/bin/npm install --ignore-scripts)"
     ],
     "deny": [],
     "ask": []

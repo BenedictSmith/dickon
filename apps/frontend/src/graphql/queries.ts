@@ -117,3 +117,36 @@ export const CANCEL_JOB = gql`
     cancelJob(id: $id)
   }
 `;
+
+/**
+ * Epic 3.1: D3.js Force-Directed Graph
+ * Graph visualization queries
+ */
+
+export const GET_GRAPH_DATA = gql`
+  query GetGraphData($input: GraphDataInput) {
+    getGraphData(input: $input) {
+      nodes {
+        id
+        label
+        type
+        databaseId
+        tableId
+        properties {
+          path
+          rowCount
+          dataType
+          primaryKey
+          notNull
+        }
+      }
+      edges {
+        source
+        target
+        type
+        confidence
+        discoveredAt
+      }
+    }
+  }
+`;

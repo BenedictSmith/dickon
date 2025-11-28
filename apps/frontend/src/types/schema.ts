@@ -77,3 +77,60 @@ export interface StartDiscoveryResponse {
 export interface JobResult {
   relationshipsCreated?: number;
 }
+
+/**
+ * Graph visualization types for Epic 3.1: D3.js Force-Directed Graph
+ */
+
+export type GraphNodeType = 'DATABASE' | 'TABLE' | 'COLUMN';
+
+export type GraphEdgeType =
+  | 'HAS_TABLE'
+  | 'HAS_COLUMN'
+  | 'REFERENCES'
+  | 'SIMILAR_TO';
+
+export interface GraphNodeProperties {
+  path?: string;
+  rowCount?: number;
+  dataType?: string;
+  primaryKey?: boolean;
+  notNull?: boolean;
+}
+
+export interface GraphNode {
+  id: string;
+  label: string;
+  type: GraphNodeType;
+  databaseId?: string;
+  tableId?: string;
+  properties: GraphNodeProperties;
+  // D3.js will add these during simulation
+  x?: number;
+  y?: number;
+  vx?: number;
+  vy?: number;
+  fx?: number | null;
+  fy?: number | null;
+}
+
+export interface GraphEdge {
+  source: string | GraphNode;
+  target: string | GraphNode;
+  type: GraphEdgeType;
+  confidence?: number;
+  discoveredAt?: string;
+}
+
+export interface GraphData {
+  nodes: GraphNode[];
+  edges: GraphEdge[];
+}
+
+export interface GraphDataInput {
+  databaseIds?: string[];
+  minConfidence?: number;
+  maxNodes?: number;
+  nodeTypes?: GraphNodeType[];
+  edgeTypes?: GraphEdgeType[];
+}
