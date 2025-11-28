@@ -20,47 +20,68 @@ These are the easiest to set up and handle most common scenarios.
 1. Go to your project: https://github.com/users/BenedictSmith/projects/2
 2. Click the `⋯` menu (top right) → **Settings**
 3. Click **Workflows** in the left sidebar
-4. Enable the following workflows:
+4. Enable the following recommended workflows:
 
-#### Workflow 1: Auto-add items
+#### Recommended Workflows to Enable
 
-- **Trigger:** Item added to project
-- **Action:** Set Status to "Todo"
-- **Purpose:** All new issues/PRs start in the backlog
+Based on actual GitHub Projects v2 workflows (as of 2025-11-28):
 
-#### Workflow 2: Item closed
+**Essential Workflows:**
 
-- **Trigger:** Item closed
-- **Action:** Set Status to "Done"
-- **Purpose:** Completed issues automatically move to Done
+1. **Auto-add to project**
+   - Automatically adds new issues/PRs to the project
 
-#### Workflow 3: Pull request merged
+2. **Item added to project**
+   - Sets initial status when item is added
+   - Configure to set Status → "Todo"
 
-- **Trigger:** Pull request merged
-- **Action:** Set Status to "Done"
-- **Purpose:** Merged PRs move to Done
+3. **Item closed**
+   - Updates status when issue/PR is closed
+   - Configure to set Status → "Done"
 
-#### Workflow 4: Pull request opened/reopened
+4. **Pull request merged**
+   - Updates status when PR is merged
+   - Configure to set Status → "Done"
 
-- **Trigger:** Pull request opened or reopened
-- **Action:** Set Status to "In Review"
-- **Purpose:** Active PRs move to In Review
+5. **Item reopened**
+   - Handles reopened issues
+   - Configure to set Status → "Todo"
 
-#### Workflow 5: Issue/PR assigned
+**Nice-to-Have Workflows:**
 
-- **Trigger:** Issue or pull request assigned
-- **Action:** Set Status to "In Progress"
-- **Condition:** Only if current status is "Todo" or "Ready"
-- **Purpose:** Self-assignment indicates work has started
+6. **Pull request linked to issue**
+   - Updates status when PR links to issue
+   - Configure to set Status → "In Review"
+
+7. **Code review approved**
+   - Updates when PR review is approved
+   - Optional: Set Status → "Ready to Merge"
+
+8. **Code changes requested**
+   - Updates when changes requested on PR
+   - Optional: Keep in "In Review" or move to "In Progress"
+
+9. **Auto-archive items**
+   - Archives old completed items after a period
+   - Keeps board clean
+
+10. **Auto-close issue**
+    - Optional: Auto-close issues after certain conditions
+
+11. **Auto-add sub-issues to project**
+    - Automatically adds sub-issues if using issue hierarchies
 
 ### Expected Behavior
 
-After setup, the project will automatically:
+After enabling these workflows, the project will automatically:
 
 - ✅ Add new issues to the project in "Todo" status
-- ✅ Move assigned issues to "In Progress"
-- ✅ Move PRs to "In Review" when opened
+- ✅ Move PRs to "In Review" when linked to issues
 - ✅ Move items to "Done" when closed or merged
+- ✅ Reopen items back to "Todo" when reopened
+- ✅ Archive old items to keep board clean
+
+**Note:** There is no built-in "Issue assigned → In Progress" workflow in GitHub Projects v2. You must manually move items to "In Progress" when starting work, or create a custom GitHub Action for this.
 
 ---
 

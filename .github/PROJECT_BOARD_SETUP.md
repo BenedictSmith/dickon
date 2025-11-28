@@ -85,25 +85,30 @@ Move to **📋 Backlog**:
 
 Configure these automations in the project settings (Settings → Workflows):
 
-1. **When issue closed** → Move to **✅ Done**
+1. **Auto-add to project**
+   - Automatically adds new issues/PRs to the project
+
+2. **Item added to project** → Set to **📋 Todo**
+   - Trigger: Item added to project
+   - Action: Set status to "Todo"
+
+3. **Item closed** → Move to **✅ Done**
    - Trigger: Item closed
    - Action: Set status to "Done"
 
-2. **When PR created** → Move linked issues to **👀 In Review**
-   - Trigger: Pull request opened
-   - Action: Set status to "In Review"
-
-3. **When PR merged** → Move linked issues to **✅ Done**
+4. **Pull request merged** → Move to **✅ Done**
    - Trigger: Pull request merged
    - Action: Set status to "Done"
 
-4. **When assigned** → Move to **🚧 In Progress** (if in Ready)
-   - Trigger: Issue assigned
-   - Action: Set status to "In Progress"
+5. **Pull request linked to issue** → Move to **👀 In Review**
+   - Trigger: Pull request linked to issue
+   - Action: Set status to "In Review"
 
-5. **Auto-add new items** → Add to **📋 Backlog**
-   - Trigger: Item added to project
+6. **Item reopened** → Move back to **📋 Todo**
+   - Trigger: Item reopened
    - Action: Set status to "Todo"
+
+**Note:** There is no built-in workflow for "Issue assigned → In Progress". Manually update status to "In Progress" when starting work.
 
 ### GitHub Actions Automation
 
@@ -140,7 +145,7 @@ A GitHub Actions workflow (`.github/workflows/project-automation.yml`) automatic
 **When Starting Work:**
 
 - Assign yourself to the issue
-- Automation will move to "In Progress"
+- **Manually** move status to "In Progress" (no automation for this)
 - Create a branch and reference the issue number
 
 **When Creating PR:**
