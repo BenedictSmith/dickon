@@ -103,4 +103,40 @@ export class GraphService {
   async getTablesForDatabase(databaseId: string): Promise<Table[]> {
     return await this.repository.getTablesForDatabase(databaseId);
   }
+
+  /**
+   * Get graph data for visualization
+   * Returns nodes and edges optimized for D3.js force-directed graph
+   */
+  async getGraphData(input?: {
+    databaseIds?: string[];
+    minConfidence?: number;
+    maxNodes?: number;
+    nodeTypes?: string[];
+    edgeTypes?: string[];
+  }): Promise<{
+    nodes: Array<{
+      id: string;
+      label: string;
+      type: string;
+      databaseId?: string;
+      tableId?: string;
+      properties: {
+        path?: string;
+        rowCount?: number;
+        dataType?: string;
+        primaryKey?: boolean;
+        notNull?: boolean;
+      };
+    }>;
+    edges: Array<{
+      source: string;
+      target: string;
+      type: string;
+      confidence?: number;
+      discoveredAt?: string;
+    }>;
+  }> {
+    return await this.repository.getGraphData(input);
+  }
 }

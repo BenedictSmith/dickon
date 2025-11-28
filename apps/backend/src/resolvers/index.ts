@@ -86,6 +86,47 @@ export const resolvers = {
     ): Promise<Job | null> {
       return context.jobManager.getJob(args.id) || null;
     },
+
+    /**
+     * Get graph data for visualization
+     */
+    async getGraphData(
+      _parent: unknown,
+      args: {
+        input?: {
+          databaseIds?: string[];
+          minConfidence?: number;
+          maxNodes?: number;
+          nodeTypes?: string[];
+          edgeTypes?: string[];
+        };
+      },
+      context: GraphQLContext
+    ): Promise<{
+      nodes: Array<{
+        id: string;
+        label: string;
+        type: string;
+        databaseId?: string;
+        tableId?: string;
+        properties: {
+          path?: string;
+          rowCount?: number;
+          dataType?: string;
+          primaryKey?: boolean;
+          notNull?: boolean;
+        };
+      }>;
+      edges: Array<{
+        source: string;
+        target: string;
+        type: string;
+        confidence?: number;
+        discoveredAt?: string;
+      }>;
+    }> {
+      return await context.graphService.getGraphData(args.input);
+    },
   },
 
   Mutation: {

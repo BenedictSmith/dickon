@@ -4,6 +4,7 @@ import { SchemaTree } from './components/SchemaTree';
 import { DetailPanel } from './components/DetailPanel';
 import { DiscoveryControlPanel } from './components/DiscoveryControlPanel';
 import { RelationshipReviewPanel } from './components/RelationshipReviewPanel';
+import { GraphVisualization } from './components/GraphVisualization';
 import type { Table, Column } from './types/schema';
 
 /**
@@ -12,6 +13,7 @@ import type { Table, Column } from './types/schema';
  * Main application component.
  * Epic 1.4: Schema Explorer UI - Complete!
  * Epic 2.4: Discovery Interface - Complete!
+ * Epic 3.1: D3.js Force-Directed Graph - In Progress!
  */
 
 export function App(): JSX.Element {
@@ -73,6 +75,11 @@ export function App(): JSX.Element {
           {/* Relationship Review - Bottom Section */}
           <section>
             <RelationshipReviewPanel />
+          </section>
+
+          {/* Graph Visualization - Bottom Section */}
+          <section>
+            <GraphVisualization minConfidence={0.5} />
           </section>
         </main>
       </div>
