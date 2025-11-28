@@ -170,6 +170,7 @@ export class ConfidenceScorer {
    - [ ] Coverage increased or maintained
 
 4. **PR Template**
+
    ```markdown
    ## TDD Checklist
 
