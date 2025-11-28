@@ -19,6 +19,7 @@
     "prepare": "husky install"
   },
   "devDependencies": {
+    "@types/sql.js": "^1.4.9",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "dependency-cruiser": "^14.0.0",
@@ -31,5 +32,8 @@
     "turbo": "^1.10.0",
     "typescript": "^5.2.0"
   },
-  "packageManager": "npm@10.7.0"
+  "packageManager": "npm@10.7.0",
+  "dependencies": {
+    "sql.js": "^1.12.0"
+  }
 }

@@ -28,6 +28,7 @@ A project inspired by Dickon from The Secret Garden - a shared workspace for col
 - 👥 **[WORK_SPLIT.md](WORK_SPLIT.md)** - Ben/Carsten work division and timeline
 - ⚡ **[QUICKSTART.md](QUICKSTART.md)** - 5-minute setup and command-line workflow guide
 - 🚀 **[SETUP.md](SETUP.md)** - Installation and activation guide
+- 🔧 **[DEVELOPMENT.md](docs/DEVELOPMENT.md)** - Developer guide, TDD, architecture decisions
 - 🧪 **[TESTING.md](docs/TESTING.md)** - TDD strategy and testing guide
 - 🤝 **[CONTRIBUTING.md](CONTRIBUTING.md)** - Development workflow and guidelines
 - 🗺️ **[ROADMAP.md](ROADMAP.md)** - Project phases and epics
