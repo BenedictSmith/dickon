@@ -22,6 +22,7 @@ Create the following columns in this order:
 Add these custom fields to track additional metadata:
 
 ### 1. Phase
+
 - **Type:** Single Select
 - **Options:**
   - Phase 0: Foundation
@@ -32,10 +33,12 @@ Add these custom fields to track additional metadata:
   - Phase 5: Entity Resolution
 
 ### 2. Epic
+
 - **Type:** Text
 - **Purpose:** Track which epic the issue belongs to (e.g., "Epic 3.1")
 
 ### 3. Owner
+
 - **Type:** Single Select
 - **Options:**
   - Ben (Backend)
@@ -43,6 +46,7 @@ Add these custom fields to track additional metadata:
   - Both
 
 ### 4. Priority
+
 - **Type:** Single Select
 - **Options:**
   - 🔴 High
@@ -50,22 +54,28 @@ Add these custom fields to track additional metadata:
   - 🟢 Low
 
 ### 5. Estimate
+
 - **Type:** Number
 - **Purpose:** Story points or day estimate
 
 ## Initial Issue Organization
 
 ### Phase 0-2 (Completed)
+
 Move to **✅ Done**:
+
 - Issues #1-4 (already closed)
 - Any merged PRs from Phase 1-2
 
 ### Phase 3 (Next Up)
+
 Move to **🎯 Ready**:
+
 - Issue #12: Epic 3.4 - Graph Data API (Backend - Ben should start here)
 - Issue #9: Epic 3.1 - D3.js Graph Component (Frontend - Carsten)
 
 Move to **📋 Backlog**:
+
 - Issue #10: Epic 3.2 - Interactive Graph Features (depends on #9)
 - Issue #11: Epic 3.3 - Graph Layout Options (depends on #9)
 
@@ -83,22 +93,26 @@ Set up these automations:
 Create these additional views:
 
 ### By Phase
+
 - **Type:** Board
 - **Group by:** Phase field
 - **Purpose:** See work organized by project phase
 
 ### By Owner
+
 - **Type:** Board
 - **Group by:** Owner field
 - **Purpose:** See Ben vs Carsten workload
 
 ### Timeline
+
 - **Type:** Roadmap
 - **Purpose:** Visualize project timeline and dependencies
 
 ## Labels
 
 The following labels are already created:
+
 - `enhancement` - New features
 - `bug` - Bug fixes
 - `phase-3` - Phase 3 work
@@ -128,6 +142,7 @@ The following labels are already created:
 ---
 
 **Note:** This setup provides clear visibility into:
+
 - What's been completed (Phases 0-2)
 - What's next (Phase 3 epics)
 - Who owns what (Ben vs Carsten)
