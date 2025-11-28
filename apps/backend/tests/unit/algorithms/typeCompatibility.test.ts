@@ -146,7 +146,9 @@ describe('Type Compatibility', () => {
     });
 
     it('should return 0.95 for compatible text types with different lengths', () => {
-      expect(getTypeCompatibilityScore('VARCHAR(50)', 'VARCHAR(100)')).toBe(0.95);
+      expect(getTypeCompatibilityScore('VARCHAR(50)', 'VARCHAR(100)')).toBe(
+        0.95
+      );
       expect(getTypeCompatibilityScore('CHAR(10)', 'TEXT')).toBe(0.95);
     });
 
@@ -175,7 +177,9 @@ describe('Type Compatibility', () => {
 
     it('should handle common foreign key patterns', () => {
       // Foreign keys are typically integers
-      expect(getTypeCompatibilityScore('INTEGER', 'BIGINT')).toBeGreaterThan(0.8);
+      expect(getTypeCompatibilityScore('INTEGER', 'BIGINT')).toBeGreaterThan(
+        0.8
+      );
       expect(getTypeCompatibilityScore('INT', 'INTEGER')).toBe(1.0);
     });
   });

@@ -1,11 +1,13 @@
 # SiloBreaker Development Roadmap
 
 ## Project Goals
+
 Build a production-grade system for automated discovery and federation of relationships across disparate SQLite databases, breaking down data silos through knowledge graphs and interactive visualization.
 
 ## Phase 0: Foundation (Week 1-2)
 
 ### Infrastructure Setup
+
 - [x] Repository initialization
 - [x] Documentation structure
 - [x] GitHub repository created with collaborator access
@@ -27,6 +29,7 @@ Build a production-grade system for automated discovery and federation of relati
   - Husky pre-commit hooks
 
 ### Development Environment
+
 - [ ] Backend TypeScript project
   - Apollo Server setup
   - Neo4j driver configuration
@@ -43,6 +46,7 @@ Build a production-grade system for automated discovery and federation of relati
   - Download Sakila database
 
 **Deliverables:**
+
 - ✅ Fully configured development environment
 - ✅ All three sample databases in `data/` directory
 - ✅ Docker Compose bringing up all services
@@ -55,6 +59,7 @@ Build a production-grade system for automated discovery and federation of relati
 ### Backend Implementation
 
 **Epic 1.1: SQLite Schema Extraction**
+
 - [ ] SQLiteRepository implementation
   - Connection management
   - Schema metadata queries
@@ -68,6 +73,7 @@ Build a production-grade system for automated discovery and federation of relati
 - [ ] Unit tests (80%+ coverage)
 
 **Epic 1.2: Neo4j Graph Population**
+
 - [ ] Neo4jRepository implementation
   - Connection pooling
   - Cypher query builders
@@ -80,6 +86,7 @@ Build a production-grade system for automated discovery and federation of relati
 - [ ] Integration tests with test Neo4j instance
 
 **Epic 1.3: GraphQL API**
+
 - [ ] Schema definition
   - Database, Table, Column types
   - Query: databases, database(id)
@@ -96,6 +103,7 @@ Build a production-grade system for automated discovery and federation of relati
 ### Frontend Implementation
 
 **Epic 1.4: Schema Explorer UI**
+
 - [ ] Database list component
 - [ ] Schema tree component
   - Hierarchical view (DB → Tables → Columns)
@@ -108,6 +116,7 @@ Build a production-grade system for automated discovery and federation of relati
   - Get database details
 
 **Deliverables:**
+
 - ✅ Can ingest all three SQLite databases into Neo4j
 - ✅ GraphQL API exposes complete schema information
 - ✅ Frontend displays navigable schema tree
@@ -120,6 +129,7 @@ Build a production-grade system for automated discovery and federation of relati
 ### Backend Implementation
 
 **Epic 2.1: Column Similarity Analysis**
+
 - [ ] Implement similarity algorithms
   - Levenshtein distance for column names
   - Jaro-Winkler for fuzzy matching
@@ -131,6 +141,7 @@ Build a production-grade system for automated discovery and federation of relati
 - [ ] Unit tests for algorithms
 
 **Epic 2.2: Value Overlap Detection**
+
 - [ ] Sample data from columns
 - [ ] Calculate value intersection
 - [ ] Cardinality analysis
@@ -139,6 +150,7 @@ Build a production-grade system for automated discovery and federation of relati
 - [ ] Integration tests
 
 **Epic 2.3: Discovery Job Management**
+
 - [ ] Job queue implementation (in-memory for now)
 - [ ] GraphQL subscription for progress
 - [ ] Resolver: discoverRelationships mutation
@@ -148,6 +160,7 @@ Build a production-grade system for automated discovery and federation of relati
 ### Frontend Implementation
 
 **Epic 2.4: Discovery Interface**
+
 - [ ] Discovery job trigger UI
   - Select databases to analyze
   - Set confidence thresholds
@@ -160,6 +173,7 @@ Build a production-grade system for automated discovery and federation of relati
   - Mark as validated/rejected
 
 **Deliverables:**
+
 - ✅ Automated discovery finds relationships across Chinook/Northwind/Sakila
 - ✅ Confidence scores calculated and stored
 - ✅ UI allows triggering and monitoring discovery
@@ -172,6 +186,7 @@ Build a production-grade system for automated discovery and federation of relati
 ### Frontend Implementation
 
 **Epic 3.1: D3.js Force-Directed Graph**
+
 - [ ] GraphVisualization component
   - D3.js force simulation setup
   - Node rendering (Database, Table, Column)
@@ -183,6 +198,7 @@ Build a production-grade system for automated discovery and federation of relati
   - Web Worker for calculations
 
 **Epic 3.2: Interactive Features**
+
 - [ ] Node selection and highlighting
 - [ ] Edge filtering by confidence threshold
 - [ ] Node clustering by database
@@ -191,18 +207,21 @@ Build a production-grade system for automated discovery and federation of relati
 - [ ] Export graph as SVG/PNG
 
 **Epic 3.3: Layout Options**
+
 - [ ] Force-directed layout
 - [ ] Hierarchical layout
 - [ ] Radial layout
 - [ ] Layout persistence (save positions)
 
 **Backend Support**
+
 - [ ] GraphQL query: getGraphData(filter)
   - Return nodes and edges for visualization
   - Support filtering by confidence
   - Support subgraph extraction
 
 **Deliverables:**
+
 - ✅ Interactive force-directed graph of all databases
 - ✅ Color-coded by database source
 - ✅ Edge thickness indicates confidence
@@ -216,6 +235,7 @@ Build a production-grade system for automated discovery and federation of relati
 ### Backend Implementation
 
 **Epic 4.1: Federated Query Engine**
+
 - [ ] FederationService implementation
   - Parse query structure
   - Identify cross-database joins
@@ -227,6 +247,7 @@ Build a production-grade system for automated discovery and federation of relati
 - [ ] Result caching
 
 **Epic 4.2: GraphQL Federation API**
+
 - [ ] Schema extension
   - FederatedQueryInput type
   - QueryResult type
@@ -236,6 +257,7 @@ Build a production-grade system for automated discovery and federation of relati
 ### Frontend Implementation
 
 **Epic 4.3: Visual Query Builder**
+
 - [ ] Drag-and-drop query construction
   - Select tables
   - Add join conditions
@@ -245,6 +267,7 @@ Build a production-grade system for automated discovery and federation of relati
 - [ ] Preview generated query
 
 **Epic 4.4: Result Visualization**
+
 - [ ] Tabular result display
 - [ ] Export to CSV/JSON
 - [ ] Data lineage visualization
@@ -252,6 +275,7 @@ Build a production-grade system for automated discovery and federation of relati
   - Trace data flow through joins
 
 **Deliverables:**
+
 - ✅ Can execute cross-database queries
 - ✅ Results merge data from multiple SQLite sources
 - ✅ UI provides visual query builder
@@ -264,6 +288,7 @@ Build a production-grade system for automated discovery and federation of relati
 ### Backend Implementation
 
 **Epic 5.1: Entity Recognition**
+
 - [ ] Detect logical entities across tables
   - Customer entity (in Chinook, Northwind, Sakila)
   - Product entity
@@ -272,6 +297,7 @@ Build a production-grade system for automated discovery and federation of relati
 - [ ] Create REPRESENTS relationships (Table → Entity)
 
 **Epic 5.2: Entity Matching**
+
 - [ ] Match entity instances across databases
   - Name matching
   - Address matching
@@ -279,6 +305,7 @@ Build a production-grade system for automated discovery and federation of relati
 - [ ] Create entity-level LINKS_TO relationships
 
 **Epic 5.3: GraphQL API Extension**
+
 - [ ] Entity types and queries
 - [ ] Mutation: annotateEntity(tableId, entityName)
 - [ ] Query: entities, entity(id)
@@ -286,6 +313,7 @@ Build a production-grade system for automated discovery and federation of relati
 ### Frontend Implementation
 
 **Epic 5.4: Entity Management UI**
+
 - [ ] Entity list view
 - [ ] Entity detail view
   - Show all tables representing this entity
@@ -294,6 +322,7 @@ Build a production-grade system for automated discovery and federation of relati
 - [ ] Entity-level graph visualization
 
 **Deliverables:**
+
 - ✅ System recognizes Customer entity across all three databases
 - ✅ Entity-level view in UI
 - ✅ Can query at entity level, not just table level
@@ -305,6 +334,7 @@ Build a production-grade system for automated discovery and federation of relati
 ### Quality & Testing
 
 **Epic 6.1: Comprehensive Testing**
+
 - [ ] Achieve 80%+ code coverage
 - [ ] E2E tests with Playwright
   - Full discovery workflow
@@ -317,6 +347,7 @@ Build a production-grade system for automated discovery and federation of relati
   - GraphQL query complexity attacks
 
 **Epic 6.2: Documentation**
+
 - [ ] API documentation (GraphQL schema docs)
 - [ ] User guide
   - Getting started
@@ -331,6 +362,7 @@ Build a production-grade system for automated discovery and federation of relati
 ### Production Deployment
 
 **Epic 6.3: Production Infrastructure**
+
 - [ ] Production Docker images
 - [ ] Environment configuration management
 - [ ] Secrets management
@@ -339,6 +371,7 @@ Build a production-grade system for automated discovery and federation of relati
 - [ ] Alerting rules
 
 **Epic 6.4: Performance Optimization**
+
 - [ ] Neo4j query optimization
 - [ ] GraphQL query batching
 - [ ] Frontend code splitting
@@ -346,6 +379,7 @@ Build a production-grade system for automated discovery and federation of relati
 - [ ] Database connection pooling tuning
 
 **Deliverables:**
+
 - ✅ Production-ready deployment
 - ✅ Complete documentation
 - ✅ Monitoring and alerting operational
@@ -356,6 +390,7 @@ Build a production-grade system for automated discovery and federation of relati
 ## Phase 7: Advanced Features (Future)
 
 ### Potential Enhancements
+
 - [ ] Machine learning for relationship discovery
   - Train on validated relationships
   - Improve confidence scoring
@@ -385,6 +420,7 @@ Build a production-grade system for automated discovery and federation of relati
 ## Success Metrics
 
 ### Technical Metrics
+
 - **Discovery Accuracy**: >80% of discovered relationships validated as correct
 - **Query Performance**: Federated queries execute in <5 seconds for typical cases
 - **Graph Performance**: Render 5000+ nodes at 60fps
@@ -393,11 +429,13 @@ Build a production-grade system for automated discovery and federation of relati
 - **Zero Critical Security Issues**
 
 ### User Experience Metrics
+
 - **Time to First Discovery**: <5 minutes from setup to first discovered relationships
 - **Query Success Rate**: >95% of user-constructed queries execute successfully
 - **Annotation Rate**: Users validate >60% of discovered relationships
 
 ### Business Value
+
 - **Silo Breaking**: Successfully link at least 3 disparate data sources
 - **Query Federation**: Enable at least 10 meaningful cross-database queries
 - **Extensibility**: Support adding new databases without code changes
@@ -407,6 +445,7 @@ Build a production-grade system for automated discovery and federation of relati
 ## Current Sprint (Week 1)
 
 ### This Week's Focus
+
 - [ ] Complete monorepo setup
 - [ ] Docker Compose configuration
 - [ ] CI/CD pipeline enhancement
@@ -415,10 +454,12 @@ Build a production-grade system for automated discovery and federation of relati
 - [ ] Download sample databases
 
 ### Team Assignments
+
 - **Benedict**: Backend setup, Neo4j configuration, Docker Compose
 - **Carsten**: Frontend setup, Vite configuration, Tailwind setup
 
 ### Communication
+
 - Collaborate via GitHub Issues and Pull Requests
 - Use PR reviews for knowledge sharing
 - Document decisions in ADRs
@@ -428,6 +469,7 @@ Build a production-grade system for automated discovery and federation of relati
 ## Notes & Decisions
 
 ### Key Architectural Decisions
+
 - Using monorepo for easy code sharing
 - TypeScript strict mode enforced
 - GraphQL for flexible API
@@ -435,11 +477,13 @@ Build a production-grade system for automated discovery and federation of relati
 - D3.js for powerful visualizations
 
 ### Open Questions
+
 - [ ] How to handle very large databases (>1GB)?
 - [ ] Should we support real-time collaboration?
 - [ ] What's the authentication strategy for multi-user?
 
 ### Risks & Mitigations
+
 - **Risk**: D3.js performance with large graphs
   - **Mitigation**: Canvas rendering, LOD, Web Workers
 - **Risk**: Complex federated queries may be slow
@@ -452,6 +496,7 @@ Build a production-grade system for automated discovery and federation of relati
 ## Completed Milestones
 
 ### Phase 0 (Partial)
+
 - [x] Repository initialization with Git
 - [x] GitHub repository created (BenedictSmith/dickon)
 - [x] Collaborator access granted (Carsten)

@@ -43,7 +43,11 @@ export class JobManager {
   private async executeDiscovery(jobId: string): Promise<void> {
     try {
       // Update to running
-      this.updateJob(jobId, { status: 'running', startedAt: new Date(), progress: 0 });
+      this.updateJob(jobId, {
+        status: 'running',
+        startedAt: new Date(),
+        progress: 0,
+      });
 
       // Run discovery
       const count = await this.discoveryService.createSimilarityRelationships();

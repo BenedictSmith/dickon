@@ -1,9 +1,11 @@
 # SiloBreaker Architecture
 
 ## Vision
+
 A production-grade system for automated discovery, federation, and visualization of relationships across disparate SQLite databases, using knowledge graphs to break down enterprise data silos.
 
 ## System Overview
+
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                     Data Sources Layer                       │
@@ -107,6 +109,7 @@ A production-grade system for automated discovery, federation, and visualization
 ## Technology Stack
 
 ### Backend
+
 - **Runtime**: Node.js 20+ with TypeScript 5+
 - **API Framework**: Apollo Server 4 (GraphQL)
 - **Graph Database**: Neo4j 5+ (with neo4j-driver)
@@ -118,6 +121,7 @@ A production-grade system for automated discovery, federation, and visualization
 - **Process Management**: PM2 for production
 
 ### Frontend
+
 - **Framework**: React 18+ with TypeScript
 - **Visualization**: D3.js v7
 - **GraphQL Client**: Apollo Client
@@ -127,6 +131,7 @@ A production-grade system for automated discovery, federation, and visualization
 - **Testing**: Vitest + React Testing Library
 
 ### Infrastructure
+
 - **Containerization**: Docker + Docker Compose
 - **CI/CD**: GitHub Actions
 - **Code Quality**: ESLint + Prettier + TypeScript strict mode
@@ -135,14 +140,17 @@ A production-grade system for automated discovery, federation, and visualization
 ## Architectural Principles
 
 ### 1. Strict Layered Architecture
+
 ```
 Presentation → Application → Domain → Infrastructure
 ```
+
 - **No layer bypass**: Each layer only communicates with adjacent layers
 - **Dependency direction**: Always inward (Presentation depends on Application, never reverse)
 - **Interface segregation**: Each layer exposes minimal interfaces
 
 ### 2. Domain-Driven Design Patterns
+
 - **Entities**: Database, Table, Column, Relationship
 - **Value Objects**: ConfidenceScore, DataType, ColumnStatistics
 - **Aggregates**: SchemaAggregate, DiscoveryAggregate
@@ -150,24 +158,28 @@ Presentation → Application → Domain → Infrastructure
 - **Services**: Encapsulate business logic
 
 ### 3. Type Safety
+
 - **End-to-end types**: GraphQL schema → TypeScript types (via codegen)
 - **Runtime validation**: Zod schemas at service boundaries
 - **Strict TypeScript**: `strict: true`, `noImplicitAny: true`
 - **No `any` types**: Enforce via ESLint rules
 
 ### 4. Error Handling
+
 - **Typed errors**: Custom error classes extending base Error
 - **Error boundaries**: GraphQL error formatting
 - **Structured logging**: All errors logged with context
 - **No silent failures**: All errors either handled or propagated
 
 ### 5. Testing Strategy
+
 - **Unit tests**: 80%+ coverage for services and utilities
 - **Integration tests**: API endpoints and database operations
 - **E2E tests**: Critical user flows (Playwright)
 - **Contract tests**: GraphQL schema validation
 
 ## Project Structure
+
 ```
 dickon/
 ├── apps/
@@ -265,6 +277,7 @@ dickon/
 ## Architectural Compliance Mechanisms
 
 ### 1. Import Linting (eslint-plugin-import)
+
 ```javascript
 // .eslintrc.js rules
 rules: {
@@ -294,6 +307,7 @@ rules: {
 ```
 
 ### 2. Dependency Cruiser
+
 ```javascript
 // .dependency-cruiser.js
 module.exports = {
@@ -302,25 +316,26 @@ module.exports = {
       name: 'no-circular',
       severity: 'error',
       from: {},
-      to: { circular: true }
+      to: { circular: true },
     },
     {
       name: 'no-domain-to-infrastructure',
       from: { path: '^src/domain' },
       to: { path: '^src/infrastructure' },
-      severity: 'error'
+      severity: 'error',
     },
     {
       name: 'resolvers-via-services-only',
       from: { path: '^src/resolvers' },
       to: { path: '^src/repositories' },
-      severity: 'error'
-    }
-  ]
+      severity: 'error',
+    },
+  ],
 };
 ```
 
 ### 3. TypeScript Project References
+
 ```json
 // tsconfig.json (root)
 {
@@ -335,13 +350,16 @@ module.exports = {
 ```
 
 ### 4. Architecture Decision Records (ADRs)
+
 Every architectural decision must be documented in `docs/ADR/` with:
+
 - Context
 - Decision
 - Consequences
 - Compliance mechanism
 
 ### 5. Pre-commit Hooks (Husky)
+
 ```json
 // .husky/pre-commit
 #!/bin/sh
@@ -361,7 +379,9 @@ npm run test:unit
 ```
 
 ### 6. CI/CD Gates
+
 GitHub Actions must pass:
+
 - ✅ TypeScript compilation (strict mode)
 - ✅ ESLint with architectural rules
 - ✅ Dependency cruiser validation
@@ -370,7 +390,9 @@ GitHub Actions must pass:
 - ✅ GraphQL schema validation
 
 ### 7. Code Review Checklist
+
 Automated PR template enforces:
+
 - [ ] No layer violations
 - [ ] Types properly defined
 - [ ] Tests added/updated
@@ -383,6 +405,7 @@ Automated PR template enforces:
 ### Neo4j Graph Schema
 
 **Nodes:**
+
 ```cypher
 // Database node
 (:Database {
@@ -432,6 +455,7 @@ Automated PR template enforces:
 ```
 
 **Relationships:**
+
 ```cypher
 (:Database)-[:CONTAINS]->(:Table)
 (:Table)-[:CONTAINS]->(:Column)
@@ -442,6 +466,7 @@ Automated PR template enforces:
 ```
 
 ### GraphQL Schema (Excerpt)
+
 ```graphql
 type Database {
   id: ID!
@@ -525,16 +550,18 @@ type Subscription {
 ## Observability
 
 ### Logging
+
 ```typescript
 // Structured logging with Winston
 logger.info('Discovery job started', {
   jobId,
   databaseIds,
-  timestamp: new Date().toISOString()
+  timestamp: new Date().toISOString(),
 });
 ```
 
 ### Tracing
+
 ```typescript
 // OpenTelemetry spans
 const span = tracer.startSpan('discovery.findRelationships');
@@ -543,6 +570,7 @@ span.end();
 ```
 
 ### Metrics
+
 - GraphQL operation timing
 - Neo4j query performance
 - Discovery job duration
@@ -551,11 +579,13 @@ span.end();
 ## Deployment
 
 ### Development
+
 ```bash
 docker-compose up
 ```
 
 ### Production
+
 - Backend: Docker container with PM2
 - Frontend: Static build on CDN
 - Neo4j: Managed instance or containerized

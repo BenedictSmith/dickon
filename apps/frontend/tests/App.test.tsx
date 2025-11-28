@@ -26,7 +26,9 @@ describe('App', () => {
     );
 
     expect(screen.getByText('SiloBreaker')).toBeInTheDocument();
-    expect(screen.getByText('Database Schema Discovery Tool')).toBeInTheDocument();
+    expect(
+      screen.getByText('Database Schema Discovery Tool')
+    ).toBeInTheDocument();
 
     await waitFor(() => {
       expect(screen.getByText(/no databases/i)).toBeInTheDocument();

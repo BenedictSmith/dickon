@@ -112,7 +112,10 @@ export function areTypesCompatible(type1: string, type2: string): boolean {
  * getTypeCompatibilityScore('INTEGER', 'BIGINT') // returns 0.9
  * getTypeCompatibilityScore('INTEGER', 'TEXT') // returns 0.0
  */
-export function getTypeCompatibilityScore(type1: string, type2: string): number {
+export function getTypeCompatibilityScore(
+  type1: string,
+  type2: string
+): number {
   const trimmed1 = type1.trim().toUpperCase();
   const trimmed2 = type2.trim().toUpperCase();
 
@@ -147,12 +150,22 @@ export function getTypeCompatibilityScore(type1: string, type2: string): number 
 
     // INT and INTEGER are equivalent
     const equivalentIntegers = ['INT', 'INTEGER'];
-    if (equivalentIntegers.includes(base1) && equivalentIntegers.includes(base2)) {
+    if (
+      equivalentIntegers.includes(base1) &&
+      equivalentIntegers.includes(base2)
+    ) {
       return 1.0;
     }
 
     // Different integer sizes (BIGINT, SMALLINT, etc.)
-    const integerTypes = ['INT', 'INTEGER', 'BIGINT', 'SMALLINT', 'TINYINT', 'MEDIUMINT'];
+    const integerTypes = [
+      'INT',
+      'INTEGER',
+      'BIGINT',
+      'SMALLINT',
+      'TINYINT',
+      'MEDIUMINT',
+    ];
     if (integerTypes.includes(base1) && integerTypes.includes(base2)) {
       return 0.9; // Slightly lower for different sizes
     }

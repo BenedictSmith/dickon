@@ -95,9 +95,7 @@ export function SchemaTree({
                 onClick={() => handleTableClick(table)}
                 className="w-full text-left px-3 py-2 hover:bg-gray-800 transition-colors flex items-center gap-2 group"
               >
-                <span className="text-gray-500">
-                  {isExpanded ? '▼' : '▶'}
-                </span>
+                <span className="text-gray-500">{isExpanded ? '▼' : '▶'}</span>
                 <span className="font-semibold text-primary-400 group-hover:text-primary-300">
                   {table.name}
                 </span>

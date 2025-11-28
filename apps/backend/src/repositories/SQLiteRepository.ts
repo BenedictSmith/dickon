@@ -178,7 +178,9 @@ export class SQLiteRepository {
       LIMIT ${maxSamples}
     `;
 
-    const rows = this.db.prepare(query).all() as Array<{ value: string | null }>;
+    const rows = this.db.prepare(query).all() as Array<{
+      value: string | null;
+    }>;
     return rows.map((row) => row.value);
   }
 

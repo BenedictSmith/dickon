@@ -64,5 +64,7 @@ export function ApolloProvider({
     );
   }
 
-  return <BaseApolloProvider client={apolloClient}>{children}</BaseApolloProvider>;
+  return (
+    <BaseApolloProvider client={apolloClient}>{children}</BaseApolloProvider>
+  );
 }

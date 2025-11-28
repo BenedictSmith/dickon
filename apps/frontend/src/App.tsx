@@ -12,7 +12,9 @@ import type { Table, Column } from './types/schema';
  */
 
 export function App(): JSX.Element {
-  const [selectedDatabaseId, setSelectedDatabaseId] = useState<string | null>(null);
+  const [selectedDatabaseId, setSelectedDatabaseId] = useState<string | null>(
+    null
+  );
   const [selectedTable, setSelectedTable] = useState<Table | null>(null);
   const [selectedColumn, setSelectedColumn] = useState<Column | null>(null);
 
@@ -42,14 +44,19 @@ export function App(): JSX.Element {
               />
             ) : (
               <div className="p-4">
-                <p className="text-gray-400">Select a database to view schema</p>
+                <p className="text-gray-400">
+                  Select a database to view schema
+                </p>
               </div>
             )}
           </section>
 
           {/* Detail Panel - Right Column */}
           <section className="lg:col-span-1 bg-gray-800 rounded-lg">
-            <DetailPanel table={selectedTable ?? undefined} column={selectedColumn ?? undefined} />
+            <DetailPanel
+              table={selectedTable ?? undefined}
+              column={selectedColumn ?? undefined}
+            />
           </section>
         </main>
       </div>

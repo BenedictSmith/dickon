@@ -1,7 +1,12 @@
 /**
  * Job status enum
  */
-export type JobStatus = 'pending' | 'running' | 'completed' | 'failed' | 'cancelled';
+export type JobStatus =
+  | 'pending'
+  | 'running'
+  | 'completed'
+  | 'failed'
+  | 'cancelled';
 
 /**
  * Job properties for construction

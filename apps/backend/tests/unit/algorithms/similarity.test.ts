@@ -156,8 +156,12 @@ describe('Similarity Algorithms', () => {
     it('should detect common database naming patterns', () => {
       // Test real-world column name similarities
       expect(jaroWinklerSimilarity('email', 'e_mail')).toBeGreaterThan(0.8);
-      expect(jaroWinklerSimilarity('firstName', 'first_name')).toBeGreaterThan(0.7);
-      expect(jaroWinklerSimilarity('createdAt', 'created_at')).toBeGreaterThan(0.8);
+      expect(jaroWinklerSimilarity('firstName', 'first_name')).toBeGreaterThan(
+        0.7
+      );
+      expect(jaroWinklerSimilarity('createdAt', 'created_at')).toBeGreaterThan(
+        0.8
+      );
     });
   });
 });

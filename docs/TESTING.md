@@ -36,11 +36,13 @@ SiloBreaker follows strict Test-Driven Development practices. **Code without tes
 ```
 
 ### Target Distribution
+
 - **70% Unit Tests**: Fast, isolated, pure logic
 - **20% Integration Tests**: Database, API, external dependencies
 - **10% E2E Tests**: Full user workflows
 
 ### Coverage Requirements
+
 - **Minimum**: 80% overall code coverage
 - **Services**: 90%+ coverage (core business logic)
 - **Repositories**: 85%+ coverage (data access)
@@ -54,12 +56,14 @@ SiloBreaker follows strict Test-Driven Development practices. **Code without tes
 ### 1. Unit Tests
 
 **Characteristics:**
+
 - No external dependencies (mocked)
 - Fast (<1ms per test)
 - Isolated and deterministic
 - Test pure functions and business logic
 
 **What to Test:**
+
 - Domain entities and value objects
 - Service methods with mocked repositories
 - Utility functions
@@ -100,12 +104,14 @@ export function levenshteinDistance(a: string, b: string): number {
 ### 2. Integration Tests
 
 **Characteristics:**
+
 - Test interactions between layers
 - Use real databases (test instances)
 - Moderate speed (~100ms-1s per test)
 - Verify contracts between components
 
 **What to Test:**
+
 - Repository operations against real Neo4j
 - Service methods calling real repositories
 - GraphQL resolvers with real services
@@ -160,12 +166,14 @@ describe('Neo4jRepository', () => {
 ### 3. End-to-End (E2E) Tests
 
 **Characteristics:**
+
 - Test complete user workflows
 - All services running (Docker Compose)
 - Slow (5-30s per test)
 - Browser-based (Playwright)
 
 **What to Test:**
+
 - Critical user journeys
 - Discovery workflow (add DB → discover relationships → visualize)
 - Query federation workflow
@@ -340,12 +348,14 @@ Repeat Red-Green-Refactor cycle for each test.
 ### What to Mock
 
 ✅ **Mock in Unit Tests:**
+
 - External dependencies (repositories, APIs)
 - Database connections
 - File system operations
 - Time-dependent functions
 
 ❌ **Don't Mock in Integration Tests:**
+
 - Databases (use test instances)
 - Internal services
 - Business logic
@@ -477,6 +487,7 @@ npm test
 ### CI Test Environment
 
 GitHub Actions provides:
+
 - Neo4j service container
 - Isolated environment per test run
 - Coverage reporting to Codecov
@@ -497,14 +508,14 @@ open coverage/lcov-report/index.html
 
 ### Coverage Targets by Layer
 
-| Layer            | Target | Why                              |
-| ---------------- | ------ | -------------------------------- |
-| Domain Entities  | 95%+   | Critical business logic          |
-| Services         | 90%+   | Core application logic           |
-| Repositories     | 85%+   | Data access patterns             |
-| Resolvers        | 80%+   | API contract enforcement         |
-| Utilities        | 90%+   | Pure functions, high reusability |
-| Infrastructure   | 70%+   | Often thin wrappers              |
+| Layer           | Target | Why                              |
+| --------------- | ------ | -------------------------------- |
+| Domain Entities | 95%+   | Critical business logic          |
+| Services        | 90%+   | Core application logic           |
+| Repositories    | 85%+   | Data access patterns             |
+| Resolvers       | 80%+   | API contract enforcement         |
+| Utilities       | 90%+   | Pure functions, high reusability |
+| Infrastructure  | 70%+   | Often thin wrappers              |
 
 ### Coverage Enforcement
 

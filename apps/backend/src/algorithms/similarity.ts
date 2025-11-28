@@ -184,7 +184,9 @@ function calculateJaroSimilarity(str1: string, str2: string): number {
 
   // Calculate Jaro similarity
   return (
-    (matches / len1 + matches / len2 + (matches - transpositions / 2) / matches) /
+    (matches / len1 +
+      matches / len2 +
+      (matches - transpositions / 2) / matches) /
     3
   );
 }

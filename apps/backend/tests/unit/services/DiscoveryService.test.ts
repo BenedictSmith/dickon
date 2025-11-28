@@ -17,7 +17,7 @@ describe('DiscoveryService', () => {
     mockNeo4jRepo = {
       getAllColumns: jest.fn(),
       createSimilarityRelationship: jest.fn(),
-    } as any;
+    } as unknown as jest.Mocked<Neo4jRepository>;
 
     discoveryService = new DiscoveryService(mockNeo4jRepo);
   });

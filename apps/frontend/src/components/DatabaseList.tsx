@@ -20,7 +20,8 @@ interface DatabaseListProps {
 export function DatabaseList({
   onDatabaseSelect,
 }: DatabaseListProps = {}): JSX.Element {
-  const { loading, error, data } = useQuery<GetDatabasesResponse>(GET_DATABASES);
+  const { loading, error, data } =
+    useQuery<GetDatabasesResponse>(GET_DATABASES);
 
   if (loading) {
     return (
