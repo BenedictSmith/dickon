@@ -42,25 +42,36 @@ This will:
 ### 3. Start Services
 
 ```bash
+# Start Neo4j (graph database)
 docker-compose up -d
+
+# Start backend and frontend
+./scripts/restart-services.sh
 ```
 
 This starts:
 
-- **Neo4j** (graph database) on ports 9474 (HTTP) and 9687 (Bolt)
-- Available at: http://localhost:9474
-- Credentials: `neo4j` / `dickon-ktb3`
+- **Neo4j** (graph database) on ports 9474 (HTTP) and 7687 (Bolt)
+- **Backend** (GraphQL API) on port 4000
+- **Frontend** (React app) on port 5173
 
 ### 4. Verify Setup
 
 ```bash
-# Check everything works
-npm run type-check   # TypeScript compilation
-npm run lint         # Code quality
-npm test            # Run tests
+# Test all API endpoints
+./scripts/test-api.sh
+
+# Check TypeScript compilation
+npm run type-check
+
+# Run code quality checks
+npm run lint
+
+# Run all tests
+npm test
 ```
 
-If all pass: **You're ready to code!** 🎉
+If all pass: **You're ready to code!**
 
 ---
 
@@ -69,8 +80,9 @@ If all pass: **You're ready to code!** 🎉
 ### Start Coding Session
 
 ```bash
-# 1. Start services
+# 1. Start all services (Neo4j, backend, frontend)
 docker-compose up -d
+./scripts/restart-services.sh
 
 # 2. Pull latest changes
 git checkout master
