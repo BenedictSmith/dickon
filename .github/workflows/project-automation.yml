@@ -1,0 +1,47 @@
+name: Project Board Automation
+
+on:
+  issues:
+    types: [opened, closed, reopened, assigned]
+  pull_request:
+    types: [opened, closed, ready_for_review, converted_to_draft]
+  pull_request_target:
+    types: [opened, closed]
+
+jobs:
+  update-project:
+    name: Update Project Board
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add new issues to project
+        if: github.event_name == 'issues' && github.event.action == 'opened'
+        uses: actions/add-to-project@v0.5.0
+        with:
+          project-url: https://github.com/users/BenedictSmith/projects/2
+          github-token: ${{ secrets.PROJECT_TOKEN }}
+
+      - name: Move issue to In Progress when assigned
+        if: github.event_name == 'issues' && github.event.action == 'assigned'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.PROJECT_TOKEN }}
+          script: |
+            const issueNumber = context.payload.issue.number;
+            console.log(`Issue #${issueNumber} was assigned, should move to In Progress`);
+            // Note: Actual status update requires GraphQL mutation
+            // This is handled by GitHub's built-in project automations
+
+      - name: Add new PRs to project
+        if: github.event_name == 'pull_request' && github.event.action == 'opened'
+        uses: actions/add-to-project@v0.5.0
+        with:
+          project-url: https://github.com/users/BenedictSmith/projects/2
+          github-token: ${{ secrets.PROJECT_TOKEN }}
+
+      - name: Comment on issue closure
+        if: github.event_name == 'issues' && github.event.action == 'closed'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issueNumber = context.payload.issue.number;
+            console.log(`Issue #${issueNumber} closed - project automation will move to Done`);

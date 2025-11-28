@@ -81,12 +81,73 @@ Move to **📋 Backlog**:
 
 ## Automation Rules
 
-Set up these automations:
+### Built-in GitHub Project Automations
+
+Configure these automations in the project settings (Settings → Workflows):
 
 1. **When issue closed** → Move to **✅ Done**
+   - Trigger: Item closed
+   - Action: Set status to "Done"
+
 2. **When PR created** → Move linked issues to **👀 In Review**
+   - Trigger: Pull request opened
+   - Action: Set status to "In Review"
+
 3. **When PR merged** → Move linked issues to **✅ Done**
+   - Trigger: Pull request merged
+   - Action: Set status to "Done"
+
 4. **When assigned** → Move to **🚧 In Progress** (if in Ready)
+   - Trigger: Issue assigned
+   - Action: Set status to "In Progress"
+
+5. **Auto-add new items** → Add to **📋 Backlog**
+   - Trigger: Item added to project
+   - Action: Set status to "Todo"
+
+### GitHub Actions Automation
+
+A GitHub Actions workflow (`.github/workflows/project-automation.yml`) automatically:
+
+- Adds new issues to the project when created
+- Adds new PRs to the project when opened
+- Logs state changes for tracking
+
+**Required Setup:**
+
+1. Create a Personal Access Token (classic) with `project` and `repo` scopes
+2. Add it as a repository secret named `PROJECT_TOKEN`:
+   - Go to Settings → Secrets and variables → Actions
+   - Click "New repository secret"
+   - Name: `PROJECT_TOKEN`
+   - Value: Your PAT
+3. The workflow will run automatically on issue and PR events
+
+### Manual Maintenance Tasks
+
+**Weekly:**
+
+- Review items in "In Progress" that haven't been updated
+- Move stale items back to "Ready" or "Backlog"
+- Update Priority field as needed
+
+**After Sprint Planning:**
+
+- Move selected items from Backlog to Ready
+- Set Priority for upcoming work
+- Update Estimate fields
+
+**When Starting Work:**
+
+- Assign yourself to the issue
+- Automation will move to "In Progress"
+- Create a branch and reference the issue number
+
+**When Creating PR:**
+
+- Link the PR to the issue (use "Closes #123" in description)
+- Automation will move issue to "In Review"
+- PR will also be added to the project board
 
 ## Views
 
