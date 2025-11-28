@@ -24,6 +24,7 @@ A project inspired by Dickon from The Secret Garden - a shared workspace for col
 
 ## Quick Links
 
+- 📖 **[Wiki](https://github.com/BenedictSmith/dickon/wiki)** - Project story, documentation hub, and contributor guide
 - 📊 **[PROJECT_STATE.md](PROJECT_STATE.md)** - Project overview, documentation index, architecture diagrams
 - 👥 **[WORK_SPLIT.md](WORK_SPLIT.md)** - Ben/Carsten work division and timeline
 - ⚡ **[QUICKSTART.md](QUICKSTART.md)** - 5-minute setup and command-line workflow guide

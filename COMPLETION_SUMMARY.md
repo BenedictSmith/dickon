@@ -157,25 +157,93 @@ This document tracks completed work across Phases 1 and 2 of the SiloBreaker pro
 
 ---
 
-## Phase 3: Graph Visualization 🎯
+## Phase 3: Graph Visualization 🚧
 
-**Status:** In Progress
+**Status:** In Progress (60% Complete)
 **Start Date:** 2025-11-28
-**Team Members:** Ben (Backend), Carsten (Frontend)
+**Team Members:** Carsten (Primary), Ben (Backend Support)
 
-### Planned Epics
+### Completed Epics
 
-| Epic | Issue                                                    | Title                      | Owner   | Status     |
-| ---- | -------------------------------------------------------- | -------------------------- | ------- | ---------- |
-| 3.1  | [#9](https://github.com/BenedictSmith/dickon/issues/9)   | D3.js Graph Component      | Carsten | 📋 Ready   |
-| 3.2  | [#10](https://github.com/BenedictSmith/dickon/issues/10) | Interactive Graph Features | Carsten | 📋 Backlog |
-| 3.3  | [#11](https://github.com/BenedictSmith/dickon/issues/11) | Graph Layout Options       | Carsten | 📋 Backlog |
-| 3.4  | [#12](https://github.com/BenedictSmith/dickon/issues/12) | Graph Data API             | Ben     | 🎯 Ready   |
+| Epic | Issue                                                    | Title                 | Owner   | Status      | PR/Commit |
+| ---- | -------------------------------------------------------- | --------------------- | ------- | ----------- | --------- |
+| 3.1  | [#9](https://github.com/BenedictSmith/dickon/issues/9)   | D3.js Graph Component | Carsten | ✅ Complete | [#8](https://github.com/BenedictSmith/dickon/pull/8) |
+| 3.4  | [#12](https://github.com/BenedictSmith/dickon/issues/12) | Graph Data API        | Carsten | ✅ Complete | [#8](https://github.com/BenedictSmith/dickon/pull/8) |
 
-**Recommended Starting Points:**
+### In Progress Epics
 
-- **Ben:** Epic 3.4 (Graph Data API - Backend)
-- **Carsten:** Epic 3.1 (D3.js Graph Component - Frontend)
+| Epic | Issue                                                    | Title                      | Owner   | Status           |
+| ---- | -------------------------------------------------------- | -------------------------- | ------- | ---------------- |
+| 3.2  | [#10](https://github.com/BenedictSmith/dickon/issues/10) | Interactive Graph Features | Carsten | 🚧 40% Complete  |
+| 3.3  | [#11](https://github.com/BenedictSmith/dickon/issues/11) | Graph Layout Options       | Carsten | ⏸️ Not Started   |
+
+### Epic 3.1: D3.js Graph Component
+
+**Owner:** Carsten (Frontend)
+**Issue:** #9
+**PR:** [#8](https://github.com/BenedictSmith/dickon/pull/8)
+**Commit:** 3809e3a
+
+**Deliverables:**
+
+- ✅ GraphVisualization component with D3.js force simulation
+- ✅ Node rendering for Database, Table, Column types
+- ✅ Edge rendering with confidence-based styling
+- ✅ Zoom and pan controls
+- ✅ Interactive drag-to-reposition nodes
+- ✅ Color-coded nodes by type
+- ✅ Comprehensive test suite (10 tests)
+
+### Epic 3.4: Graph Data API
+
+**Owner:** Carsten (Backend)
+**Issue:** #12
+**PR:** [#8](https://github.com/BenedictSmith/dickon/pull/8)
+**Commit:** 3809e3a
+
+**Deliverables:**
+
+- ✅ GraphQL query: getGraphData with filtering options
+- ✅ Support filtering by confidence threshold
+- ✅ Support filtering by node types (DATABASE, TABLE, COLUMN)
+- ✅ Support filtering by edge types (HAS_TABLE, HAS_COLUMN, REFERENCES, SIMILAR_TO)
+- ✅ Support filtering by database IDs
+- ✅ Support max nodes limit
+- ✅ Neo4jRepository.getGraphData() implementation
+- ✅ Optimized Cypher queries
+- ✅ D3.js-compatible output format
+
+### Epic 3.2: Interactive Graph Features (In Progress)
+
+**Owner:** Carsten (Frontend)
+**Issue:** #10
+**Status:** 40% Complete
+
+**Completed:**
+
+- ✅ Node drag interaction
+- ✅ Tooltip with node/edge details
+- ✅ Edge filtering by confidence threshold
+
+**Remaining:**
+
+- [ ] Node selection and highlighting
+- [ ] Node clustering by database
+- [ ] Search and focus on node
+- [ ] Export graph as SVG/PNG
+
+### Epic 3.3: Graph Layout Options (Not Started)
+
+**Owner:** Carsten (Frontend)
+**Issue:** #11
+**Status:** Not Started
+
+**Planned:**
+
+- [x] Force-directed layout (implemented in 3.1)
+- [ ] Hierarchical layout
+- [ ] Radial layout
+- [ ] Layout persistence (save positions)
 
 ---
 
@@ -183,16 +251,16 @@ This document tracks completed work across Phases 1 and 2 of the SiloBreaker pro
 
 ### Completed Work
 
-- **Total Phases Complete:** 2 out of 6
-- **Total Epics Complete:** 8
-- **Backend Epics (Ben):** 6
-- **Frontend Epics (Carsten):** 2
+- **Total Phases Complete:** 2 out of 6 (Phase 3 at 60%)
+- **Total Epics Complete:** 10
+- **Backend Epics:** 7 (6 by Ben, 1 by Carsten)
+- **Frontend Epics:** 3 (all by Carsten)
 - **Lines of Code:** Significant codebase across backend and frontend
 - **Test Coverage:** 80%+ maintained across all packages
 
 ### Team Contributions
 
-**Ben (Backend Focus):**
+**Ben (Backend & Infrastructure):**
 
 - Epic 1.1: SQLite Schema Extraction
 - Epic 1.2: Neo4j Graph Population
@@ -201,10 +269,12 @@ This document tracks completed work across Phases 1 and 2 of the SiloBreaker pro
 - Epic 2.2: Value Overlap Detection
 - Epic 2.3: Discovery Job Management
 
-**Carsten (Frontend Focus):**
+**Carsten (Full Stack):**
 
 - Epic 1.4: Schema Explorer UI
 - Epic 2.4: Discovery Interface
+- Epic 3.1: D3.js Graph Component
+- Epic 3.4: Graph Data API (Backend)
 
 ### Infrastructure & DevOps
 
@@ -215,6 +285,14 @@ This document tracks completed work across Phases 1 and 2 of the SiloBreaker pro
 - Neo4j integration test setup
 - GitHub Actions optimization
 - Branch protection and workflow setup
+- GitHub Project Board with automation
+- GitHub Wiki with project story
+- Documentation updates (ROADMAP, COMPLETION_SUMMARY)
+
+**Carsten:**
+
+- Tailwind CSS v4 migration with custom theme (PR #19)
+- Helper scripts and DEVELOPMENT.md guide (PR #21)
 
 ---
 
@@ -241,17 +319,28 @@ This document tracks completed work across Phases 1 and 2 of the SiloBreaker pro
 
 ## Next Steps
 
-1. **Epic 3.4** (Ben): Implement Graph Data API
-   - GraphQL query for graph visualization data
-   - Support filtering by confidence threshold
-   - Subgraph extraction functionality
+### Phase 3 Completion
 
-2. **Epic 3.1** (Carsten): Build D3.js Graph Component
-   - Force-directed graph layout
-   - Node and edge rendering
-   - Zoom and pan controls
-   - Performance optimization for large graphs
+1. **Epic 3.2** (Carsten or Ben): Complete Interactive Graph Features
+   - Node selection and highlighting
+   - Node clustering by database
+   - Search and focus on node
+   - Export graph as SVG/PNG
+
+2. **Epic 3.3** (Carsten or Ben): Implement Graph Layout Options
+   - Hierarchical layout
+   - Radial layout
+   - Layout persistence (save/restore positions)
+
+### Outstanding PRs
+
+- **PR #20**: Backend Resolver Improvements (Carsten to address conflicts)
+- **PR #22**: UI Redesign (Carsten to rebase onto master)
+
+### Phase 4 Preparation
+
+Once Phase 3 is complete, begin planning Phase 4: Query Federation
 
 ---
 
-_Last Updated: 2025-11-28_
+_Last Updated: 2025-11-29_
