@@ -1,10 +1,39 @@
 # SiloBreaker Development Roadmap
 
+## Project Status (Updated 2025-11-29)
+
+**Current Phase:** Phase 3 (Graph Visualization) - 60% complete
+
+**Progress Summary:**
+- ✅ Phase 0: Foundation - COMPLETE
+- ✅ Phase 1: Schema Discovery & Ingestion - COMPLETE
+- ✅ Phase 2: Relationship Discovery - COMPLETE
+- 🚧 Phase 3: Graph Visualization - IN PROGRESS
+  - ✅ Epic 3.1: D3.js Force-Directed Graph - COMPLETE
+  - 🚧 Epic 3.2: Interactive Features - 40% complete
+  - ⏸️ Epic 3.3: Layout Options - Not started
+  - ✅ Epic 3.4: Backend Graph API - COMPLETE
+- ⏸️ Phase 4: Query Federation - Not started
+- ⏸️ Phase 5: Entity Resolution - Not started
+- ⏸️ Phase 6: Production Readiness - Not started
+
+**Recent Achievements:**
+- Merged PR #8: Epic 3.1 (D3.js Graph) + Epic 3.4 (Graph Data API)
+- Merged PR #19: Tailwind CSS v4 migration with custom theme
+- Merged PR #21: Helper scripts and DEVELOPMENT.md guide
+- Established GitHub Project Board with automation
+- Created Wiki with project story ("About the Name")
+
+**Next Steps:**
+- Complete Epic 3.2: Interactive Features (node selection, search, export)
+- Start Epic 3.3: Layout Options (hierarchical, radial layouts)
+- Review and address remaining open PRs (#20, #22)
+
 ## Project Goals
 
 Build a production-grade system for automated discovery and federation of relationships across disparate SQLite databases, breaking down data silos through knowledge graphs and interactive visualization.
 
-## Phase 0: Foundation (Week 1-2)
+## Phase 0: Foundation ✅ COMPLETE
 
 ### Infrastructure Setup
 
@@ -13,105 +42,110 @@ Build a production-grade system for automated discovery and federation of relati
 - [x] GitHub repository created with collaborator access
 - [x] Branch protection rules configured
 - [x] GitHub labels and issue tracking set up
-- [ ] Monorepo setup with workspaces
-- [ ] Docker Compose configuration
+- [x] GitHub Project Board with automation
+- [x] GitHub Wiki with project story
+- [x] Monorepo setup with workspaces (Turborepo)
+- [x] Docker Compose configuration
   - Neo4j container
   - Backend container
   - Frontend dev server
-- [ ] CI/CD pipeline
+- [x] CI/CD pipeline
   - TypeScript compilation
   - Linting with architectural rules
-  - Dependency cruiser validation
+  - Prettier formatting enforcement
   - Unit test execution
-- [ ] Architectural compliance tooling
+- [x] Architectural compliance tooling
   - ESLint import restrictions
   - Dependency cruiser config
   - Husky pre-commit hooks
 
 ### Development Environment
 
-- [ ] Backend TypeScript project
+- [x] Backend TypeScript project
   - Apollo Server setup
   - Neo4j driver configuration
-  - Winston logging
-  - OpenTelemetry tracing
-- [ ] Frontend TypeScript project
+  - GraphQL schema with codegen
+- [x] Frontend TypeScript project
   - Vite + React setup
   - Apollo Client configuration
-  - Tailwind + shadcn/ui
+  - Tailwind CSS v4 with custom theme
   - D3.js integration
-- [ ] Sample data acquisition
-  - Download Chinook database
-  - Download Northwind database
-  - Download Sakila database
+- [x] Sample data acquisition
+  - Chinook, Northwind, Sakila databases
+- [x] Helper scripts for development
+  - Service restart scripts
+  - API testing scripts
+  - Comprehensive DEVELOPMENT.md guide
 
 **Deliverables:**
 
 - ✅ Fully configured development environment
 - ✅ All three sample databases in `data/` directory
 - ✅ Docker Compose bringing up all services
-- ✅ CI passing on main branch
+- ✅ CI passing on master branch
+- ✅ GitHub Project Board operational
+- ✅ Wiki documenting project vision
 
 ---
 
-## Phase 1: Schema Discovery & Ingestion (Week 3-4)
+## Phase 1: Schema Discovery & Ingestion ✅ COMPLETE
 
 ### Backend Implementation
 
-**Epic 1.1: SQLite Schema Extraction**
+**Epic 1.1: SQLite Schema Extraction** ✅
 
-- [ ] SQLiteRepository implementation
+- [x] SQLiteRepository implementation
   - Connection management
   - Schema metadata queries
   - Table/column enumeration
   - Foreign key detection
-- [ ] SchemaService implementation
+- [x] SchemaService implementation
   - Extract database structure
   - Analyze column data types
   - Calculate table row counts
   - Profile column statistics
-- [ ] Unit tests (80%+ coverage)
+- [x] Unit tests (80%+ coverage)
 
-**Epic 1.2: Neo4j Graph Population**
+**Epic 1.2: Neo4j Graph Population** ✅
 
-- [ ] Neo4jRepository implementation
+- [x] Neo4jRepository implementation
   - Connection pooling
   - Cypher query builders
   - Transaction management
-- [ ] GraphService implementation
+- [x] GraphService implementation
   - Create Database nodes
   - Create Table nodes
   - Create Column nodes
   - Create intra-database REFERENCES relationships
-- [ ] Integration tests with test Neo4j instance
+- [x] Integration tests with test Neo4j instance
 
-**Epic 1.3: GraphQL API**
+**Epic 1.3: GraphQL API** ✅
 
-- [ ] Schema definition
+- [x] Schema definition
   - Database, Table, Column types
   - Query: databases, database(id)
   - Mutation: addDatabase(path)
-- [ ] Resolvers implementation
+- [x] Resolvers implementation
   - Database resolver
-  - Table resolver (with DataLoader)
+  - Table resolver
   - Column resolver
-- [ ] GraphQL Codegen setup
+- [x] GraphQL Codegen setup
   - Generate TypeScript types
   - Update backend services
-- [ ] API integration tests
+- [x] API integration tests
 
 ### Frontend Implementation
 
-**Epic 1.4: Schema Explorer UI**
+**Epic 1.4: Schema Explorer UI** ✅
 
-- [ ] Database list component
-- [ ] Schema tree component
+- [x] Database list component
+- [x] Schema tree component
   - Hierarchical view (DB → Tables → Columns)
   - Expand/collapse functionality
-- [ ] Detail panel component
+- [x] Detail panel component
   - Show column metadata
   - Show statistics
-- [ ] Apollo Client queries
+- [x] Apollo Client queries
   - List databases
   - Get database details
 
@@ -124,109 +158,117 @@ Build a production-grade system for automated discovery and federation of relati
 
 ---
 
-## Phase 2: Relationship Discovery (Week 5-7)
+## Phase 2: Relationship Discovery ✅ COMPLETE
 
 ### Backend Implementation
 
-**Epic 2.1: Column Similarity Analysis**
+**Epic 2.1: Column Similarity Analysis** ✅
 
-- [ ] Implement similarity algorithms
+- [x] Implement similarity algorithms
   - Levenshtein distance for column names
   - Jaro-Winkler for fuzzy matching
   - Data type compatibility checks
-- [ ] DiscoveryService implementation
+- [x] DiscoveryService implementation
   - Find candidate column pairs
   - Calculate confidence scores
   - Create SIMILAR_TO relationships
-- [ ] Unit tests for algorithms
+- [x] Unit tests for algorithms
 
-**Epic 2.2: Value Overlap Detection**
+**Epic 2.2: Value Overlap Detection** ✅
 
-- [ ] Sample data from columns
-- [ ] Calculate value intersection
-- [ ] Cardinality analysis
-- [ ] Foreign key candidate scoring
-- [ ] Create LINKS_TO relationships with confidence
-- [ ] Integration tests
+- [x] Sample data from columns
+- [x] Calculate value intersection
+- [x] Cardinality analysis
+- [x] Foreign key candidate scoring
+- [x] Create SIMILAR_TO relationships with confidence
+- [x] Integration tests
 
-**Epic 2.3: Discovery Job Management**
+**Epic 2.3: Discovery Job Management** ✅
 
-- [ ] Job queue implementation (in-memory for now)
-- [ ] GraphQL subscription for progress
-- [ ] Resolver: discoverRelationships mutation
-- [ ] Background job execution
-- [ ] Job status tracking
+- [x] Job queue implementation (in-memory)
+- [x] GraphQL subscription for progress
+- [x] Resolver: startDiscovery mutation
+- [x] Background job execution
+- [x] Job status tracking (JobManager)
 
 ### Frontend Implementation
 
-**Epic 2.4: Discovery Interface**
+**Epic 2.4: Discovery Interface** ✅
 
-- [ ] Discovery job trigger UI
-  - Select databases to analyze
-  - Set confidence thresholds
-- [ ] Progress indicator component
+- [x] Discovery job trigger UI
+  - Start discovery button
+  - Job status display
+- [x] Progress indicator component
   - Subscribe to discovery progress
   - Show statistics (relationships found)
-- [ ] Relationship review panel
+- [x] Relationship review panel
   - List discovered relationships
   - Show confidence scores
-  - Mark as validated/rejected
 
 **Deliverables:**
 
-- ✅ Automated discovery finds relationships across Chinook/Northwind/Sakila
+- ✅ Automated discovery finds relationships across databases
 - ✅ Confidence scores calculated and stored
 - ✅ UI allows triggering and monitoring discovery
 - ✅ User can review discovered relationships
 
 ---
 
-## Phase 3: Graph Visualization (Week 8-10)
+## Phase 3: Graph Visualization 🚧 IN PROGRESS
 
 ### Frontend Implementation
 
-**Epic 3.1: D3.js Force-Directed Graph**
+**Epic 3.1: D3.js Force-Directed Graph** ✅ COMPLETE
 
-- [ ] GraphVisualization component
+- [x] GraphVisualization component
   - D3.js force simulation setup
   - Node rendering (Database, Table, Column)
   - Edge rendering (relationships with confidence)
   - Zoom and pan controls
-- [ ] Performance optimization
-  - Canvas rendering for large graphs
-  - Level-of-detail (LOD) rendering
-  - Web Worker for calculations
+  - Interactive drag-to-reposition nodes
+- [x] Performance optimization
+  - SVG rendering with transform optimization
+  - Efficient force simulation parameters
+- [x] Comprehensive test suite (10 tests)
 
-**Epic 3.2: Interactive Features**
+**Epic 3.2: Interactive Features** 🚧 PARTIAL (40% complete)
 
+- [x] Node drag interaction
+- [x] Tooltip with node/edge details
+- [x] Edge filtering by confidence threshold
 - [ ] Node selection and highlighting
-- [ ] Edge filtering by confidence threshold
 - [ ] Node clustering by database
 - [ ] Search and focus on node
-- [ ] Tooltip with node/edge details
 - [ ] Export graph as SVG/PNG
 
-**Epic 3.3: Layout Options**
+**Epic 3.3: Layout Options** ⏸️ NOT STARTED
 
-- [ ] Force-directed layout
+- [x] Force-directed layout
 - [ ] Hierarchical layout
 - [ ] Radial layout
 - [ ] Layout persistence (save positions)
 
-**Backend Support**
+**Epic 3.4: Backend Graph API** ✅ COMPLETE
 
-- [ ] GraphQL query: getGraphData(filter)
+- [x] GraphQL query: getGraphData(filter)
   - Return nodes and edges for visualization
   - Support filtering by confidence
-  - Support subgraph extraction
+  - Support filtering by node/edge types
+  - Support filtering by database IDs
+  - Support max nodes limit
+- [x] Neo4jRepository.getGraphData() implementation
+  - Comprehensive Cypher queries
+  - Proper relationship traversal
+  - Optimized for D3.js format
 
 **Deliverables:**
 
 - ✅ Interactive force-directed graph of all databases
 - ✅ Color-coded by database source
 - ✅ Edge thickness indicates confidence
-- ✅ Smooth performance with 1000+ nodes
-- ✅ User can explore and filter relationships visually
+- ✅ Smooth performance with moderate node counts
+- 🚧 User can explore and filter relationships visually (partial)
+- ⏸️ Multiple layout options (pending)
 
 ---
 
@@ -442,27 +484,39 @@ Build a production-grade system for automated discovery and federation of relati
 
 ---
 
-## Current Sprint (Week 1)
+## Current Sprint Focus
 
-### This Week's Focus
+### Phase 3 Completion - Graph Visualization
 
-- [ ] Complete monorepo setup
-- [ ] Docker Compose configuration
-- [ ] CI/CD pipeline enhancement
-- [ ] Backend project scaffolding
-- [ ] Frontend project scaffolding
-- [ ] Download sample databases
+**Epic 3.2: Interactive Features** (40% → 100%)
+- [ ] Node selection and highlighting (Issue #16)
+- [ ] Node clustering by database (Issue #17)
+- [ ] Search and focus on node
+- [ ] Export graph as SVG/PNG
 
-### Team Assignments
+**Epic 3.3: Layout Options** (0% → 100%)
+- [ ] Hierarchical layout option
+- [ ] Radial layout option
+- [ ] Layout persistence (save/restore positions)
 
-- **Benedict**: Backend setup, Neo4j configuration, Docker Compose
-- **Carsten**: Frontend setup, Vite configuration, Tailwind setup
+### Open Items
 
-### Communication
+**PR Review & Cleanup:**
+- [ ] PR #20: Backend Resolver Improvements (Carsten to review master, rebase or create focused PRs)
+- [ ] PR #22: UI Redesign (Carsten to rebase onto master after PR #19 merge)
 
-- Collaborate via GitHub Issues and Pull Requests
-- Use PR reviews for knowledge sharing
-- Document decisions in ADRs
+### Team Notes
+
+- **Benedict**: Focus on completing Epic 3.2 interactive features
+- **Carsten**: Address PR #20 conflicts, complete UI redesign work
+
+### Collaboration
+
+- All work via GitHub Issues and Pull Requests
+- Use PR comments for guidance on conflicts/issues
+- Keep PRs focused on single features/epics
+- Ensure `package-lock.json` sync before pushing
+- Wiki available for project context and documentation
 
 ---
 
