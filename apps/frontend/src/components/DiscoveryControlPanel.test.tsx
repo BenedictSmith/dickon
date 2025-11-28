@@ -74,10 +74,13 @@ describe('DiscoveryControlPanel', () => {
 
     // Click start discovery
     const startButton = screen.getByText('Start Discovery');
+    expect(startButton).not.toBeDisabled();
+
     await user.click(startButton);
 
+    // Button should be disabled while mutation is in progress
     await waitFor(() => {
-      expect(screen.getByText(/starting discovery/i)).toBeInTheDocument();
+      expect(startButton).toBeDisabled();
     });
   });
 
