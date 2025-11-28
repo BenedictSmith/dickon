@@ -136,7 +136,9 @@ describe('GraphService', () => {
       await service.createForeignKeyRelationships([]);
 
       // Assert
-      expect(mockRepository.createForeignKeyRelationship).not.toHaveBeenCalled();
+      expect(
+        mockRepository.createForeignKeyRelationship
+      ).not.toHaveBeenCalled();
     });
   });
 
@@ -214,7 +216,9 @@ describe('GraphService', () => {
       expect(mockRepository.createDatabase).toHaveBeenCalled();
       expect(mockRepository.createTable).toHaveBeenCalled();
       expect(mockRepository.createColumn).toHaveBeenCalled();
-      expect(mockRepository.createForeignKeyRelationship).not.toHaveBeenCalled();
+      expect(
+        mockRepository.createForeignKeyRelationship
+      ).not.toHaveBeenCalled();
     });
   });
 

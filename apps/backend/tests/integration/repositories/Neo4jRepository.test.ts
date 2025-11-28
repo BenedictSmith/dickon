@@ -1,4 +1,11 @@
-import { describe, it, expect, beforeAll, afterAll, afterEach } from '@jest/globals';
+import {
+  describe,
+  it,
+  expect,
+  beforeAll,
+  afterAll,
+  afterEach,
+} from '@jest/globals';
 import { Neo4jRepository } from '../../../src/repositories/Neo4jRepository';
 import { Database } from '../../../src/domain/Database';
 import { Table } from '../../../src/domain/Table';
@@ -306,15 +313,11 @@ describe('Neo4jRepository Integration Tests', () => {
       await repository.createColumn(postUserIdColumn);
 
       // Act
-      await repository.createForeignKeyRelationship(
-        'test-col-2',
-        'test-col-1'
-      );
+      await repository.createForeignKeyRelationship('test-col-2', 'test-col-1');
 
       // Assert
-      const relationships = await repository.getForeignKeyRelationships(
-        'test-db-1'
-      );
+      const relationships =
+        await repository.getForeignKeyRelationships('test-db-1');
       expect(relationships).toHaveLength(1);
       expect(relationships[0].fromColumnId).toBe('test-col-2');
       expect(relationships[0].toColumnId).toBe('test-col-1');

@@ -25,9 +25,9 @@ describe('SchemaService', () => {
     } as unknown as jest.Mocked<SQLiteRepository>;
 
     // Mock the SQLiteRepository constructor
-    (SQLiteRepository as jest.MockedClass<typeof SQLiteRepository>).mockImplementation(
-      () => mockRepository
-    );
+    (
+      SQLiteRepository as jest.MockedClass<typeof SQLiteRepository>
+    ).mockImplementation(() => mockRepository);
 
     service = new SchemaService();
   });

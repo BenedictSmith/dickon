@@ -11,8 +11,8 @@ jest.mock('../../../src/services/GraphService');
 jest.mock('../../../src/services/SchemaService');
 
 describe('GraphQL Resolvers', () => {
-  let mockGraphService: jest.Mocked<GraphService>;
-  let mockSchemaService: jest.Mocked<SchemaService>;
+  let mockGraphService: Partial<jest.Mocked<GraphService>>;
+  let mockSchemaService: Partial<jest.Mocked<SchemaService>>;
   let context: GraphQLContext;
 
   beforeEach(() => {
@@ -23,16 +23,16 @@ describe('GraphQL Resolvers', () => {
       getDatabaseFromGraph: jest.fn(),
       getTablesForDatabase: jest.fn(),
       populateFullSchema: jest.fn(),
-    } as jest.Mocked<GraphService>;
+    };
 
     mockSchemaService = {
       extractSchema: jest.fn(),
       getTableStructure: jest.fn(),
-    } as jest.Mocked<SchemaService>;
+    };
 
     context = {
-      graphService: mockGraphService,
-      schemaService: mockSchemaService,
+      graphService: mockGraphService as GraphService,
+      schemaService: mockSchemaService as SchemaService,
       jobManager: {} as GraphQLContext['jobManager'],
     };
   });
@@ -60,7 +60,9 @@ describe('GraphQL Resolvers', () => {
 
       // Assert
       expect(result).toEqual(databases);
-      expect(mockGraphService.getAllDatabasesFromGraph).toHaveBeenCalledTimes(1);
+      expect(mockGraphService.getAllDatabasesFromGraph).toHaveBeenCalledTimes(
+        1
+      );
     });
 
     it('should return empty array when no databases exist', async () => {
@@ -95,7 +97,9 @@ describe('GraphQL Resolvers', () => {
 
       // Assert
       expect(result).toEqual(database);
-      expect(mockGraphService.getDatabaseFromGraph).toHaveBeenCalledWith('db-1');
+      expect(mockGraphService.getDatabaseFromGraph).toHaveBeenCalledWith(
+        'db-1'
+      );
     });
 
     it('should return null for non-existent database', async () => {
@@ -141,7 +145,9 @@ describe('GraphQL Resolvers', () => {
 
       // Assert
       expect(result).toEqual(tables);
-      expect(mockGraphService.getTablesForDatabase).toHaveBeenCalledWith('db-1');
+      expect(mockGraphService.getTablesForDatabase).toHaveBeenCalledWith(
+        'db-1'
+      );
     });
   });
 
@@ -245,7 +251,9 @@ describe('GraphQL Resolvers', () => {
 
       // Assert
       expect(result).toEqual(tables);
-      expect(mockGraphService.getTablesForDatabase).toHaveBeenCalledWith('db-1');
+      expect(mockGraphService.getTablesForDatabase).toHaveBeenCalledWith(
+        'db-1'
+      );
     });
   });
 
@@ -271,7 +279,9 @@ describe('GraphQL Resolvers', () => {
 
       // Assert
       expect(result).toEqual(database);
-      expect(mockGraphService.getDatabaseFromGraph).toHaveBeenCalledWith('db-1');
+      expect(mockGraphService.getDatabaseFromGraph).toHaveBeenCalledWith(
+        'db-1'
+      );
     });
   });
 

@@ -1,4 +1,8 @@
-import { SQLiteRepository, ColumnInfo, ForeignKeyInfo } from '../repositories/SQLiteRepository';
+import {
+  SQLiteRepository,
+  ColumnInfo,
+  ForeignKeyInfo,
+} from '../repositories/SQLiteRepository';
 import { Database } from '../domain/Database';
 import { Table } from '../domain/Table';
 import { Column } from '../domain/Column';
@@ -76,16 +80,17 @@ export class SchemaService {
       });
 
       // Transform ColumnInfo to Column entities
-      const columns = columnInfos.map((colInfo: ColumnInfo) =>
-        new Column({
-          id: randomUUID(),
-          name: colInfo.name,
-          dataType: colInfo.type,
-          tableId: table.id,
-          notNull: colInfo.notNull,
-          primaryKey: colInfo.primaryKey,
-          defaultValue: colInfo.defaultValue,
-        })
+      const columns = columnInfos.map(
+        (colInfo: ColumnInfo) =>
+          new Column({
+            id: randomUUID(),
+            name: colInfo.name,
+            dataType: colInfo.type,
+            tableId: table.id,
+            notNull: colInfo.notNull,
+            primaryKey: colInfo.primaryKey,
+            defaultValue: colInfo.defaultValue,
+          })
       );
 
       return {

@@ -23,7 +23,11 @@
       "Bash(npm run test:integration:*)",
       "Bash(npm install:*)",
       "Bash(cat:*)",
-      "Bash(npm uninstall:*)"
+      "Bash(npm uninstall:*)",
+      "Bash(git restore:*)",
+      "Bash(gh run view:*)",
+      "Bash(npx prettier:*)",
+      "Bash(npm run test:unit:*)"
     ],
     "deny": [],
     "ask": []

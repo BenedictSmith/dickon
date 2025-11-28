@@ -12,7 +12,9 @@ import { Neo4jRepository } from './repositories/Neo4jRepository';
 /**
  * Creates and configures the Apollo Server instance
  */
-export async function createApolloServer(): Promise<ApolloServer<GraphQLContext>> {
+export async function createApolloServer(): Promise<
+  ApolloServer<GraphQLContext>
+> {
   // Load GraphQL schema
   const typeDefs = readFileSync(
     join(__dirname, 'schema', 'schema.graphql'),
@@ -31,13 +33,20 @@ export async function createApolloServer(): Promise<ApolloServer<GraphQLContext>
 /**
  * Starts the Apollo Server
  */
-export async function startServer(): Promise<{ server: ApolloServer<GraphQLContext>; url: string }> {
+export async function startServer(): Promise<{
+  server: ApolloServer<GraphQLContext>;
+  url: string;
+}> {
   // Initialize services
   const neo4jUri = process.env.NEO4J_URI || 'bolt://localhost:7687';
   const neo4jUser = process.env.NEO4J_USER || 'neo4j';
   const neo4jPassword = process.env.NEO4J_PASSWORD || 'password';
 
-  const neo4jRepository = new Neo4jRepository(neo4jUri, neo4jUser, neo4jPassword);
+  const neo4jRepository = new Neo4jRepository(
+    neo4jUri,
+    neo4jUser,
+    neo4jPassword
+  );
   const graphService = new GraphService(neo4jRepository);
   const schemaService = new SchemaService();
   const discoveryService = new DiscoveryService(neo4jRepository);

@@ -56,7 +56,10 @@ export class DiscoveryService {
 
         // Only include matches above threshold
         if (confidence >= this.CONFIDENCE_THRESHOLD) {
-          const nameSimilarity = this.calculateNameSimilarity(col1.name, col2.name);
+          const nameSimilarity = this.calculateNameSimilarity(
+            col1.name,
+            col2.name
+          );
           const typeCompatibility = getTypeCompatibilityScore(
             col1.dataType,
             col2.dataType
