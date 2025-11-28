@@ -47,21 +47,23 @@ export default {
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-        'mesh-gradient': 'linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%)',
+        'gradient-conic':
+          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        'mesh-gradient':
+          'linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%)',
       },
       boxShadow: {
         'glow-sm': '0 0 15px -3px rgba(168, 85, 247, 0.3)',
-        'glow': '0 0 25px -5px rgba(168, 85, 247, 0.4)',
+        glow: '0 0 25px -5px rgba(168, 85, 247, 0.4)',
         'glow-lg': '0 0 35px -5px rgba(168, 85, 247, 0.5)',
         'glow-cyan': '0 0 25px -5px rgba(6, 182, 212, 0.4)',
         'inner-glow': 'inset 0 1px 0 0 rgba(255, 255, 255, 0.05)',
       },
       animation: {
         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        'shimmer': 'shimmer 2s linear infinite',
-        'float': 'float 6s ease-in-out infinite',
-        'gradient': 'gradient 8s ease infinite',
+        shimmer: 'shimmer 2s linear infinite',
+        float: 'float 6s ease-in-out infinite',
+        gradient: 'gradient 8s ease infinite',
       },
       keyframes: {
         shimmer: {
