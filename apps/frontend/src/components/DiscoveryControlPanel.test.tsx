@@ -1,9 +1,9 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MockedProvider } from '@apollo/client/testing';
 import { DiscoveryControlPanel } from './DiscoveryControlPanel';
-import { START_DISCOVERY, CANCEL_JOB } from '../graphql/queries';
+import { START_DISCOVERY } from '../graphql/queries';
 
 /**
  * DiscoveryControlPanel Component Tests
@@ -28,18 +28,6 @@ describe('DiscoveryControlPanel', () => {
           },
           error: null,
         },
-      },
-    },
-  };
-
-  const mockCancelJob = {
-    request: {
-      query: CANCEL_JOB,
-      variables: { id: 'job-123' },
-    },
-    result: {
-      data: {
-        cancelJob: true,
       },
     },
   };
