@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, jest } from '@jest/globals';
-import { resolvers } from '../../../src/resolvers';
+import { resolvers, GraphQLContext } from '../../../src/resolvers';
 import { GraphService } from '../../../src/services/GraphService';
 import { SchemaService } from '../../../src/services/SchemaService';
 import { Database } from '../../../src/domain/Database';
@@ -13,7 +13,7 @@ jest.mock('../../../src/services/SchemaService');
 describe('GraphQL Resolvers', () => {
   let mockGraphService: jest.Mocked<GraphService>;
   let mockSchemaService: jest.Mocked<SchemaService>;
-  let context: any;
+  let context: GraphQLContext;
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -23,16 +23,17 @@ describe('GraphQL Resolvers', () => {
       getDatabaseFromGraph: jest.fn(),
       getTablesForDatabase: jest.fn(),
       populateFullSchema: jest.fn(),
-    } as any;
+    } as jest.Mocked<GraphService>;
 
     mockSchemaService = {
       extractSchema: jest.fn(),
       getTableStructure: jest.fn(),
-    } as any;
+    } as jest.Mocked<SchemaService>;
 
     context = {
       graphService: mockGraphService,
       schemaService: mockSchemaService,
+      jobManager: {} as GraphQLContext['jobManager'],
     };
   });
 

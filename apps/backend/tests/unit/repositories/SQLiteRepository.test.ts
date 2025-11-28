@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach } from '@jest/globals';
 import * as fs from 'fs';
 import * as path from 'path';
+import Database from 'better-sqlite3';
 import { SQLiteRepository } from '../../../src/repositories/SQLiteRepository';
 
 describe('SQLiteRepository', () => {
@@ -23,7 +24,6 @@ describe('SQLiteRepository', () => {
     }
 
     // Create a test database with multiple tables
-    const Database = require('better-sqlite3');
     const db = new Database(testDbPath);
     db.exec(`
       CREATE TABLE users (
@@ -153,7 +153,6 @@ describe('SQLiteRepository', () => {
     it('should return an empty array for a database with no tables', () => {
       // Arrange - create empty database
       const emptyDbPath = path.join(__dirname, '../../fixtures/empty.db');
-      const Database = require('better-sqlite3');
       const db = new Database(emptyDbPath);
       db.close();
 
@@ -226,7 +225,6 @@ describe('SQLiteRepository', () => {
     it('should return columns with default values when specified', () => {
       // Arrange - create table with default value
       const dbWithDefaults = path.join(__dirname, '../../fixtures/defaults.db');
-      const Database = require('better-sqlite3');
       const db = new Database(dbWithDefaults);
       db.exec(`
         CREATE TABLE settings (
@@ -362,7 +360,6 @@ describe('SQLiteRepository', () => {
         __dirname,
         '../../fixtures/composite.db'
       );
-      const Database = require('better-sqlite3');
       const db = new Database(dbWithComposite);
       db.exec(`
         CREATE TABLE parent (

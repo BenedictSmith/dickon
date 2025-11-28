@@ -20,6 +20,10 @@ module.exports = {
       allowExpressions: true,
       allowTypedFunctionExpressions: true,
     }],
+    '@typescript-eslint/no-unused-vars': ['error', {
+      argsIgnorePattern: '^_',
+      varsIgnorePattern: '^_',
+    }],
 
     // Import rules
     'import/no-cycle': 'error',
@@ -64,9 +68,8 @@ module.exports = {
   },
   settings: {
     'import/resolver': {
-      typescript: {
-        alwaysTryTypes: true,
-        project: ['./apps/*/tsconfig.json', './packages/*/tsconfig.json'],
+      node: {
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
       },
     },
   },

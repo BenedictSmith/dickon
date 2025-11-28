@@ -17,7 +17,13 @@
       "Bash(git checkout:*)",
       "Bash(npm install)",
       "Bash(npm run type-check:*)",
-      "Bash(npm run lint:*)"
+      "Bash(npm run lint:*)",
+      "Bash(gh pr:*)",
+      "Bash(gh issue:*)",
+      "Bash(npm run test:integration:*)",
+      "Bash(npm install:*)",
+      "Bash(cat:*)",
+      "Bash(npm uninstall:*)"
     ],
     "deny": [],
     "ask": []
