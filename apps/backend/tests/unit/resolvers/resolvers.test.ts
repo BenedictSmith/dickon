@@ -11,8 +11,8 @@ jest.mock('../../../src/services/GraphService');
 jest.mock('../../../src/services/SchemaService');
 
 describe('GraphQL Resolvers', () => {
-  let mockGraphService: Partial<jest.Mocked<GraphService>>;
-  let mockSchemaService: Partial<jest.Mocked<SchemaService>>;
+  let mockGraphService: jest.Mocked<GraphService>;
+  let mockSchemaService: jest.Mocked<SchemaService>;
   let context: GraphQLContext;
 
   beforeEach(() => {
@@ -23,16 +23,16 @@ describe('GraphQL Resolvers', () => {
       getDatabaseFromGraph: jest.fn(),
       getTablesForDatabase: jest.fn(),
       populateFullSchema: jest.fn(),
-    };
+    } as unknown as jest.Mocked<GraphService>;
 
     mockSchemaService = {
       extractSchema: jest.fn(),
       getTableStructure: jest.fn(),
-    };
+    } as unknown as jest.Mocked<SchemaService>;
 
     context = {
-      graphService: mockGraphService as GraphService,
-      schemaService: mockSchemaService as SchemaService,
+      graphService: mockGraphService,
+      schemaService: mockSchemaService,
       jobManager: {} as GraphQLContext['jobManager'],
     };
   });

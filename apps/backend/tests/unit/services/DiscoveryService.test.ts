@@ -8,7 +8,7 @@ jest.mock('../../../src/repositories/Neo4jRepository');
 
 describe('DiscoveryService', () => {
   let discoveryService: DiscoveryService;
-  let mockNeo4jRepo: Partial<jest.Mocked<Neo4jRepository>>;
+  let mockNeo4jRepo: jest.Mocked<Neo4jRepository>;
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -17,11 +17,9 @@ describe('DiscoveryService', () => {
     mockNeo4jRepo = {
       getAllColumns: jest.fn(),
       createSimilarityRelationship: jest.fn(),
-    };
+    } as unknown as jest.Mocked<Neo4jRepository>;
 
-    discoveryService = new DiscoveryService(
-      mockNeo4jRepo as Neo4jRepository
-    );
+    discoveryService = new DiscoveryService(mockNeo4jRepo);
   });
 
   describe('findSimilarColumns', () => {

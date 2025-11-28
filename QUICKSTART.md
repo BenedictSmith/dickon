@@ -5,11 +5,13 @@
 ## Prerequisites
 
 Ensure you have these installed:
+
 - **Node.js 20+** - [Download here](https://nodejs.org/)
 - **Docker Desktop** - [Download here](https://www.docker.com/products/docker-desktop/)
 - **Git** - [Download here](https://git-scm.com/)
 
 Verify installations:
+
 ```bash
 node --version    # Should be v20.x or higher
 docker --version  # Should be 20.x or higher
@@ -32,6 +34,7 @@ npm install
 ```
 
 This will:
+
 - Install all packages (backend, frontend, shared)
 - Set up Husky git hooks (pre-commit, commit-msg, pre-push)
 - Install ESLint, TypeScript, Jest, etc.
@@ -43,6 +46,7 @@ docker-compose up -d
 ```
 
 This starts:
+
 - **Neo4j** (graph database) on ports 9474 (HTTP) and 9687 (Bolt)
 - Available at: http://localhost:9474
 - Credentials: `neo4j` / `dickon-ktb3`
@@ -82,11 +86,13 @@ npm run test:unit -- --watch
 ### While Coding
 
 **Follow TDD (Test-Driven Development):**
+
 1. 🔴 Write a failing test
 2. 🟢 Write minimal code to pass
 3. 🔵 Refactor while keeping tests green
 
 **Run checks frequently:**
+
 ```bash
 npm run lint         # Check code style
 npm test            # Run all tests
@@ -96,6 +102,7 @@ npm run type-check  # Check TypeScript
 ### Before Committing
 
 **Hooks will automatically run:**
+
 - Type checking
 - Linting
 - Dependency rules check
@@ -120,6 +127,7 @@ docker-compose stop
 ### Branch Management
 
 **Create feature branch:**
+
 ```bash
 # Always start from master
 git checkout master
@@ -130,6 +138,7 @@ git checkout -b feature/epic-1.1-schema-extraction
 ```
 
 **Branch naming convention:**
+
 ```bash
 feature/epic-X.Y-description    # New features
 fix/description                 # Bug fixes
@@ -140,6 +149,7 @@ chore/description               # Build/config changes
 ```
 
 **Examples:**
+
 ```bash
 git checkout -b feature/epic-1.1-schema-extraction
 git checkout -b feature/discovery-algorithm
@@ -151,6 +161,7 @@ git checkout -b refactor/extract-confidence-scorer
 ### Making Changes
 
 **Check status:**
+
 ```bash
 git status              # See modified files
 git diff                # See changes
@@ -158,6 +169,7 @@ git diff --staged       # See staged changes
 ```
 
 **Stage and commit:**
+
 ```bash
 # Stage specific files
 git add src/services/SchemaService.ts
@@ -176,6 +188,7 @@ Part of Epic 1.1 - Schema Extraction"
 ```
 
 **Commit message format:**
+
 ```
 type(scope): brief description
 
@@ -191,6 +204,7 @@ Closes #123
 ### Pushing and Creating PR
 
 **Push branch:**
+
 ```bash
 # First push (creates remote branch)
 git push -u origin feature/your-feature-name
@@ -200,6 +214,7 @@ git push
 ```
 
 **Create PR via GitHub CLI:**
+
 ```bash
 gh pr create \
   --title "feat(schema): Add SQLite schema extraction" \
@@ -221,6 +236,7 @@ Implements SchemaExtractor service for Epic 1.1
 ```
 
 **Request review:**
+
 ```bash
 # Request review from Benedict
 gh pr review --request @BenedictSmith
@@ -231,6 +247,7 @@ gh pr review --request @BenedictSmith
 ### Working with PRs
 
 **Check PR status:**
+
 ```bash
 gh pr status              # Your PRs
 gh pr view 123            # View specific PR
@@ -238,6 +255,7 @@ gh pr checks              # See CI status
 ```
 
 **Update PR after feedback:**
+
 ```bash
 # Make changes
 git add .
@@ -248,6 +266,7 @@ git push
 ```
 
 **Merge PR:**
+
 ```bash
 # After approval via web UI or CLI
 gh pr merge 123 --squash   # Squash commits
@@ -258,6 +277,7 @@ gh pr merge 123 --rebase   # Rebase commits
 ### Syncing with Master
 
 **Update your branch with latest master:**
+
 ```bash
 # Save your work first
 git add .
@@ -276,6 +296,7 @@ git merge master
 ```
 
 **Or use rebase (cleaner history):**
+
 ```bash
 git checkout feature/your-feature
 git fetch origin
@@ -291,12 +312,14 @@ git push --force-with-lease
 ### Checking Out Others' Branches
 
 **View all branches:**
+
 ```bash
 git branch -a             # All branches
 gh pr list                # Open PRs
 ```
 
 **Check out Benedict's branch:**
+
 ```bash
 # Fetch all remote branches
 git fetch origin
@@ -309,6 +332,7 @@ git checkout -b feature/benedicts-feature origin/feature/benedicts-feature
 ```
 
 **Test their changes:**
+
 ```bash
 npm install              # Install any new dependencies
 npm run type-check
@@ -319,6 +343,7 @@ npm test
 ### Cleaning Up
 
 **Delete merged branches:**
+
 ```bash
 # Delete local branch
 git branch -d feature/old-feature
@@ -328,6 +353,7 @@ git push origin --delete feature/old-feature
 ```
 
 **List merged branches:**
+
 ```bash
 git branch --merged master
 ```
@@ -485,21 +511,21 @@ dickon/
 
 ## Key Commands Reference
 
-| Command | Purpose |
-|---------|---------|
-| `npm install` | Install dependencies |
-| `npm run dev` | Start all services |
-| `npm test` | Run all tests |
-| `npm run test:unit` | Run unit tests only |
-| `npm run test:unit -- --watch` | Watch mode |
-| `npm run lint` | Check code quality |
-| `npm run type-check` | TypeScript validation |
-| `npm run check:deps` | Architectural rules |
-| `npm run format` | Format all files |
-| `docker-compose up -d` | Start services |
-| `docker-compose down` | Stop services |
-| `gh pr create` | Create pull request |
-| `gh pr list` | List open PRs |
+| Command                        | Purpose               |
+| ------------------------------ | --------------------- |
+| `npm install`                  | Install dependencies  |
+| `npm run dev`                  | Start all services    |
+| `npm test`                     | Run all tests         |
+| `npm run test:unit`            | Run unit tests only   |
+| `npm run test:unit -- --watch` | Watch mode            |
+| `npm run lint`                 | Check code quality    |
+| `npm run type-check`           | TypeScript validation |
+| `npm run check:deps`           | Architectural rules   |
+| `npm run format`               | Format all files      |
+| `docker-compose up -d`         | Start services        |
+| `docker-compose down`          | Stop services         |
+| `gh pr create`                 | Create pull request   |
+| `gh pr list`                   | List open PRs         |
 
 ---
 
@@ -584,6 +610,7 @@ git commit  # No message needed for merge commits
 - 🗺️ **[ROADMAP.md](ROADMAP.md)** - Project phases
 
 **Questions?**
+
 - Open an issue on GitHub
 - Ask in PR reviews
 - Tag @BenedictSmith in comments

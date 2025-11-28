@@ -1,6 +1,7 @@
 # Contributing to Dickon
 
 ## Table of Contents
+
 - [Test-Driven Development](#test-driven-development)
 - [Workflow](#workflow)
 - [Testing Requirements](#testing-requirements)
@@ -17,6 +18,7 @@
 ### TDD Workflow
 
 1. **🔴 RED**: Write a failing test first
+
    ```typescript
    it('should calculate levenshtein distance', () => {
      expect(levenshteinDistance('kitten', 'sitting')).toBe(3);
@@ -24,6 +26,7 @@
    ```
 
 2. **🟢 GREEN**: Write minimal code to pass
+
    ```typescript
    export function levenshteinDistance(a: string, b: string): number {
      // Implement algorithm
@@ -58,6 +61,7 @@ git checkout -b feature/epic-1.1-schema-extraction
 ```
 
 **Branch naming:**
+
 - `feature/` - New features (e.g., `feature/discovery-service`)
 - `fix/` - Bug fixes (e.g., `fix/neo4j-connection-leak`)
 - `test/` - Test-only changes (e.g., `test/add-integration-tests`)
@@ -232,6 +236,7 @@ npm run lint -- --fix
 ### Architectural Rules
 
 ESLint enforces layer boundaries:
+
 - ❌ Frontend cannot import backend
 - ❌ Resolvers cannot import repositories directly (use services)
 - ❌ Domain cannot depend on infrastructure
@@ -297,6 +302,7 @@ Adds connection pool monitoring."
 ### Pre-commit Hooks
 
 Husky automatically runs before each commit:
+
 - ✅ Type checking
 - ✅ Linting
 - ✅ Dependency rules
@@ -325,9 +331,11 @@ Before creating a PR, ensure:
 
 ```markdown
 ## Description
+
 [What does this PR do?]
 
 ## Type of Change
+
 - [ ] New feature (Epic X.Y)
 - [ ] Bug fix
 - [ ] Refactoring
@@ -335,23 +343,27 @@ Before creating a PR, ensure:
 - [ ] Tests only
 
 ## TDD Checklist
+
 - [ ] Wrote tests before implementation (red phase)
 - [ ] Implemented minimal code to pass (green phase)
 - [ ] Refactored for quality (refactor phase)
 - [ ] Coverage maintained or increased
 
 ## Testing
+
 - [ ] Unit tests added/updated
 - [ ] Integration tests added/updated
 - [ ] All tests passing
 - [ ] Coverage ≥80%
 
 ## Architectural Compliance
+
 - [ ] No layer violations (ESLint passing)
 - [ ] No circular dependencies (depcruise passing)
 - [ ] Follows DDD patterns
 
 ## Checklist
+
 - [ ] Code is self-documenting
 - [ ] Complex logic has comments
 - [ ] No debugging code (console.log, etc.)
@@ -359,12 +371,14 @@ Before creating a PR, ensure:
 - [ ] Types are explicit (no `any`)
 
 ## Related Issues
+
 Closes #[issue number]
 ```
 
 ### Review Guidelines
 
 **As a Reviewer:**
+
 - Verify tests were written first
 - Check for TDD anti-patterns
 - Ensure coverage didn't decrease
@@ -374,6 +388,7 @@ Closes #[issue number]
 - Approve when requirements are met
 
 **As an Author:**
+
 - Respond to feedback promptly
 - Don't take criticism personally
 - Update tests if behavior changes
@@ -383,6 +398,7 @@ Closes #[issue number]
 ### CI/CD Requirements
 
 All checks must pass:
+
 - ✅ Type checking
 - ✅ Linting
 - ✅ Dependency rules

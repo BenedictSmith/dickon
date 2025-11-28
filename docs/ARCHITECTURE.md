@@ -21,6 +21,7 @@ Infrastructure Layer (Neo4j, SQLite, Logging)
 ```
 
 ### Core Layers:
+
 1. **Data Sources Layer**: Multiple SQLite databases (Chinook, Northwind, Sakila)
 2. **Discovery & Ingestion**: Schema extraction and entity matching
 3. **Knowledge Graph Layer**: Neo4j graph database for relationship mapping
@@ -30,6 +31,7 @@ Infrastructure Layer (Neo4j, SQLite, Logging)
 ## Key Components
 
 ### Backend (TypeScript + Node.js)
+
 - **GraphQL API Server**: Apollo Server 4 for API layer
 - **Schema Service**: SQLite metadata extraction and profiling
 - **Discovery Service**: Automated relationship detection across databases
@@ -38,12 +40,14 @@ Infrastructure Layer (Neo4j, SQLite, Logging)
 - **Repositories**: Data access abstraction for Neo4j and SQLite
 
 ### Frontend (React + TypeScript)
+
 - **Graph Visualization**: D3.js force-directed graph of database relationships
 - **Schema Explorer**: Interactive tree view of database schemas
 - **Query Builder**: Visual interface for federated queries
 - **Relationship Annotator**: Manual relationship validation and annotation
 
 ### Infrastructure
+
 - **Neo4j**: Graph database for storing relationships and metadata
 - **Docker Compose**: Containerized development environment
 - **GitHub Actions**: CI/CD pipeline with automated testing
@@ -69,6 +73,7 @@ Infrastructure Layer (Neo4j, SQLite, Logging)
 ## Technology Stack
 
 ### Backend
+
 - **Runtime**: Node.js 20+ with TypeScript 5+
 - **API**: Apollo Server 4 (GraphQL)
 - **Graph DB**: Neo4j 5+ with neo4j-driver
@@ -78,6 +83,7 @@ Infrastructure Layer (Neo4j, SQLite, Logging)
 - **Logging**: Winston + OpenTelemetry
 
 ### Frontend
+
 - **Framework**: React 18+ with TypeScript
 - **Visualization**: D3.js v7
 - **GraphQL Client**: Apollo Client
@@ -86,6 +92,7 @@ Infrastructure Layer (Neo4j, SQLite, Logging)
 - **Testing**: Vitest + React Testing Library
 
 ### DevOps
+
 - **Containers**: Docker + Docker Compose
 - **CI/CD**: GitHub Actions
 - **Code Quality**: ESLint + Prettier + Husky
@@ -96,6 +103,7 @@ Infrastructure Layer (Neo4j, SQLite, Logging)
 All architectural decisions are documented as Architecture Decision Records (ADRs) in the `ADR/` folder.
 
 Key principles:
+
 - **Strict Layered Architecture**: No layer bypassing
 - **Domain-Driven Design**: Entities, value objects, aggregates, repositories
 - **Type Safety**: End-to-end TypeScript with strict mode
@@ -105,5 +113,6 @@ Key principles:
 ## Detailed Documentation
 
 For comprehensive system design, data models, compliance mechanisms, and deployment instructions, see:
+
 - **[SILOBREAKER.md](SILOBREAKER.md)** - Complete system architecture
 - **[ADR/](ADR/)** - Architecture decision records

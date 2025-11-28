@@ -3,11 +3,13 @@
 Date: 2024-11-26
 
 ## Status
+
 Accepted
 
 ## Context
 
 The SiloBreaker project requires a robust, type-safe, and scalable architecture for:
+
 1. **Graph-based data modeling**: Representing complex relationships between disparate databases
 2. **Real-time discovery**: Automated detection of cross-database relationships
 3. **Interactive visualization**: Force-directed graphs for exploring database connections
@@ -19,6 +21,7 @@ The system must balance developer productivity with long-term maintainability wh
 ## Decision
 
 ### Backend Stack
+
 - **Runtime**: Node.js 20+ with TypeScript 5+
   - Mature ecosystem, excellent TypeScript support
   - Strong async/await primitives for I/O-heavy operations
@@ -41,6 +44,7 @@ The system must balance developer productivity with long-term maintainability wh
   - Great coverage reporting
 
 ### Frontend Stack
+
 - **Framework**: React 18+ with TypeScript
   - Component-based architecture aligns with our UI needs
   - Large ecosystem, strong TypeScript support
@@ -63,6 +67,7 @@ The system must balance developer productivity with long-term maintainability wh
   - Native TypeScript support
 
 ### Infrastructure & Quality
+
 - **Containerization**: Docker + Docker Compose
   - Consistent development environments
   - Easy Neo4j and application orchestration
@@ -82,6 +87,7 @@ The system must balance developer productivity with long-term maintainability wh
 ## Consequences
 
 ### Positive
+
 - **End-to-end type safety**: GraphQL schema generates TypeScript types for both client and server
 - **Excellent DX**: Fast feedback loops with Vite, TypeScript, and Jest
 - **Production-ready**: Battle-tested technologies with strong community support
@@ -91,6 +97,7 @@ The system must balance developer productivity with long-term maintainability wh
 - **Modern UI**: React 18 concurrent rendering handles complex visualizations without blocking
 
 ### Negative
+
 - **Learning curve**: Neo4j and Cypher require upfront investment for developers unfamiliar with graph databases
 - **Infrastructure complexity**: Neo4j adds another service to manage (vs. simpler relational DB)
 - **Bundle size**: React + D3.js + Apollo Client results in larger frontend bundle than simpler alternatives
@@ -99,6 +106,7 @@ The system must balance developer productivity with long-term maintainability wh
 - **Node.js limitations**: Single-threaded runtime may require worker threads for CPU-intensive discovery algorithms
 
 ### Mitigations
+
 - **Neo4j learning curve**: Comprehensive documentation, sample Cypher queries in codebase
 - **Infrastructure**: Docker Compose abstracts Neo4j setup; managed Neo4j available for production
 - **Bundle size**: Code splitting and lazy loading for visualization components
@@ -109,16 +117,19 @@ The system must balance developer productivity with long-term maintainability wh
 ## Alternatives Considered
 
 ### Backend Alternatives
+
 - **REST API**: Rejected due to lack of strong typing and inefficient for nested graph data
 - **tRPC**: Considered, but GraphQL subscriptions and existing ecosystem favored Apollo
 - **PostgreSQL with pg_graph**: Rejected in favor of native graph database (Neo4j)
 
 ### Frontend Alternatives
+
 - **Vue 3**: Rejected due to team familiarity with React and larger React ecosystem
 - **Svelte**: Considered for bundle size, but React's maturity and hiring pool favored React
 - **Plotly/Recharts**: Too limited for custom force-directed graph interactions; D3.js provides full control
 
 ## Compliance Mechanism
+
 - TypeScript compiler with `strict: true` enforces type safety
 - ESLint rules with `no-restricted-paths` enforce layer boundaries
 - dependency-cruiser validates architecture in CI/CD

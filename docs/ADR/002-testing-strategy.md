@@ -3,11 +3,13 @@
 Date: 2024-11-26
 
 ## Status
+
 Accepted
 
 ## Context
 
 The SiloBreaker project is a complex system involving:
+
 - Graph database operations (Neo4j)
 - Multiple data sources (SQLite databases)
 - Real-time discovery algorithms
@@ -15,6 +17,7 @@ The SiloBreaker project is a complex system involving:
 - Cross-database query federation
 
 We need a testing strategy that:
+
 1. **Ensures correctness** of complex algorithms (relationship discovery, similarity matching)
 2. **Maintains architectural integrity** (prevents layer violations)
 3. **Enables confident refactoring** (no fear of breaking changes)
@@ -23,6 +26,7 @@ We need a testing strategy that:
 6. **Supports multiple developers** (clear testing patterns)
 
 Traditional "test-after" approaches lead to:
+
 - Low test coverage (testing feels like overhead)
 - Brittle tests (coupled to implementation)
 - Poor design (code not built for testability)
@@ -58,6 +62,7 @@ We adopt **strict Test-Driven Development (TDD)** as the mandatory development m
 ### Test Types by Layer
 
 **Unit Tests** (`tests/unit/`)
+
 - Domain entities and value objects
 - Service methods (with mocked repositories)
 - Utility functions and algorithms
@@ -65,6 +70,7 @@ We adopt **strict Test-Driven Development (TDD)** as the mandatory development m
 - Speed: <10ms per test
 
 **Integration Tests** (`tests/integration/`)
+
 - Repository operations with real Neo4j
 - Service methods with real repositories
 - GraphQL resolvers with real services
@@ -72,6 +78,7 @@ We adopt **strict Test-Driven Development (TDD)** as the mandatory development m
 - Speed: <1s per test
 
 **E2E Tests** (`tests/e2e/`)
+
 - Complete user workflows
 - Discovery → Visualization → Federation
 - Browser-based with Playwright
@@ -109,9 +116,7 @@ export class ConfidenceScorer {
   calculate(metrics: SimilarityMetrics): ConfidenceScore {
     // Weighted average with validation
     this.validateMetrics(metrics);
-    const weighted =
-      metrics.nameSimilarity * 0.4 +
-      metrics.valueOverlap * 0.6;
+    const weighted = metrics.nameSimilarity * 0.4 + metrics.valueOverlap * 0.6;
     return new ConfidenceScore(weighted);
   }
 
@@ -126,18 +131,21 @@ export class ConfidenceScorer {
 ### Test Infrastructure
 
 **Local Development:**
+
 - Jest for backend unit/integration tests
 - Vitest for frontend tests
 - Playwright for E2E tests
 - Separate Neo4j test instance (port 7688)
 
 **CI/CD:**
+
 - GitHub Actions with Neo4j service container
 - Parallel test execution
 - Coverage reporting to Codecov
 - Coverage diff in PR comments
 
 **Test Data:**
+
 - Fixtures in `tests/fixtures/`
 - Small subsets of Chinook/Northwind/Sakila
 - Seed scripts for Neo4j test data
@@ -164,6 +172,7 @@ export class ConfidenceScorer {
 4. **PR Template**
    ```markdown
    ## TDD Checklist
+
    - [ ] Wrote tests first (red)
    - [ ] Implemented minimal code (green)
    - [ ] Refactored for quality (refactor)
@@ -257,23 +266,29 @@ export class ConfidenceScorer {
 ## Alternatives Considered
 
 ### 1. Test-After Development
+
 **Rejected:** Leads to low coverage, brittle tests, poor design
 
 ### 2. Behavior-Driven Development (BDD)
+
 **Considered:** Too verbose for our use case. TDD provides sufficient structure without Gherkin overhead.
 
 ### 3. Property-Based Testing (e.g., fast-check)
+
 **Complementary:** Will add for algorithms (similarity, scoring) but not primary strategy.
 
 ### 4. Mutation Testing
+
 **Future:** May add in Phase 6 to verify test quality, but not required initially.
 
 ### 5. No Testing Strategy
+
 **Rejected:** Unacceptable for production-grade system with complex algorithms and multiple developers.
 
 ## Compliance Mechanism
 
 ### CI/CD Enforcement
+
 ```yaml
 # .github/workflows/ci.yml
 - name: Run tests with coverage
@@ -281,14 +296,17 @@ export class ConfidenceScorer {
 ```
 
 ### Pre-commit Hook
+
 ```bash
 # .husky/pre-commit
 npm run test:unit || exit 1
 ```
 
 ### Code Review Template
+
 ```markdown
 ## Testing
+
 - [ ] All new code has tests
 - [ ] Tests written before implementation (TDD)
 - [ ] Coverage ≥80%
@@ -296,6 +314,7 @@ npm run test:unit || exit 1
 ```
 
 ### Documentation
+
 - `docs/TESTING.md` - Comprehensive TDD guide
 - Test examples in each Epic
 - Fixtures and helpers provided
@@ -311,6 +330,7 @@ npm run test:unit || exit 1
 ## Review Date
 
 Reassess TDD strategy after Phase 2 (Week 7) based on:
+
 - Developer feedback
 - Test suite maintenance burden
 - Coverage trends

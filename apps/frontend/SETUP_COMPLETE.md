@@ -3,6 +3,7 @@
 ## ✅ What's Been Completed
 
 ### Infrastructure Setup
+
 - ✅ Tailwind CSS configured and working
 - ✅ Vite entry point (index.html, main.tsx)
 - ✅ Apollo Client with MockedProvider
@@ -13,12 +14,14 @@
 - ✅ Lint passing
 
 ### Components Built (TDD)
+
 - ✅ **DatabaseList** - displays list of databases with loading/error states
   - 5 comprehensive tests
   - Integrated with Apollo Client
   - Proper loading, error, and empty states
 
 ### File Structure Created
+
 ```
 apps/frontend/
 ├── src/
@@ -53,9 +56,11 @@ apps/frontend/
 ### Remaining Components (TDD Workflow)
 
 #### 1. SchemaTree Component
+
 **Purpose**: Hierarchical display of Database → Tables → Columns
 
 **TDD Steps**:
+
 ```bash
 # Start watch mode in one terminal
 npm run test:watch
@@ -76,23 +81,27 @@ npm run test:watch
 ```
 
 **Key Features**:
+
 - Expand/collapse tree nodes
 - Database → Tables → Columns hierarchy
 - Click handlers for selection
 - Visual indicators (icons, indentation)
 
 #### 2. DetailPanel Component
+
 **Purpose**: Show detailed metadata for selected item
 
 **TDD Steps**: Same Red-Green-Refactor cycle
 
 **Key Features**:
+
 - Display column statistics
 - Show data types, constraints
 - Primary key / foreign key indicators
 - Null counts, distinct counts
 
 #### 3. Integration
+
 - Wire SchemaTree and DetailPanel together
 - Add selection state management
 - Connect DatabaseList clicks to SchemaTree
@@ -129,6 +138,7 @@ Tests: 6 passed (6)
 ## 🎨 Tailwind Customization
 
 Custom colors configured in `tailwind.config.js`:
+
 - `text-primary-400` - bright blue (#38bdf8)
 - `bg-gray-900` - dark background
 - `bg-gray-800` - card background
@@ -139,10 +149,12 @@ Custom colors configured in `tailwind.config.js`:
 **Current Mode**: MockedProvider (VITE_USE_REAL_API !== 'true')
 
 **Mock Data Available**:
+
 - Chinook database (Artist, Album, Track tables)
 - Northwind database (Customers, Orders tables)
 
 **Switch to Real API** (when Epic 1.3 complete):
+
 ```bash
 # .env file
 VITE_USE_REAL_API=true
@@ -160,9 +172,11 @@ VITE_API_URL=http://localhost:4000/graphql
 ## 🐛 Known Warnings (Safe to Ignore)
 
 Apollo Client emits deprecation warnings about `addTypename`:
+
 ```
 An error occurred! For more details, see https://go.apollo.dev/c/err...
 ```
+
 These are **warnings only** and don't affect functionality. Tests still pass.
 
 ## 📚 Relevant Documentation

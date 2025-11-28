@@ -5,6 +5,7 @@ This guide will help you complete the setup of the SiloBreaker development envir
 ## Current Status
 
 ✅ **Configuration Files Created:**
+
 - package.json with monorepo setup
 - TypeScript configuration (strict mode)
 - ESLint with architectural rules
@@ -17,6 +18,7 @@ This guide will help you complete the setup of the SiloBreaker development envir
 - Testing documentation
 
 ❌ **Still Need to Install:**
+
 - Node.js dependencies
 - Husky git hooks
 - Sample SQLite databases
@@ -38,6 +40,7 @@ npm install
 ```
 
 **Expected output:**
+
 ```
 added 500+ packages in 2m
 ```
@@ -57,11 +60,13 @@ npm run prepare
 ```
 
 **Expected output:**
+
 ```
 husky - Git hooks installed
 ```
 
 **What this does:**
+
 - `.husky/pre-commit` → Runs before each commit
   - Type checking
   - Linting
@@ -106,12 +111,14 @@ These databases are used for development and testing.
 ### Option A: Download from Official Sources
 
 1. **Chinook Database** (Music store)
+
    ```bash
    # Download from: https://github.com/lerocha/chinook-database
    curl -L https://github.com/lerocha/chinook-database/raw/master/ChinookDatabase/DataSources/Chinook_Sqlite.sqlite -o data/chinook.db
    ```
 
 2. **Northwind Database** (Orders/Products)
+
    ```bash
    # Download from: https://github.com/jpwhite3/northwind-SQLite3
    curl -L https://raw.githubusercontent.com/jpwhite3/northwind-SQLite3/master/dist/northwind.db -o data/northwind.db
@@ -150,6 +157,7 @@ docker-compose ps
 ```
 
 **Access Neo4j Browser:**
+
 - URL: http://localhost:7474
 - Username: neo4j
 - Password: dickon-ktb3
@@ -173,6 +181,7 @@ npm test
 ```
 
 **Expected output for all commands:**
+
 ```
 ✅ All checks passed
 ```
@@ -277,6 +286,7 @@ Once everything is installed and verified:
    - Assign tasks
 
 3. **Start coding with TDD:**
+
    ```bash
    # Create feature branch
    git checkout -b feature/epic-1.1-schema-extraction
@@ -326,6 +336,7 @@ Before starting Phase 1, ensure:
 ## Summary of Enforcement Mechanisms
 
 ### 🪨 Pebbles (Hard Blocks)
+
 - ✅ Pre-commit hooks (Husky) - **ACTIVE after `npm install`**
 - ✅ Commit message validation - **ACTIVE after `npm install`**
 - ✅ GitHub Actions CI - **ACTIVE** (runs on every push)
@@ -335,6 +346,7 @@ Before starting Phase 1, ensure:
 - ✅ Coverage threshold - **WILL BE ACTIVE** (when tests exist)
 
 ### 🍞 Breadcrumbs (Soft Guidance)
+
 - ✅ VS Code settings - **ACTIVE** (formatting, linting)
 - ✅ Prettier - **ACTIVE** (auto-format on save)
 - ✅ Documentation - **READY** (all docs created)

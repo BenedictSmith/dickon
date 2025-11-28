@@ -56,7 +56,9 @@ function TableDetails({ table }: { table: Table }): JSX.Element {
 
         {/* Column List */}
         <div>
-          <label className="text-sm text-gray-400 block mb-2">Column List</label>
+          <label className="text-sm text-gray-400 block mb-2">
+            Column List
+          </label>
           <div className="space-y-2">
             {table.columns.map((col) => (
               <div
@@ -87,8 +89,12 @@ function ColumnDetails({ column }: { column: Column }): JSX.Element {
       <div className="space-y-4">
         {/* Column Name */}
         <div>
-          <label className="text-sm text-gray-400 block mb-1">Column Name</label>
-          <p className="text-lg font-semibold text-primary-400">{column.name}</p>
+          <label className="text-sm text-gray-400 block mb-1">
+            Column Name
+          </label>
+          <p className="text-lg font-semibold text-primary-400">
+            {column.name}
+          </p>
         </div>
 
         {/* Data Type */}
@@ -99,7 +105,9 @@ function ColumnDetails({ column }: { column: Column }): JSX.Element {
 
         {/* Primary Key */}
         <div>
-          <label className="text-sm text-gray-400 block mb-1">Primary Key</label>
+          <label className="text-sm text-gray-400 block mb-1">
+            Primary Key
+          </label>
           <p className="text-white">
             {column.primaryKey ? (
               <span className="text-green-400">Yes 🔑</span>
@@ -134,7 +142,9 @@ function ColumnDetails({ column }: { column: Column }): JSX.Element {
         {/* Statistics */}
         {column.statistics && (
           <div>
-            <label className="text-sm text-gray-400 block mb-2">Statistics</label>
+            <label className="text-sm text-gray-400 block mb-2">
+              Statistics
+            </label>
             <div className="bg-gray-900 rounded p-3 space-y-2">
               {/* Distinct Count */}
               <div className="flex justify-between">
