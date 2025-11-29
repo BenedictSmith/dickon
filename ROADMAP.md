@@ -15,8 +15,9 @@
   - ✅ Epic 3.4: Backend Graph API - COMPLETE
 - 🚧 Phase 4: Query Federation - Backend COMPLETE
   - ✅ Epic 4.1: Federated Query Engine - COMPLETE
-  - ⏸️ Epic 4.2: Visual Query Builder (Frontend) - Not started
-  - ⏸️ Epic 4.3: Result Visualization (Frontend) - Not started
+  - ✅ Epic 4.2: GraphQL Federation API - COMPLETE (merged into 4.1)
+  - ⏸️ Epic 4.3: Visual Query Builder (Frontend) - Not started
+  - ⏸️ Epic 4.4: Result Visualization (Frontend) - Not started
 - ⏸️ Phase 5: Entity Resolution - Not started
 - ⏸️ Phase 6: Production Readiness - Not started
 
@@ -315,6 +316,19 @@ Build a production-grade system for automated discovery and federation of relati
   - Database-aware cache invalidation
   - Error handling for query failures
 
+**Epic 4.2: GraphQL Federation API** ✅ COMPLETE (merged into Epic 4.1)
+
+- [x] Schema extension
+  - FederatedQueryInput type (tables, select, joins, where, limit/offset)
+  - FederatedQueryResult type (rows, columns, executionTimeMs, databases)
+  - JSON scalar type for arbitrary JSON data
+- [x] Resolver: federatedQuery mutation
+  - Cache-aware query execution
+  - Integration with FederationService
+- [x] Error handling for query failures
+  - Try-catch with descriptive error messages
+  - Failed query debugging
+
 ### Frontend Implementation
 
 **Epic 4.3: Visual Query Builder**
@@ -524,13 +538,13 @@ Now that **Phase 4 Backend (Epic 4.1)** is complete, there are two paths forward
   - Layout persistence (save/restore positions)
 
 **Option B: Continue Phase 4 Frontend Work**
-- Create Epic 4.2: Visual Query Builder (issue needed)
+- Create Epic 4.3: Visual Query Builder (issue needed)
   - Drag-and-drop query construction UI
   - Table selection from graph
   - Join condition builder
   - Filter/WHERE clause builder
   - Column selection
-- Create Epic 4.3: Result Visualization (issue needed)
+- Create Epic 4.4: Result Visualization (issue needed)
   - Tabular result display component
   - Data lineage visualization
   - Export to CSV/JSON
