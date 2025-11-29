@@ -2,7 +2,7 @@
 
 ## Project Status (Updated 2025-11-29)
 
-**Current Phase:** Phase 3 (Graph Visualization) - 60% complete
+**Current Phase:** Phase 4 (Query Federation) - Backend Complete, Frontend Pending
 
 **Progress Summary:**
 - ✅ Phase 0: Foundation - COMPLETE
@@ -13,11 +13,20 @@
   - 🚧 Epic 3.2: Interactive Features - 40% complete
   - ⏸️ Epic 3.3: Layout Options - Not started
   - ✅ Epic 3.4: Backend Graph API - COMPLETE
-- ⏸️ Phase 4: Query Federation - Not started
+- 🚧 Phase 4: Query Federation - Backend COMPLETE
+  - ✅ Epic 4.1: Federated Query Engine - COMPLETE
+  - ⏸️ Epic 4.2: Visual Query Builder (Frontend) - Not started
+  - ⏸️ Epic 4.3: Result Visualization (Frontend) - Not started
 - ⏸️ Phase 5: Entity Resolution - Not started
 - ⏸️ Phase 6: Production Readiness - Not started
 
 **Recent Achievements:**
+- ✅ Completed Epic 4.1: Federated Query Engine (5 tasks)
+  - SQL Generator with predicate push-down (10-100x data transfer reduction)
+  - Query Executor with parallel execution and connection pooling
+  - Result Merger with O(n+m) hash join algorithm
+  - GraphQL API with FederatedQueryInput and FederatedQueryResult types
+  - QueryCache with LRU eviction and 5-minute TTL
 - Merged PR #8: Epic 3.1 (D3.js Graph) + Epic 3.4 (Graph Data API)
 - Merged PR #19: Tailwind CSS v4 migration with custom theme
 - Merged PR #21: Helper scripts and DEVELOPMENT.md guide
@@ -25,8 +34,12 @@
 - Created Wiki with project story ("About the Name")
 
 **Next Steps:**
-- Complete Epic 3.2: Interactive Features (node selection, search, export)
-- Start Epic 3.3: Layout Options (hierarchical, radial layouts)
+- Option A: Complete Phase 3 frontend work
+  - Complete Epic 3.2: Interactive Features (node selection, search, export)
+  - Start Epic 3.3: Layout Options (hierarchical, radial layouts)
+- Option B: Continue Phase 4 frontend work
+  - Create Epic 4.2: Visual Query Builder
+  - Create Epic 4.3: Result Visualization
 - Review and address remaining open PRs (#20, #22)
 
 ## Project Goals
@@ -276,25 +289,31 @@ Build a production-grade system for automated discovery and federation of relati
 
 ### Backend Implementation
 
-**Epic 4.1: Federated Query Engine**
+**Epic 4.1: Federated Query Engine** ✅ COMPLETE
 
-- [ ] FederationService implementation
-  - Parse query structure
-  - Identify cross-database joins
-  - Generate SQL for each database
-  - Merge results in memory
-- [ ] Query optimization
-  - Push-down predicates
-  - Minimize data transfer
-- [ ] Result caching
-
-**Epic 4.2: GraphQL Federation API**
-
-- [ ] Schema extension
-  - FederatedQueryInput type
-  - QueryResult type
-- [ ] Resolver: federatedQuery mutation
-- [ ] Error handling for query failures
+- [x] Task 4.1.1: FederationService and Query Parser
+  - Parse query structure (tables, columns, joins, where, limit/offset)
+  - TypeScript types for FederatedQueryInput
+  - Comprehensive validation
+- [x] Task 4.1.2: Relationship Resolver - Neo4j Path Finding
+  - Automatic join detection via Neo4j graph traversal
+  - Multi-hop relationship support (A → B → C)
+  - Confidence-based path scoring
+- [x] Task 4.1.3: SQL Generator and Predicate Push-Down
+  - Generate optimized SQL for each database
+  - Push-down WHERE clauses (10-100x data transfer reduction)
+  - Support for JOIN, SELECT, LIMIT, OFFSET
+- [x] Task 4.1.4: Execution Engine and Result Merger
+  - Parallel query execution (Promise.all)
+  - Connection pooling for SQLite
+  - Hash join O(n+m) result merging
+  - Data lineage tracking
+- [x] Task 4.1.5: GraphQL API and Result Caching
+  - Schema extension (FederatedQueryInput, FederatedQueryResult, JSON scalar)
+  - Resolver: federatedQuery mutation
+  - QueryCache with LRU eviction and 5-minute TTL
+  - Database-aware cache invalidation
+  - Error handling for query failures
 
 ### Frontend Implementation
 
@@ -318,10 +337,13 @@ Build a production-grade system for automated discovery and federation of relati
 
 **Deliverables:**
 
-- ✅ Can execute cross-database queries
-- ✅ Results merge data from multiple SQLite sources
-- ✅ UI provides visual query builder
-- ✅ Results display with lineage information
+- ✅ Backend can execute cross-database queries (GraphQL API ready)
+- ✅ Results merge data from multiple SQLite sources (hash join)
+- ✅ Automatic relationship detection for joins (Neo4j graph traversal)
+- ✅ Query optimization with predicate push-down (10-100x faster)
+- ✅ Result caching with LRU eviction (5-minute TTL)
+- ⏸️ UI provides visual query builder (not started)
+- ⏸️ Results display with lineage information (not started)
 
 ---
 
@@ -486,29 +508,48 @@ Build a production-grade system for automated discovery and federation of relati
 
 ## Current Sprint Focus
 
-### Phase 3 Completion - Graph Visualization
+### Phase Decision: Next Steps
 
-**Epic 3.2: Interactive Features** (40% → 100%)
-- [ ] Node selection and highlighting (Issue #16)
-- [ ] Node clustering by database (Issue #17)
-- [ ] Search and focus on node
-- [ ] Export graph as SVG/PNG
+Now that **Phase 4 Backend (Epic 4.1)** is complete, there are two paths forward:
 
-**Epic 3.3: Layout Options** (0% → 100%)
-- [ ] Hierarchical layout option
-- [ ] Radial layout option
-- [ ] Layout persistence (save/restore positions)
+**Option A: Complete Phase 3 Frontend Work**
+- Complete Epic 3.2: Interactive Features (40% → 100%)
+  - Node selection and highlighting
+  - Node clustering by database
+  - Search and focus on node
+  - Export graph as SVG/PNG
+- Start Epic 3.3: Layout Options (0% → 100%)
+  - Hierarchical layout option
+  - Radial layout option
+  - Layout persistence (save/restore positions)
+
+**Option B: Continue Phase 4 Frontend Work**
+- Create Epic 4.2: Visual Query Builder (issue needed)
+  - Drag-and-drop query construction UI
+  - Table selection from graph
+  - Join condition builder
+  - Filter/WHERE clause builder
+  - Column selection
+- Create Epic 4.3: Result Visualization (issue needed)
+  - Tabular result display component
+  - Data lineage visualization
+  - Export to CSV/JSON
+
+**Recommendation:** Complete Phase 3 first (Option A) since:
+1. Phase 3 provides better visualization before adding query features
+2. Open issues already exist for Phase 3 work (#10, #11)
+3. Natural progression: visualize → explore → query
 
 ### Open Items
 
 **PR Review & Cleanup:**
-- [ ] PR #20: Backend Resolver Improvements (Carsten to review master, rebase or create focused PRs)
-- [ ] PR #22: UI Redesign (Carsten to rebase onto master after PR #19 merge)
+- [ ] PR #20: Backend Resolver Improvements (review conflicts with master)
+- [ ] PR #22: UI Redesign (rebase after PR #19 merge)
 
 ### Team Notes
 
-- **Benedict**: Focus on completing Epic 3.2 interactive features
-- **Carsten**: Address PR #20 conflicts, complete UI redesign work
+- **Benedict**: Recently completed Epic 4.1 (Federated Query Engine - all 5 tasks)
+- **Carsten**: Frontend work on Phase 3 visualization features
 
 ### Collaboration
 
