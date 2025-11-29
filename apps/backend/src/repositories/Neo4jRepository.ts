@@ -559,8 +559,10 @@ export class Neo4jRepository {
       if (!options?.edgeTypes || options.edgeTypes.includes('REFERENCES')) {
         const referencesQuery = `
           MATCH (from:Column)-[r:REFERENCES]->(to:Column)
-          ${databaseFilter ? 'MATCH (from)<-[:HAS_COLUMN]-()<-[:HAS_TABLE]-(d:Database) ' + databaseFilter : ''}
-          RETURN from.id as fromId, to.id as toId
+          ${databaseFilter ? 'MATCH (from)<-[:HAS_COLUMN]-(ft:Table)<-[:HAS_TABLE]-(d:Database) ' + databaseFilter : ''}
+          MATCH (from)<-[:HAS_COLUMN]-(ft:Table)<-[:HAS_TABLE]-(fd:Database)
+          MATCH (to)<-[:HAS_COLUMN]-(tt:Table)<-[:HAS_TABLE]-(td:Database)
+          RETURN from, to, ft, tt, fd, td
         `;
 
         const referencesResult = await session.run(referencesQuery, {
@@ -568,9 +570,49 @@ export class Neo4jRepository {
         });
 
         for (const record of referencesResult.records) {
+          const fromCol = record.get('from');
+          const toCol = record.get('to');
+          const fromTable = record.get('ft');
+          const toTable = record.get('tt');
+          const fromDb = record.get('fd');
+          const toDb = record.get('td');
+
+          // Ensure column nodes exist (add if not already present)
+          if (!seenColumnIds.has(fromCol.properties.id)) {
+            nodes.push({
+              id: fromCol.properties.id,
+              label: fromCol.properties.name,
+              type: 'COLUMN',
+              databaseId: fromDb.properties.id,
+              tableId: fromTable.properties.id,
+              properties: {
+                dataType: fromCol.properties.dataType,
+                primaryKey: fromCol.properties.primaryKey,
+                notNull: fromCol.properties.notNull,
+              },
+            });
+            seenColumnIds.add(fromCol.properties.id);
+          }
+
+          if (!seenColumnIds.has(toCol.properties.id)) {
+            nodes.push({
+              id: toCol.properties.id,
+              label: toCol.properties.name,
+              type: 'COLUMN',
+              databaseId: toDb.properties.id,
+              tableId: toTable.properties.id,
+              properties: {
+                dataType: toCol.properties.dataType,
+                primaryKey: toCol.properties.primaryKey,
+                notNull: toCol.properties.notNull,
+              },
+            });
+            seenColumnIds.add(toCol.properties.id);
+          }
+
           edges.push({
-            source: record.get('fromId'),
-            target: record.get('toId'),
+            source: fromCol.properties.id,
+            target: toCol.properties.id,
             type: 'REFERENCES',
           });
         }
@@ -585,9 +627,11 @@ export class Neo4jRepository {
 
         const similarityQuery = `
           MATCH (from:Column)-[r:SIMILAR_TO]->(to:Column)
-          ${databaseFilter ? 'MATCH (from)<-[:HAS_COLUMN]-()<-[:HAS_TABLE]-(d:Database) ' + databaseFilter : ''}
+          ${databaseFilter ? 'MATCH (from)<-[:HAS_COLUMN]-(ft:Table)<-[:HAS_TABLE]-(d:Database) ' + databaseFilter : ''}
+          MATCH (from)<-[:HAS_COLUMN]-(ft:Table)<-[:HAS_TABLE]-(fd:Database)
+          MATCH (to)<-[:HAS_COLUMN]-(tt:Table)<-[:HAS_TABLE]-(td:Database)
           WHERE 1=1 ${confidenceFilter}
-          RETURN from.id as fromId, to.id as toId, r.confidence as confidence, r.discoveredAt as discoveredAt
+          RETURN from, to, ft, tt, fd, td, r.confidence as confidence, r.discoveredAt as discoveredAt
         `;
 
         const similarityResult = await session.run(similarityQuery, {
@@ -596,10 +640,50 @@ export class Neo4jRepository {
         });
 
         for (const record of similarityResult.records) {
+          const fromCol = record.get('from');
+          const toCol = record.get('to');
+          const fromTable = record.get('ft');
+          const toTable = record.get('tt');
+          const fromDb = record.get('fd');
+          const toDb = record.get('td');
           const discoveredAt = record.get('discoveredAt');
+
+          // Ensure column nodes exist (add if not already present)
+          if (!seenColumnIds.has(fromCol.properties.id)) {
+            nodes.push({
+              id: fromCol.properties.id,
+              label: fromCol.properties.name,
+              type: 'COLUMN',
+              databaseId: fromDb.properties.id,
+              tableId: fromTable.properties.id,
+              properties: {
+                dataType: fromCol.properties.dataType,
+                primaryKey: fromCol.properties.primaryKey,
+                notNull: fromCol.properties.notNull,
+              },
+            });
+            seenColumnIds.add(fromCol.properties.id);
+          }
+
+          if (!seenColumnIds.has(toCol.properties.id)) {
+            nodes.push({
+              id: toCol.properties.id,
+              label: toCol.properties.name,
+              type: 'COLUMN',
+              databaseId: toDb.properties.id,
+              tableId: toTable.properties.id,
+              properties: {
+                dataType: toCol.properties.dataType,
+                primaryKey: toCol.properties.primaryKey,
+                notNull: toCol.properties.notNull,
+              },
+            });
+            seenColumnIds.add(toCol.properties.id);
+          }
+
           edges.push({
-            source: record.get('fromId'),
-            target: record.get('toId'),
+            source: fromCol.properties.id,
+            target: toCol.properties.id,
             type: 'SIMILAR_TO',
             confidence: record.get('confidence'),
             discoveredAt: discoveredAt ? discoveredAt.toString() : undefined,
