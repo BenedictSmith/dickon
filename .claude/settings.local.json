@@ -30,7 +30,15 @@
       "Bash(npm run test:unit:*)",
       "Bash(npx tsc --noEmit)",
       "Bash(npx tsc:*)",
-      "Bash(/opt/homebrew/bin/npm install --ignore-scripts)"
+      "Bash(/opt/homebrew/bin/npm install --ignore-scripts)",
+      "Bash(gh repo clone:*)",
+      "Bash(gh label list:*)",
+      "Bash(for issue in 27 28 29 30 31 32)",
+      "Bash(do)",
+      "Bash(gh project item-add:*)",
+      "Bash(npm test:*)",
+      "Bash(gh project field-list:*)",
+      "Bash(gh project item-edit:*)"
     ],
     "deny": [],
     "ask": []
