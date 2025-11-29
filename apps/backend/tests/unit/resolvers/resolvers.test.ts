@@ -34,6 +34,8 @@ describe('GraphQL Resolvers', () => {
       graphService: mockGraphService,
       schemaService: mockSchemaService,
       jobManager: {} as GraphQLContext['jobManager'],
+      federationService: {} as GraphQLContext['federationService'],
+      queryCache: {} as GraphQLContext['queryCache'],
     };
   });
 

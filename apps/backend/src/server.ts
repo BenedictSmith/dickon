@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
 import { readFileSync } from 'fs';
@@ -7,6 +8,8 @@ import { GraphService } from './services/GraphService';
 import { SchemaService } from './services/SchemaService';
 import { DiscoveryService } from './services/DiscoveryService';
 import { JobManager } from './services/JobManager';
+import { FederationService } from './services/FederationService';
+import { QueryCache } from './services/QueryCache';
 import { Neo4jRepository } from './repositories/Neo4jRepository';
 
 /**
@@ -51,6 +54,8 @@ export async function startServer(): Promise<{
   const schemaService = new SchemaService();
   const discoveryService = new DiscoveryService(neo4jRepository);
   const jobManager = new JobManager(discoveryService);
+  const federationService = new FederationService(neo4jRepository);
+  const queryCache = new QueryCache();
 
   // Create server
   const server = await createApolloServer();
@@ -61,6 +66,8 @@ export async function startServer(): Promise<{
       graphService,
       schemaService,
       jobManager,
+      federationService,
+      queryCache,
     }),
     listen: { port: 4000 },
   });

@@ -477,3 +477,179 @@ type Subscription {
   """
   jobProgress(id: ID!): Job!
 }
+
+"""
+JSON scalar type for arbitrary JSON data
+"""
+scalar JSON
+
+"""
+Input for executing a federated query across multiple databases
+"""
+input FederatedQueryInput {
+  """
+  Tables to query with their database context
+  """
+  tables: [FederatedTableInput!]!
+
+  """
+  Columns to select
+  """
+  select: [FederatedColumnInput!]!
+
+  """
+  Join conditions (auto-detected if not specified)
+  """
+  joins: [FederatedJoinInput!]
+
+  """
+  Where conditions
+  """
+  where: [FederatedWhereInput!]
+
+  """
+  Limit number of results
+  """
+  limit: Int
+
+  """
+  Offset for pagination
+  """
+  offset: Int
+}
+
+"""
+Table reference in federated query
+"""
+input FederatedTableInput {
+  """
+  Database ID
+  """
+  database: ID!
+
+  """
+  Table name
+  """
+  table: String!
+
+  """
+  Table alias (optional)
+  """
+  alias: String
+}
+
+"""
+Column selection in federated query
+"""
+input FederatedColumnInput {
+  """
+  Table alias or name
+  """
+  table: String!
+
+  """
+  Column name
+  """
+  column: String!
+
+  """
+  Column alias (optional)
+  """
+  alias: String
+}
+
+"""
+Join condition between tables
+"""
+input FederatedJoinInput {
+  """
+  Source column reference
+  """
+  from: FederatedColumnRef!
+
+  """
+  Target column reference
+  """
+  to: FederatedColumnRef!
+
+  """
+  Join type
+  """
+  type: JoinType!
+}
+
+"""
+Column reference for joins
+"""
+input FederatedColumnRef {
+  """
+  Table alias or name
+  """
+  table: String!
+
+  """
+  Column name
+  """
+  column: String!
+}
+
+"""
+WHERE clause condition
+"""
+input FederatedWhereInput {
+  """
+  Column reference (format: "tableAlias.columnName")
+  """
+  column: String!
+
+  """
+  Comparison operator
+  """
+  operator: String!
+
+  """
+  Comparison value
+  """
+  value: String!
+}
+
+"""
+Join types for federated queries
+"""
+enum JoinType {
+  INNER
+  LEFT
+  RIGHT
+}
+
+"""
+Result of a federated query
+"""
+type FederatedQueryResult {
+  """
+  Result rows as JSON
+  """
+  rows: [JSON!]!
+
+  """
+  Column names in the result
+  """
+  columns: [String!]!
+
+  """
+  Total execution time in milliseconds
+  """
+  executionTimeMs: Int!
+
+  """
+  List of databases queried
+  """
+  databases: [String!]!
+}
+
+extend type Mutation {
+  """
+  Execute a federated query across multiple databases
+  """
+  federatedQuery(input: FederatedQueryInput!): FederatedQueryResult!
+}

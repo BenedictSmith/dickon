@@ -1,10 +1,14 @@
+import { GraphQLScalarType, Kind } from 'graphql';
 import { GraphService } from '../services/GraphService';
 import { SchemaService } from '../services/SchemaService';
 import { JobManager } from '../services/JobManager';
+import { FederationService } from '../services/FederationService';
+import { QueryCache, generateCacheKey } from '../services/QueryCache';
 import { Database } from '../domain/Database';
 import { Table } from '../domain/Table';
 import { Column } from '../domain/Column';
 import { Job } from '../domain/Job';
+import { FederatedQueryInput } from '../types/federation';
 
 /**
  * GraphQL context containing service instances
@@ -13,6 +17,8 @@ export interface GraphQLContext {
   graphService: GraphService;
   schemaService: SchemaService;
   jobManager: JobManager;
+  federationService: FederationService;
+  queryCache: QueryCache;
 }
 
 /**
@@ -218,7 +224,87 @@ export const resolvers = {
     ): Promise<boolean> {
       return context.jobManager.cancelJob(args.id);
     },
+
+    /**
+     * Execute federated query across multiple databases
+     */
+    async federatedQuery(
+      _parent: unknown,
+      args: { input: FederatedQueryInput },
+      context: GraphQLContext
+    ): Promise<{
+      rows: Array<Record<string, unknown>>;
+      columns: string[];
+      executionTimeMs: number;
+      databases: string[];
+    }> {
+      try {
+        // Generate cache key
+        const cacheKey = generateCacheKey(args.input);
+
+        // Check cache first
+        const cached = await context.queryCache.get(cacheKey);
+        if (cached) {
+          return cached;
+        }
+
+        // Execute query
+        const result = await context.federationService.executeQuery(args.input);
+
+        // Cache result (5 minute TTL)
+        const databases = args.input.tables.map((t) => t.database);
+        await context.queryCache.set(cacheKey, result, databases);
+
+        return result;
+      } catch (error) {
+        throw new Error(
+          `Federated query failed: ${error instanceof Error ? error.message : 'Unknown error'}`
+        );
+      }
+    },
   },
+
+  /**
+   * JSON scalar type for arbitrary JSON data
+   */
+  JSON: new GraphQLScalarType({
+    name: 'JSON',
+    description: 'Arbitrary JSON value',
+    serialize(value: unknown): unknown {
+      return value;
+    },
+    parseValue(value: unknown): unknown {
+      return value;
+    },
+    parseLiteral(ast): unknown {
+      const parseAst = (node: typeof ast): unknown => {
+        if (node.kind === Kind.STRING) {
+          return node.value;
+        }
+        if (node.kind === Kind.INT || node.kind === Kind.FLOAT) {
+          return Number(node.value);
+        }
+        if (node.kind === Kind.BOOLEAN) {
+          return node.value;
+        }
+        if (node.kind === Kind.NULL) {
+          return null;
+        }
+        if (node.kind === Kind.LIST) {
+          return node.values.map((v) => parseAst(v));
+        }
+        if (node.kind === Kind.OBJECT) {
+          const value: Record<string, unknown> = {};
+          node.fields.forEach((field) => {
+            value[field.name.value] = parseAst(field.value);
+          });
+          return value;
+        }
+        return null;
+      };
+      return parseAst(ast);
+    },
+  }),
 
   /**
    * Field resolvers for Database type
