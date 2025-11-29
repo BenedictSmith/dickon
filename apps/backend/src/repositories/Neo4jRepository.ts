@@ -124,7 +124,7 @@ export class Neo4jRepository {
             t.rowCount = $rowCount
         WITH t
         MATCH (d:Database {id: $databaseId})
-        MERGE (d)-[:CONTAINS]->(t)
+        MERGE (d)-[:HAS_TABLE]->(t)
         `,
         {
           id: table.id,
@@ -146,7 +146,7 @@ export class Neo4jRepository {
     try {
       const result = await session.run(
         `
-        MATCH (d:Database)-[:CONTAINS]->(t:Table {id: $id})
+        MATCH (d:Database)-[:HAS_TABLE]->(t:Table {id: $id})
         RETURN t, d.id as databaseId
         `,
         { id }
@@ -179,7 +179,7 @@ export class Neo4jRepository {
     try {
       const result = await session.run(
         `
-        MATCH (d:Database {id: $databaseId})-[:CONTAINS]->(t:Table)
+        MATCH (d:Database {id: $databaseId})-[:HAS_TABLE]->(t:Table)
         RETURN t
         `,
         { databaseId }
@@ -300,7 +300,7 @@ export class Neo4jRepository {
     try {
       const result = await session.run(
         `
-        MATCH (d:Database {id: $databaseId})-[:CONTAINS]->(:Table)-[:HAS_COLUMN]->(from:Column)
+        MATCH (d:Database {id: $databaseId})-[:HAS_TABLE]->(:Table)-[:HAS_COLUMN]->(from:Column)
         MATCH (from)-[:REFERENCES]->(to:Column)
         RETURN from.id as fromColumnId, to.id as toColumnId
         `,
@@ -325,7 +325,7 @@ export class Neo4jRepository {
     try {
       const result = await session.run(
         `
-        MATCH (:Database)-[:CONTAINS]->(t:Table)-[:HAS_COLUMN]->(c:Column)
+        MATCH (:Database)-[:HAS_TABLE]->(t:Table)-[:HAS_COLUMN]->(c:Column)
         RETURN c.id as id,
                c.name as name,
                c.dataType as dataType,
@@ -470,7 +470,9 @@ export class Neo4jRepository {
 
       const nodeResult = await session.run(nodeQuery, {
         databaseIds: options?.databaseIds || [],
-        maxNodes: options?.maxNodes || 10000,
+        maxNodes: options?.maxNodes
+          ? neo4j.int(Math.floor(options.maxNodes))
+          : neo4j.int(10000),
       });
 
       // Process nodes
