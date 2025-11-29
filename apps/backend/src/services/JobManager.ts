@@ -24,7 +24,7 @@ export class JobManager {
     const job = new Job({
       id: jobId,
       type: 'discovery',
-      status: 'pending',
+      status: 'PENDING',
     });
 
     this.jobs.set(jobId, job);
@@ -44,7 +44,7 @@ export class JobManager {
     try {
       // Update to running
       this.updateJob(jobId, {
-        status: 'running',
+        status: 'RUNNING',
         startedAt: new Date(),
         progress: 0,
       });
@@ -54,7 +54,7 @@ export class JobManager {
 
       // Update to completed
       this.updateJob(jobId, {
-        status: 'completed',
+        status: 'COMPLETED',
         completedAt: new Date(),
         progress: 100,
         result: { relationshipsCreated: count },
@@ -62,7 +62,7 @@ export class JobManager {
     } catch (error) {
       // Update to failed
       this.updateJob(jobId, {
-        status: 'failed',
+        status: 'FAILED',
         completedAt: new Date(),
         error: error instanceof Error ? error.message : 'Unknown error',
       });
@@ -108,7 +108,7 @@ export class JobManager {
     }
 
     this.updateJob(jobId, {
-      status: 'cancelled',
+      status: 'CANCELLED',
       completedAt: new Date(),
     });
 

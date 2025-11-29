@@ -8,7 +8,7 @@ describe('Job Domain Entity', () => {
       const job = new Job({
         id: 'job-1',
         type: 'discovery',
-        status: 'pending',
+        status: 'PENDING',
       });
 
       // Assert
@@ -24,7 +24,7 @@ describe('Job Domain Entity', () => {
         new Job({
           id: '',
           type: 'discovery',
-          status: 'pending',
+          status: 'PENDING',
         });
       }).toThrow('Job id cannot be empty');
     });
@@ -34,7 +34,7 @@ describe('Job Domain Entity', () => {
         new Job({
           id: 'job-1',
           type: '',
-          status: 'pending',
+          status: 'PENDING',
         });
       }).toThrow('Job type cannot be empty');
     });
@@ -43,7 +43,7 @@ describe('Job Domain Entity', () => {
       const job = new Job({
         id: 'job-1',
         type: 'discovery',
-        status: 'pending',
+        status: 'PENDING',
       });
 
       expect(job.progress).toBe(0);
@@ -53,7 +53,7 @@ describe('Job Domain Entity', () => {
       const job = new Job({
         id: 'job-1',
         type: 'discovery',
-        status: 'running',
+        status: 'RUNNING',
         progress: 50,
       });
 
@@ -67,7 +67,7 @@ describe('Job Domain Entity', () => {
       const job = new Job({
         id: 'job-1',
         type: 'discovery',
-        status: 'completed',
+        status: 'COMPLETED',
         startedAt,
         completedAt,
       });
@@ -80,7 +80,7 @@ describe('Job Domain Entity', () => {
       const job = new Job({
         id: 'job-1',
         type: 'discovery',
-        status: 'failed',
+        status: 'FAILED',
         error: 'Connection timeout',
       });
 
@@ -93,7 +93,7 @@ describe('Job Domain Entity', () => {
       const job = new Job({
         id: 'job-1',
         type: 'discovery',
-        status: 'pending',
+        status: 'PENDING',
       });
 
       expect(job.isPending()).toBe(true);
@@ -106,7 +106,7 @@ describe('Job Domain Entity', () => {
       const job = new Job({
         id: 'job-1',
         type: 'discovery',
-        status: 'running',
+        status: 'RUNNING',
       });
 
       expect(job.isPending()).toBe(false);
@@ -118,7 +118,7 @@ describe('Job Domain Entity', () => {
       const job = new Job({
         id: 'job-1',
         type: 'discovery',
-        status: 'completed',
+        status: 'COMPLETED',
       });
 
       expect(job.isCompleted()).toBe(true);
@@ -130,7 +130,7 @@ describe('Job Domain Entity', () => {
       const job = new Job({
         id: 'job-1',
         type: 'discovery',
-        status: 'failed',
+        status: 'FAILED',
       });
 
       expect(job.isFailed()).toBe(true);
@@ -141,7 +141,7 @@ describe('Job Domain Entity', () => {
       const job = new Job({
         id: 'job-1',
         type: 'discovery',
-        status: 'cancelled',
+        status: 'CANCELLED',
       });
 
       expect(job.isCancelled()).toBe(true);
@@ -155,7 +155,7 @@ describe('Job Domain Entity', () => {
         new Job({
           id: 'job-1',
           type: 'discovery',
-          status: 'running',
+          status: 'RUNNING',
           progress: -1,
         });
       }).toThrow('Job progress must be between 0 and 100');
@@ -166,7 +166,7 @@ describe('Job Domain Entity', () => {
         new Job({
           id: 'job-1',
           type: 'discovery',
-          status: 'running',
+          status: 'RUNNING',
           progress: 101,
         });
       }).toThrow('Job progress must be between 0 and 100');
@@ -176,7 +176,7 @@ describe('Job Domain Entity', () => {
       const job = new Job({
         id: 'job-1',
         type: 'discovery',
-        status: 'running',
+        status: 'RUNNING',
         progress: 0,
       });
 
@@ -187,7 +187,7 @@ describe('Job Domain Entity', () => {
       const job = new Job({
         id: 'job-1',
         type: 'discovery',
-        status: 'running',
+        status: 'RUNNING',
         progress: 100,
       });
 
@@ -200,7 +200,7 @@ describe('Job Domain Entity', () => {
       const job = new Job({
         id: 'job-1',
         type: 'discovery',
-        status: 'running',
+        status: 'RUNNING',
         progress: 50,
       });
 
@@ -218,7 +218,7 @@ describe('Job Domain Entity', () => {
       const job = new Job({
         id: 'job-1',
         type: 'discovery',
-        status: 'running',
+        status: 'RUNNING',
         startedAt,
         error: 'Test error',
       });
@@ -235,13 +235,13 @@ describe('Job Domain Entity', () => {
       const job1 = new Job({
         id: 'job-1',
         type: 'discovery',
-        status: 'pending',
+        status: 'PENDING',
       });
 
       const job2 = new Job({
         id: 'job-1',
         type: 'discovery',
-        status: 'running',
+        status: 'RUNNING',
       });
 
       expect(job1.equals(job2)).toBe(true);
@@ -251,13 +251,13 @@ describe('Job Domain Entity', () => {
       const job1 = new Job({
         id: 'job-1',
         type: 'discovery',
-        status: 'pending',
+        status: 'PENDING',
       });
 
       const job2 = new Job({
         id: 'job-2',
         type: 'discovery',
-        status: 'pending',
+        status: 'PENDING',
       });
 
       expect(job1.equals(job2)).toBe(false);
