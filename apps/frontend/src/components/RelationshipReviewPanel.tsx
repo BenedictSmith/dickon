@@ -117,9 +117,7 @@ export function RelationshipReviewPanel(): JSX.Element {
               </h3>
               <div className="space-y-2">
                 {completedJobs.slice(0, 5).map((job) => {
-                  const result = job.result
-                    ? (JSON.parse(job.result) as JobResult)
-                    : null;
+                  const result = job.result as JobResult | null;
                   return (
                     <div
                       key={job.id}
