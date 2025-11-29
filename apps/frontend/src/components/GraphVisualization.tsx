@@ -12,15 +12,7 @@ import type {
 
 /**
  * GraphVisualization Component
- * Epic 3.1: D3.js Force-Directed Graph
- *
- * Interactive force-directed graph visualization of database schema relationships
- * Features:
- * - Force simulation with collision detection
- * - Zoom and pan controls
- * - Color-coded nodes by type
- * - Relationship filtering
- * - Hover tooltips
+ * Modern D3.js Force-Directed Graph with glassmorphism design
  */
 
 interface GetGraphDataResponse {
@@ -52,7 +44,7 @@ export function GraphVisualization({
           edgeTypes: Array.from(selectedEdgeTypes),
         },
       },
-      pollInterval: 10000, // Refresh every 10 seconds
+      pollInterval: 10000,
     }
   );
 
@@ -63,10 +55,8 @@ export function GraphVisualization({
     const width = svgRef.current.clientWidth;
     const height = svgRef.current.clientHeight;
 
-    // Clear previous visualization
     svg.selectAll('*').remove();
 
-    // Create zoom behavior
     const zoom = d3
       .zoom<SVGSVGElement, unknown>()
       .scaleExtent([0.1, 10])
@@ -76,10 +66,8 @@ export function GraphVisualization({
 
     svg.call(zoom);
 
-    // Create container for zoom/pan
     const container = svg.append('g');
 
-    // Clone data to avoid mutating original
     const nodes: GraphNode[] = JSON.parse(
       JSON.stringify(data.getGraphData.nodes)
     );
@@ -87,33 +75,31 @@ export function GraphVisualization({
       JSON.stringify(data.getGraphData.edges)
     );
 
-    // Color scales
+    // Modern color palette
     const nodeColors: Record<GraphNodeType, string> = {
-      DATABASE: '#8b5cf6', // Purple
-      TABLE: '#3b82f6', // Blue
-      COLUMN: '#10b981', // Green
+      DATABASE: '#a855f7', // Violet
+      TABLE: '#3b82f6',    // Blue
+      COLUMN: '#10b981',   // Emerald
     };
 
     const edgeColors: Record<GraphEdgeType, string> = {
-      HAS_TABLE: '#6b7280', // Gray
-      HAS_COLUMN: '#6b7280', // Gray
-      REFERENCES: '#ef4444', // Red
-      SIMILAR_TO: '#f59e0b', // Amber
+      HAS_TABLE: '#475569',
+      HAS_COLUMN: '#475569',
+      REFERENCES: '#ef4444',
+      SIMILAR_TO: '#f59e0b',
     };
 
-    // Node radius based on type
     const nodeRadius = (d: GraphNode): number => {
       switch (d.type) {
         case 'DATABASE':
-          return 12;
+          return 14;
         case 'TABLE':
-          return 9;
+          return 10;
         case 'COLUMN':
-          return 6;
+          return 7;
       }
     };
 
-    // Create force simulation
     const simulation = d3
       .forceSimulation<GraphNode>(nodes)
       .force(
@@ -122,19 +108,36 @@ export function GraphVisualization({
           .forceLink<GraphNode, GraphEdge>(edges)
           .id((d) => d.id)
           .distance((d) => {
-            // Shorter links for hierarchy, longer for relationships
-            if (d.type === 'HAS_TABLE' || d.type === 'HAS_COLUMN') return 50;
-            return 100;
+            if (d.type === 'HAS_TABLE' || d.type === 'HAS_COLUMN') return 60;
+            return 120;
           })
       )
-      .force('charge', d3.forceManyBody().strength(-300))
+      .force('charge', d3.forceManyBody().strength(-350))
       .force('center', d3.forceCenter(width / 2, height / 2))
       .force(
         'collision',
-        d3.forceCollide<GraphNode>().radius((d) => nodeRadius(d) + 5)
+        d3.forceCollide<GraphNode>().radius((d) => nodeRadius(d) + 8)
       );
 
-    // Create edge lines
+    // Gradient definitions
+    const defs = svg.append('defs');
+
+    // Add glow filter
+    const filter = defs.append('filter')
+      .attr('id', 'glow')
+      .attr('x', '-50%')
+      .attr('y', '-50%')
+      .attr('width', '200%')
+      .attr('height', '200%');
+
+    filter.append('feGaussianBlur')
+      .attr('stdDeviation', '3')
+      .attr('result', 'coloredBlur');
+
+    const feMerge = filter.append('feMerge');
+    feMerge.append('feMergeNode').attr('in', 'coloredBlur');
+    feMerge.append('feMergeNode').attr('in', 'SourceGraphic');
+
     const link = container
       .append('g')
       .attr('class', 'links')
@@ -144,24 +147,21 @@ export function GraphVisualization({
       .append('line')
       .attr('stroke', (d) => edgeColors[d.type])
       .attr('stroke-opacity', (d) => {
-        // SIMILAR_TO edges show confidence via opacity
         if (d.type === 'SIMILAR_TO' && d.confidence !== undefined) {
-          return 0.2 + d.confidence * 0.6;
+          return 0.3 + d.confidence * 0.5;
         }
-        return 0.6;
+        return 0.5;
       })
       .attr('stroke-width', (d) => {
-        if (d.type === 'REFERENCES') return 2;
+        if (d.type === 'REFERENCES') return 2.5;
         if (d.type === 'SIMILAR_TO') return 2;
-        return 1;
+        return 1.5;
       })
       .attr('stroke-dasharray', (d) => {
-        // Dashed lines for similarity relationships
-        if (d.type === 'SIMILAR_TO') return '5,5';
+        if (d.type === 'SIMILAR_TO') return '6,4';
         return null;
       });
 
-    // Create node groups
     const node = container
       .append('g')
       .attr('class', 'nodes')
@@ -169,6 +169,7 @@ export function GraphVisualization({
       .data(nodes)
       .enter()
       .append('g')
+      .style('cursor', 'grab')
       .call(
         d3
           .drag<SVGGElement, GraphNode>()
@@ -188,25 +189,27 @@ export function GraphVisualization({
           })
       );
 
-    // Add circles to nodes
+    // Node circles with glow effect
     node
       .append('circle')
       .attr('r', (d) => nodeRadius(d))
       .attr('fill', (d) => nodeColors[d.type])
-      .attr('stroke', '#fff')
-      .attr('stroke-width', 2);
+      .attr('stroke', '#0f172a')
+      .attr('stroke-width', 2)
+      .attr('filter', 'url(#glow)');
 
-    // Add labels to nodes
+    // Node labels
     node
       .append('text')
       .text((d) => d.label)
-      .attr('x', (d) => nodeRadius(d) + 5)
+      .attr('x', (d) => nodeRadius(d) + 6)
       .attr('y', 4)
-      .attr('font-size', '10px')
-      .attr('fill', '#e5e7eb')
+      .attr('font-size', '11px')
+      .attr('font-weight', '500')
+      .attr('fill', '#cbd5e1')
       .attr('pointer-events', 'none');
 
-    // Add tooltips
+    // Tooltips
     node.append('title').text((d) => {
       let info = `${d.type}: ${d.label}`;
       if (d.type === 'COLUMN' && d.properties.dataType) {
@@ -218,7 +221,6 @@ export function GraphVisualization({
       return info;
     });
 
-    // Update positions on each tick
     simulation.on('tick', () => {
       link
         .attr('x1', (d) => (d.source as GraphNode).x ?? 0)
@@ -229,7 +231,6 @@ export function GraphVisualization({
       node.attr('transform', (d) => `translate(${d.x ?? 0},${d.y ?? 0})`);
     });
 
-    // Cleanup
     return () => {
       simulation.stop();
     };
@@ -261,16 +262,27 @@ export function GraphVisualization({
 
   if (loading && !data) {
     return (
-      <div className="bg-gray-800 rounded-lg p-8 flex items-center justify-center">
-        <p className="text-gray-400">Loading graph...</p>
+      <div className="glass-card p-8 flex items-center justify-center">
+        <div className="flex items-center gap-3 text-surface-400">
+          <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+          </svg>
+          <span>Loading graph...</span>
+        </div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="bg-gray-800 rounded-lg p-8">
-        <p className="text-red-400">Error loading graph: {error.message}</p>
+      <div className="glass-card p-8">
+        <div className="flex items-center gap-3 text-red-400">
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span>Error loading graph: {error.message}</span>
+        </div>
       </div>
     );
   }
@@ -279,59 +291,113 @@ export function GraphVisualization({
   const edgeCount = data?.getGraphData.edges.length ?? 0;
 
   return (
-    <div className="bg-gray-800 rounded-lg overflow-hidden">
-      {/* Header with Controls */}
-      <div className="p-4 border-b border-gray-700">
-        <div className="flex items-center justify-between mb-4">
-          <div>
-            <h2 className="text-2xl font-bold text-white">Knowledge Graph</h2>
-            <p className="text-sm text-gray-400 mt-1">
-              {nodeCount} nodes, {edgeCount} edges
-            </p>
-          </div>
-        </div>
-
-        {/* Filters */}
-        <div className="flex flex-wrap gap-6">
-          {/* Node Type Filters */}
-          <div>
-            <p className="text-sm text-gray-400 mb-2">Node Types:</p>
-            <div className="flex gap-2">
-              {(['DATABASE', 'TABLE', 'COLUMN'] as GraphNodeType[]).map(
-                (type) => (
-                  <button
-                    key={type}
-                    onClick={() => toggleNodeType(type)}
-                    className={`px-3 py-1 rounded-lg text-sm font-semibold transition-colors ${
-                      selectedNodeTypes.has(type)
-                        ? 'bg-primary-600 text-white'
-                        : 'bg-gray-700 text-gray-400'
-                    }`}
-                  >
-                    {type}
-                  </button>
-                )
-              )}
+    <div className="glass-card overflow-hidden">
+      {/* Header */}
+      <div className="p-5 border-b border-surface-700/50">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyber-500/20 to-accent-500/20 border border-cyber-500/30 flex items-center justify-center">
+              <svg className="w-6 h-6 text-cyber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+            <div>
+              <h2 className="text-xl font-bold text-white">Knowledge Graph</h2>
+              <div className="flex items-center gap-3 mt-1">
+                <span className="text-sm text-surface-400">{nodeCount} nodes</span>
+                <span className="text-surface-600">•</span>
+                <span className="text-sm text-surface-400">{edgeCount} edges</span>
+              </div>
             </div>
           </div>
 
-          {/* Edge Type Filters */}
-          <div>
-            <p className="text-sm text-gray-400 mb-2">Edge Types:</p>
-            <div className="flex gap-2">
-              {(['REFERENCES', 'SIMILAR_TO'] as GraphEdgeType[]).map((type) => (
-                <button
-                  key={type}
-                  onClick={() => toggleEdgeType(type)}
-                  className={`px-3 py-1 rounded-lg text-sm font-semibold transition-colors ${
-                    selectedEdgeTypes.has(type)
-                      ? 'bg-primary-600 text-white'
-                      : 'bg-gray-700 text-gray-400'
-                  }`}
-                >
-                  {type}
-                </button>
-              ))}
+          {/* Filters */}
+          <div className="flex flex-wrap gap-4">
+            {/* Node Types */}
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-surface-500 uppercase tracking-wide">Nodes</span>
+              <div className="flex gap-1.5">
+                {(['DATABASE', 'TABLE', 'COLUMN'] as GraphNodeType[]).map((type) => {
+                  const isActive = selectedNodeTypes.has(type);
+                  const colorStyles = {
+                    DATABASE: {
+                      bg: 'rgba(139, 92, 246, 0.2)',
+                      text: '#c4b5fd',
+                      border: 'rgba(139, 92, 246, 0.3)',
+                    },
+                    TABLE: {
+                      bg: 'rgba(59, 130, 246, 0.2)',
+                      text: '#93c5fd',
+                      border: 'rgba(59, 130, 246, 0.3)',
+                    },
+                    COLUMN: {
+                      bg: 'rgba(16, 185, 129, 0.2)',
+                      text: '#6ee7b7',
+                      border: 'rgba(16, 185, 129, 0.3)',
+                    },
+                  };
+                  const colors = colorStyles[type];
+                  return (
+                    <button
+                      key={type}
+                      onClick={() => toggleNodeType(type)}
+                      className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all border"
+                      style={isActive ? {
+                        backgroundColor: colors.bg,
+                        color: colors.text,
+                        borderColor: colors.border,
+                      } : {
+                        backgroundColor: 'rgb(30, 41, 59)',
+                        color: 'rgb(100, 116, 139)',
+                        borderColor: 'transparent',
+                      }}
+                    >
+                      {type.charAt(0) + type.slice(1).toLowerCase()}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Edge Types */}
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-surface-500 uppercase tracking-wide">Edges</span>
+              <div className="flex gap-1.5">
+                {(['REFERENCES', 'SIMILAR_TO'] as const).map((type) => {
+                  const isActive = selectedEdgeTypes.has(type);
+                  const edgeColorStyles = {
+                    REFERENCES: {
+                      bg: 'rgba(239, 68, 68, 0.2)',
+                      text: '#fca5a5',
+                      border: 'rgba(239, 68, 68, 0.3)',
+                    },
+                    SIMILAR_TO: {
+                      bg: 'rgba(245, 158, 11, 0.2)',
+                      text: '#fcd34d',
+                      border: 'rgba(245, 158, 11, 0.3)',
+                    },
+                  };
+                  const colors = edgeColorStyles[type];
+                  return (
+                    <button
+                      key={type}
+                      onClick={() => toggleEdgeType(type)}
+                      className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all border"
+                      style={isActive ? {
+                        backgroundColor: colors.bg,
+                        color: colors.text,
+                        borderColor: colors.border,
+                      } : {
+                        backgroundColor: 'rgb(30, 41, 59)',
+                        color: 'rgb(100, 116, 139)',
+                        borderColor: 'transparent',
+                      }}
+                    >
+                      {type === 'REFERENCES' ? 'FK References' : 'Similarity'}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>
@@ -342,43 +408,43 @@ export function GraphVisualization({
         <svg
           ref={svgRef}
           className="w-full h-full"
-          style={{ background: '#1f2937' }}
+          style={{ background: 'linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%)' }}
         />
 
         {/* Legend */}
-        <div className="absolute bottom-4 left-4 bg-gray-900/90 rounded-lg p-4 text-sm">
-          <p className="text-white font-semibold mb-2">Legend</p>
-          <div className="space-y-1">
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-purple-500"></div>
-              <span className="text-gray-300">Database</span>
+        <div className="absolute bottom-4 left-4 glass-card p-4 text-sm max-w-xs">
+          <p className="text-white font-semibold mb-3 flex items-center gap-2">
+            <svg className="w-4 h-4 text-surface-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Legend
+          </p>
+          <div className="space-y-2">
+            <div className="flex items-center gap-3">
+              <div className="w-3 h-3 rounded-full bg-violet-500 shadow-[0_0_8px_rgba(139,92,246,0.5)]" />
+              <span className="text-surface-300 text-xs">Database</span>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-blue-500"></div>
-              <span className="text-gray-300">Table</span>
+            <div className="flex items-center gap-3">
+              <div className="w-2.5 h-2.5 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.5)]" />
+              <span className="text-surface-300 text-xs">Table</span>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-green-500"></div>
-              <span className="text-gray-300">Column</span>
+            <div className="flex items-center gap-3">
+              <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
+              <span className="text-surface-300 text-xs">Column</span>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-0.5 bg-red-500"></div>
-              <span className="text-gray-300">Foreign Key</span>
+            <div className="border-t border-surface-700/50 my-2" />
+            <div className="flex items-center gap-3">
+              <div className="w-6 h-0.5 bg-red-500" />
+              <span className="text-surface-300 text-xs">Foreign Key</span>
             </div>
-            <div className="flex items-center gap-2">
-              <div
-                className="w-8 h-0.5 bg-amber-500"
-                style={{
-                  backgroundImage:
-                    'linear-gradient(to right, #f59e0b 50%, transparent 50%)',
-                  backgroundSize: '8px 2px',
-                }}
-              ></div>
-              <span className="text-gray-300">Similarity</span>
+            <div className="flex items-center gap-3">
+              <div className="w-6 h-0.5 bg-amber-500" style={{ backgroundImage: 'repeating-linear-gradient(90deg, #f59e0b 0, #f59e0b 6px, transparent 6px, transparent 10px)' }} />
+              <span className="text-surface-300 text-xs">Similarity</span>
             </div>
           </div>
-          <p className="text-gray-400 text-xs mt-3">Drag nodes to reposition</p>
-          <p className="text-gray-400 text-xs">Scroll to zoom</p>
+          <div className="border-t border-surface-700/50 mt-3 pt-3">
+            <p className="text-[10px] text-surface-500">Drag to move • Scroll to zoom</p>
+          </div>
         </div>
       </div>
     </div>

@@ -120,7 +120,8 @@ describe('GraphVisualization', () => {
       expect(screen.getByText('Knowledge Graph')).toBeInTheDocument();
     });
 
-    expect(screen.getByText('4 nodes, 4 edges')).toBeInTheDocument();
+    expect(screen.getByText('4 nodes')).toBeInTheDocument();
+    expect(screen.getByText('4 edges')).toBeInTheDocument();
   });
 
   it('should render SVG canvas', async () => {
@@ -149,10 +150,9 @@ describe('GraphVisualization', () => {
       expect(screen.getByText('Knowledge Graph')).toBeInTheDocument();
     });
 
-    expect(screen.getByText('Node Types:')).toBeInTheDocument();
-    expect(screen.getByText('DATABASE')).toBeInTheDocument();
-    expect(screen.getByText('TABLE')).toBeInTheDocument();
-    expect(screen.getByText('COLUMN')).toBeInTheDocument();
+    expect(screen.getByText('Database')).toBeInTheDocument();
+    expect(screen.getByText('Table')).toBeInTheDocument();
+    expect(screen.getByText('Column')).toBeInTheDocument();
   });
 
   it('should display edge type filters', async () => {
@@ -166,9 +166,8 @@ describe('GraphVisualization', () => {
       expect(screen.getByText('Knowledge Graph')).toBeInTheDocument();
     });
 
-    expect(screen.getByText('Edge Types:')).toBeInTheDocument();
-    expect(screen.getByText('REFERENCES')).toBeInTheDocument();
-    expect(screen.getByText('SIMILAR_TO')).toBeInTheDocument();
+    expect(screen.getByText('FK References')).toBeInTheDocument();
+    expect(screen.getByText('Similarity')).toBeInTheDocument();
   });
 
   it('should display legend with node and edge types', async () => {
@@ -183,11 +182,7 @@ describe('GraphVisualization', () => {
     });
 
     expect(screen.getByText('Legend')).toBeInTheDocument();
-    expect(screen.getByText('Database')).toBeInTheDocument();
-    expect(screen.getByText('Table')).toBeInTheDocument();
-    expect(screen.getByText('Column')).toBeInTheDocument();
     expect(screen.getByText('Foreign Key')).toBeInTheDocument();
-    expect(screen.getByText('Similarity')).toBeInTheDocument();
   });
 
   it('should display user instructions', async () => {
@@ -201,8 +196,7 @@ describe('GraphVisualization', () => {
       expect(screen.getByText('Knowledge Graph')).toBeInTheDocument();
     });
 
-    expect(screen.getByText('Drag nodes to reposition')).toBeInTheDocument();
-    expect(screen.getByText('Scroll to zoom')).toBeInTheDocument();
+    expect(screen.getByText('Drag to move • Scroll to zoom')).toBeInTheDocument();
   });
 
   it('should handle empty graph data', async () => {
@@ -237,7 +231,8 @@ describe('GraphVisualization', () => {
       expect(screen.getByText('Knowledge Graph')).toBeInTheDocument();
     });
 
-    expect(screen.getByText('0 nodes, 0 edges')).toBeInTheDocument();
+    expect(screen.getByText('0 nodes')).toBeInTheDocument();
+    expect(screen.getByText('0 edges')).toBeInTheDocument();
   });
 
   it('should display error message on query failure', async () => {
@@ -295,6 +290,7 @@ describe('GraphVisualization', () => {
       expect(screen.getByText('Knowledge Graph')).toBeInTheDocument();
     });
 
-    expect(screen.getByText('4 nodes, 4 edges')).toBeInTheDocument();
+    expect(screen.getByText('4 nodes')).toBeInTheDocument();
+    expect(screen.getByText('4 edges')).toBeInTheDocument();
   });
 });
