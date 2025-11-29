@@ -155,21 +155,38 @@ export const resolvers = {
         // Extract schema from SQLite database
         const database = await context.schemaService.extractSchema(path, name);
 
-        // Get all tables and their structures
+        // Get all tables using SQLiteRepository
+        const SQLiteRepository =
+          require('../repositories/SQLiteRepository').SQLiteRepository;
+        const repository = new SQLiteRepository(path);
+        const tableNames = repository.getTables();
+
+        // Get structure for each table
         const tables: Table[] = [];
         const allColumns: Column[] = [];
-        const allForeignKeys: { fromColumn: string; toColumn: string }[] = [];
 
-        // For now, we'll need to enhance SchemaService to return tables
-        // This is a simplified version - in practice, SchemaService.extractSchema
-        // should return more complete information
+        for (const tableName of tableNames) {
+          const tableStructure =
+            await context.schemaService.getTableStructure(path, tableName);
 
-        // Populate the Neo4j graph
+          // Update table's databaseId to use actual database ID
+          const table = new Table({
+            ...tableStructure.table,
+            databaseId: database.id,
+          });
+
+          tables.push(table);
+          allColumns.push(...tableStructure.columns);
+        }
+
+        repository.close();
+
+        // Populate the Neo4j graph (skip foreign keys for now - TODO: implement FK mapping)
         await context.graphService.populateFullSchema(
           database,
           tables,
           allColumns,
-          allForeignKeys
+          [] // Empty foreign keys array for now
         );
 
         return {

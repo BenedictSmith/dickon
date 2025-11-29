@@ -7,7 +7,7 @@ import { ApolloClient, InMemoryCache, HttpLink } from '@apollo/client';
  */
 
 const isDevelopment = import.meta.env.MODE === 'development';
-const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:4000/graphql';
+const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:4000/';
 
 // Create the Apollo Client
 export const apolloClient = new ApolloClient({

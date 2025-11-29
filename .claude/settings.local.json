@@ -38,7 +38,16 @@
       "Bash(gh project item-add:*)",
       "Bash(npm test:*)",
       "Bash(gh project field-list:*)",
-      "Bash(gh project item-edit:*)"
+      "Bash(gh project item-edit:*)",
+      "Bash(docker compose:*)",
+      "Bash(curl:*)",
+      "Bash(jq:*)",
+      "Bash(pkill:*)",
+      "Bash(docker exec:*)",
+      "Bash(docker port:*)",
+      "Bash(node -e:*)",
+      "Bash(python3:*)",
+      "Bash(npm run test:*)"
     ],
     "deny": [],
     "ask": []
